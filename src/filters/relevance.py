@@ -61,6 +61,50 @@ BODY_MATCH_POINTS = 10.0
 COMMENT_MATCH_POINTS = 6.0
 COMMENT_MATCH_CAP = 12.0
 NO_TOPIC_TUTORIAL_PENALTY = -25.0
+INSIGHT_BONUS_CAP = 12.0
+
+# Phrases that mark a comment as *directional insight* — a practitioner
+# explaining what the industry shift means, what to learn, which mindset to
+# adopt — as opposed to reactions/jokes. Written unfolded; they are folded
+# before matching, like topic keywords.
+INSIGHT_PHRASES = [
+    "nên học", "cần học", "học những gì", "kỹ năng", "ky nang", "nghiệp vụ",
+    "business", "tư duy", "mindset", "kinh nghiệm", "hệ thống", "toàn hệ thống",
+    "làm việc với mọi người", "kỹ năng mềm", "soft skill", "áp dụng",
+    "thực tế là", "trước mặt rồi", "không phải tương lai", "nâng cấp bản thân",
+    "tự học", "định hướng", "lời khuyên", "should learn", "focus on",
+    "instead of", "what matters", "in the future", "adapt", "upskill",
+    "understand the business", "communication skill",
+]
+
+
+def comment_insight_score(text: str) -> float:
+    """Score one comment's directional-insight value (0..~12).
+
+    Phrase hits dominate; a small bonus for substantive length (a real
+    argument rarely fits in one line). Votes are handled by the caller —
+    a high-insight comment with few votes can still be the best one.
+    """
+    folded = fold_text(text or "")
+    if not folded:
+        return 0.0
+    hits = sum(1 for phrase in INSIGHT_PHRASES if _contains(folded, fold_text(phrase)))
+    score = min(10.0, hits * 2.5)
+    if len(folded) >= 280:
+        score += 2.0
+    elif len(folded) >= 150:
+        score += 1.0
+    return score
+
+
+def rank_comments(comments, limit: int = None):
+    """Order comments by insight first, then community votes."""
+    ranked = sorted(
+        comments,
+        key=lambda c: (comment_insight_score(c.text), c.votes),
+        reverse=True,
+    )
+    return ranked[:limit] if limit else ranked
 
 
 def fold_text(text: str) -> str:
@@ -181,6 +225,14 @@ class RelevanceScorer:
             bonus = min(6.0, len(item.top_comments) * 1.5)
             score += bonus
             reasons.append(f"có {len(item.top_comments)} bình luận cộng đồng (+{bonus:.0f})")
+
+            insight_bonus = min(
+                INSIGHT_BONUS_CAP,
+                sum(comment_insight_score(c.text) for c in item.top_comments),
+            )
+            if insight_bonus > 0:
+                score += insight_bonus
+                reasons.append(f"bình luận có giá trị định hướng (+{insight_bonus:.0f})")
 
         published_ts = _parse_published_ts(item.published_at)
         if published_ts:
