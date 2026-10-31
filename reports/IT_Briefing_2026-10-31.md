@@ -2,81 +2,134 @@
 
 ---
 
-# BÁO CÁO ĐỊNH HƯỚNG NGÀNH IT
+> ⚠️ **Cảnh báo:** Bản tin hôm nay là bản tổng hợp tự động (fallback) vì Gemini không chạy được — nội dung dưới đây là danh sách nguồn đã lọc theo điểm liên quan, chưa có lớp phân tích sâu. Kiểm tra GEMINI_API_KEY / GEMINI_MODEL trong GitHub Secrets.
 
-## 1. HƯỚNG ĐI CỦA NGÀNH IT HIỆN NAY
-- **AI Agent và Vibe Coding không còn là tương lai mà là hiện thực trước mắt:** Việc lập trình viên viết code thuần túy đang được thay thế dần bởi các quy trình AI Agent tự động hóa. Theo video từ kênh *Hỏi Dân IT* và *Tôi Đi Code Dạo*, các công cụ như Claude Code, Gemini hay Antigravity IDE cho phép người dùng xây dựng ứng dụng qua quy trình "vibe coding", đòi hỏi dev phải chuyển dịch từ thợ code sang người thiết lập workflow và kiểm soát hệ thống.
-- **Thị trường tuyển dụng phân cực nặng và siết chặt vòng đời Junior:** Sự kết hợp giữa làn sóng layoff của BigTech, lượng sinh viên ra trường lớn và sự hỗ trợ năng suất từ AI khiến thị trường tuyển dụng trở nên vô cùng khắt khe. Theo bình luận có `insight_score = 12.0` từ video *No Code | Không thể nào các lập trình viên kiểu này thực sự mất việc vào năm SAU?* (kênh *Tips Javascript*), áp lực không nằm ở việc AI giỏi đến đâu, mà nằm ở việc AI tự động hóa hoàn toàn các khâu từ test, security đến UI/UX, khiến những lập trình viên quen làm việc chia task, "mất não không đọc tài liệu quá 100 dòng" dễ dàng bị đào thải.
-- **Xu hướng dịch chuyển sang hệ thống AI Local và bảo mật:** Do chi phí dịch vụ Cloud AI tăng cao và rủi ro lộ lọt bảo mật dữ liệu doanh nghiệp khi kéo API bên ngoài, xu hướng build hạ tầng AI local (như chạy RAG, Vector Database cục bộ) đang được cộng đồng đặc biệt quan tâm (theo thảo luận từ video *Vector Databases* và *Xin vợ 2 tỷ build siêu máy tính chạy AI*).
-- **Thách thức tuyển dụng "Data-Entry Nightmare":** Trên quy mô toàn cầu, các bài đăng thảo luận từ Hacker News (*Tech market feels like a data entry job*) chỉ ra rằng quy trình nộp hồ sơ xin việc hiện nay đã trở thành một cơn ác mộng nhập liệu thủ công do các hệ thống tuyển dụng tự động quá tải, buộc dev phải tìm kiếm chiến lược tiếp cận local hoặc dựa vào mạng lưới quan hệ thay vì chỉ ném CV qua các nền tảng đại trà.
+# BÁO CÁO ĐỊNH HƯỚNG NGÀNH IT (BẢN LỌC TỰ ĐỘNG)
 
----
+## BÌNH LUẬN ĐỊNH HƯỚNG NỔI BẬT
 
-## 2. NGƯỜI HỌC IT BÂY GIỜ CẦN HỌC GÌ
-### Kỹ năng cần học:
-- **Kỹ năng nắm bắt Business và toàn bộ hệ thống (System Thinking):** Thay vì chỉ nhận task đơn lẻ rồi viết code, dev phải học cách thấu hiểu nghiệp vụ cốt lõi của toàn bộ hệ thống. *(Dựa trên bình luận của `@phutran-z6h` - YouTube Tips Javascript).*
-- **Kỹ năng phối hợp với AI Agent và quản lý version control (Git):** Biết cách thiết lập prompt, chia nhỏ tác vụ cho Agent, kiểm soát luồng suy nghĩ (thinking process) của model và sử dụng Git thành thạo để "vibe coding" an toàn mà không sợ hỏng code. *(Dựa trên series của Hỏi Dân IT).*
-- **Kỹ năng đặt câu hỏi, truy vấn và xử lý dữ liệu phi cấu trúc:** Nắm vững cấu trúc Vector Databases, Chunking, và giải pháp RAG để phục vụ việc tích hợp AI vào hệ thống nội bộ. *(Dựa trên chia sẻ của `@vantran_devopsinfra` về giải pháp BGE-m3, MongoDB Vector Search và Qwen).*
+### Từ [No Code | Không thể nào các lập trình viên kiểu này thực sự mất việc vào năm SAU?](https://www.youtube.com/watch?v=gxIKlsOzq70) (YouTube (Tips Javascript))
+*@phutran-z6h* (14 votes, insight 12):
+> Vấn đề là ae làm việc theo kiểu chia task + chia role quen rồi, giờ bảo ae tìm hiểu nghiệp vụ của cả hệ thống thì hơi bị khó, kĩ năng đó hình thành từ nhiều năm đi làm chứ ko phải một sớm 1 chiều, mà ngay cả khi ae muốn tìm hiểu thì cũng chưa chắc có cơ hội. Chuyện AI tự thiết kế, tự chạy test từ performance,security,e2e, uiux,... giờ là chuyên quá dễ dàng rồi, tuy ko đc 100% nhưng nó cũng làm dc 95-98% tùy vào cách ae setup + research. Chuyện lập trình viên ko cần code là chuyện trước mặt rồi, ko phải tương lại nữa, thế nên ae nên tập trung vào việc hiểu bussiness + hệ thống + kĩ năng làm việc với mọi người xung quanh. Với tình trạng mất não ko thể đọc tài liệu quá 100 dòng hiện nay thì thị
 
-### Công nghệ cần học:
-- **Vector Databases & RAG Frameworks:** MongoDB Vector Search, các embedding model như BGE-m3, và các mô hình local (như Qwen2.5-3B) để tự xây dựng hệ thống tri thức nội bộ.
-- **AI Agent IDEs & Tools:** Claude Code, Antigravity IDE, Gemini AI kết hợp các CLI tool hỗ trợ multi-agent.
-- **Git & CI/CD tự động hóa:** Công cụ kiểm soát mã nguồn là chốt chặn an toàn bắt buộc khi làm việc chung với AI sinh code tự động.
-- **Phân biệt Xu hướng thật vs Hype:** Các giải pháp RAG, Vector DB cục bộ, và tối ưu AI local cho doanh nghiệp là xu hướng thực tế do nhu cầu bảo mật. Trong khi đó, việc chạy đua mua phần cứng đắt tiền hay phụ thuộc hoàn toàn vào các AI trend ngắn hạn trên mạng xã hội cần được cân nhắc thực tế theo bài toán chi phí.
+### Từ [No Code | Không thể nào các lập trình viên kiểu này thực sự mất việc vào năm SAU?](https://www.youtube.com/watch?v=gxIKlsOzq70) (YouTube (Tips Javascript))
+*@NguyênNguyễnVăn-m6e3o* (2 votes, insight 4):
+> E nói thật chứ có kinh nghiệm kĩ thuật, năng lực,... Ở đâu cũng sống đc, chứ tại sao cứ phải suy nghĩ phải lm cho tư bản mới đc, như e làm tự do tháng đều đều trung bình cũng hơn 25 củ vưà lm vừa chơi, chưa kể sống ở nhà nông thôn nên chi phí sống vẫn dư giả chán, thấy nhiều người thất bại chỉ biết lắc đầu cười, ko phải cười họ thất bại, mà cười họ ko biết mình thất bại ở đâu rồi lấy cái lý do nào đó để tự nhủ cho cái thất bại của mình😅
 
----
+### Từ [Tech market feels like a data entry job](https://news.ycombinator.com/item?id=50254751) (Hacker News)
+*anilgulecha* (HN comment, insight 4):
+> A friend of mine put this to me: Ai can do everything needed for a business currently, outside of anticipating future business needs constantly. Which means the job market will currently benefit those with this skill. Traditionally what EMs&#x2F;PMs,leaders would do. I&#x27;m not sure where this will land, but the above rings true - Juniors are
 
-## 3. TƯ DUY & CÁCH ÁP DỤNG
-### Thay đổi tư duy cốt lõi theo cộng đồng:
-- **Từ thợ code (Task Executor) thành người thiết kế giải pháp (System & Business Architect):** AI đã thay thế phần lớn việc viết code lặp đi lặp lại. Giá trị của dev nằm ở khả năng thấu hiểu bài toán kinh doanh, dự đoán nhu cầu tương lai của doanh nghiệp và quản lý rủi ro hệ thống. *(Được củng cố qua các thảo luận trên Hacker News về việc thị trường hiện tại ưu tiên những ai có kỹ năng phán đoán kinh doanh giống như EM/PM).*
-- **Chủ động nâng cấp bản thân thay vì đổ lỗi:** Chấp nhận thực tế rằng quy trình tuyển dụng và công nghệ thay đổi nhanh chóng, không trông chờ vào một chỗ làm ổn định truyền thống mà phải tự xây dựng sản phẩm cá nhân và chủ động học tập.
+### Từ [Vector Databases - Video này để hiểu sự nâng cấp từ Kỹ sư lập trình đến Kỹ sư AI (AI Engineer).](https://www.youtube.com/watch?v=kRXoK02KJow) (YouTube (Tips Javascript))
+*@duythanh1602* (1 votes, insight 4):
+> Đại ca ơi, giờ backend 5 năm kinh nghiệm có nên chuyển hướng sang AI engineering ko hay tập trung ôn tiếp BE vậy, vì em nộp thử CV thì thấy toàn AI nhiều
 
-### Hướng dẫn áp dụng thực tế cho Dev nền tảng Java/Spring Boot đang học Python và Network Security:
-- **Tuần này nên làm gì:** 
-  - Tận dụng nền tảng Java/Spring Boot sẵn có để tìm hiểu về cách bảo mật các API kết nối với các mô hình LLM/AI Agent (Network Security cho AI).
-  - Sử dụng Python để viết một ứng dụng RAG nhỏ kết hợp Vector Database (như MongoDB hoặc Milvus) để tự động hóa việc tra cứu tài liệu bảo mật nội bộ.
-  - Thực hành "vibe coding" một dự án nhỏ bằng cách dùng Claude Code hoặc Antigravity IDE, đồng thời ép bản thân quản lý mã nguồn cực kỳ chặt chẽ bằng Git branch/commit.
-- **Cần tránh gì:**
-  - Tránh chỉ học cú pháp code chay (vì AI viết code tốt hơn và nhanh hơn bạn ở khoản này).
-  - Tránh sa đà vào việc nộp CV rải thảm qua các form tuyển dụng tự động mà không tối ưu hóa networking và portfolio cá nhân.
+### Từ [Looking for a tech job is a helpless data-entry nightmare](https://news.ycombinator.com/item?id=50254873) (Hacker News)
+*shahbaby* (HN comment, insight 4):
+> This post is Astroturfed AI fear. I&#x27;m guessing the AI oligarchs want fewer developers in the future so companies will become increasingly dependent on their tools.
 
----
+## NGUỒN ĐÃ LỌC THEO ĐIỂM LIÊN QUAN
 
-## 4. BÌNH LUẬN ĐỊNH HƯỚNG HAY NHẤT
+### [Microsoft Layoffs: Why Is This Happening? What About Freshers in India?](https://www.youtube.com/watch?v=KRDyv-wVKkU) (YouTube (myself))
+**Điểm liên quan:** 67 · **Chủ đề:** career_survival, thi_truong_tuyen_dung · **Vì sao chọn:** career_survival: khớp 'fresher' (+30); thi_truong_tuyen_dung: khớp 'layoff' (+30); tương tác (+2); mới <=2 ngày (+5)
+**Tóm tắt nội dung:** Why is getting a software developer job so difficult for freshers? And what does Microsoft's latest workforce news tell us about the future of technology jobs? In this video, we discuss Microsoft's voluntary exit offer, why technology companies restructure their workforce, and ho...
+> English reference: Why is getting a software developer job so difficult for freshers? And what does Microsoft's latest workforce news tell us about the future of technology jobs? In this video, we di...
 
-1. **Bình luận từ `@phutran-z6h`** (YouTube - *No Code | Không thể nào các lập trình viên kiểu này thực sự mất việc vào năm SAU?*)  
-   - **Votes:** 14 | **Insight Score:** 12.0  
-   - **Trích dẫn nguyên văn:**  
-     > "Vấn đề là ae làm việc theo kiểu chia task + chia role quen rồi, giờ bảo ae tìm hiểu nghiệp vụ của cả hệ thống thì hơi bị khó, kĩ năng đó hình thành từ nhiều năm đi làm chứ ko phải một sớm 1 chiều, mà ngay cả khi ae muốn tìm hiểu thì cũng chưa chắc có cơ hội. Chuyện AI tự thiết kế, tự chạy test từ performance,security,e2e, uiux,... giờ là chuyên quá dễ dàng rồi, tuy ko đc 100% nhưng nó cũng làm dc 95-98% tùy vào cách ae setup + research. Chuyện lập trình viên ko cần code là chuyện trước mặt rồi, ko phải tương lại nữa, thế nên ae nên tập trung vào việc hiểu bussiness + hệ thống + kĩ năng làm việc với mọi người xung quanh."
-   - **Vì sao đáng đọc:** Bình luận này vạch trần đúng tử huyệt của đại đa số lập trình viên hiện nay: quen nhận task cô lập thay vì tư duy hệ thống. Nó chỉ rõ kỹ năng cốt lõi cần giữ lại không phải là gõ code nhanh mà là thấu hiểu nghiệp vụ.
+### [Vector Databases - Video này để hiểu sự nâng cấp từ Kỹ sư lập trình đến Kỹ sư AI (AI Engineer).](https://www.youtube.com/watch?v=kRXoK02KJow) (YouTube (Tips Javascript))
+**Điểm liên quan:** 66 · **Chủ đề:** ai_va_huong_di_moi · **Vì sao chọn:** ai_va_huong_di_moi: khớp 'ai engineer' (+36); tương tác (+10); có 5 bình luận cộng đồng (+6); bình luận có giá trị định hướng (+8); tiếng nói chuyên gia/thâm niên (+2); ưu tiên thị trường VN (+4)
+**Tóm tắt nội dung:** #anonystick #backend #vectordatabases...
+**Bình luận nổi bật từ cộng đồng:**
+- *@duythanh1602* (1 votes): "Đại ca ơi, giờ backend 5 năm kinh nghiệm có nên chuyển hướng sang AI engineering ko hay tập trung ôn tiếp BE vậy, vì em nộp thử CV thì thấy toàn AI nhiều"
+- *@vantran_devopsinfra* (8 votes): "Xưa em từng làm dự án sinh viên, nôm na là tự build 1 con AI để có thể trả lời 1 số chủ đề cụ thể trong 1 file tài liệu lớn, lúc đó em có suy nghĩ không thể đưa cho AI 1 file lớn như vậy và rồi chỉ để hỏi 1 số chủ đề trong đó, vì vậy cần 1 giải pháp tối ưu đó là RAG. Trước tiên cắt tài liệu thành các Chunks, dùng 1 model BGE (BGE-m3) để embedding các Chunks tài liệu, rồi đẩy vào Mongo Vector Search, sau đó embedding câu hỏi và truy vấn trong MongoDB Vector Search để lấy top K số Chunks liên quan, và rồi đẩy câu hỏi text kèm top K Chunks text vào LLM (Qwen2.5-3B) để trả lời. Cảm ơn video của anh làm em nhớ lại kỉ niệm sinh viên. Điểm thú vị đó là tìm ra điểm chưa tối ưu và tìm cách để tối ưu "
+- *@giappham3462* (1 votes): "em có suy nghĩ như này:Giờ các AI aigent nhiều,toàn kéo API,tức là vấn đề bảo mật lộ ra ngoài á.Rồi sẽ có 1 lúc,các công ty sẽ cần những AI local,và code chay.Vì thế em nảy ra 1 ý tưởng,train AI local,theo phong các code của em,.. hiện tại,trên lý thuyết,em cũng nghĩ đến phương vector databases kết hợp chunking,để nó hiểu code em đang code là gì,để nó gợi ý tiếp theo,hoặc nó gen ra code,mà em mô tả cho nó (đương nhiên em sẽ viết skill,cho llm hiểu được ạ)"
 
-2. **Bình luận từ `@vantran_devopsinfra`** (YouTube - *Vector Databases - Video này để hiểu sự nâng cấp từ Kỹ sư lập trình đến Kỹ sư AI*)  
-   - **Votes:** 8 | **Insight Score:** 2.0  
-   - **Trích dẫn nguyên văn:**  
-     > "Xưa em từng làm dự án sinh viên, nôm na là tự build 1 con AI để có thể trả lời 1 số chủ đề cụ thể trong 1 file tài liệu lớn, lúc đó em có suy nghĩ không thể đưa cho AI 1 file lớn như vậy và rồi chỉ để hỏi 1 số chủ đề trong đó, vì vậy cần 1 giải pháp tối ưu đó là RAG. Trước tiên cắt tài liệu thành các Chunks, dùng 1 model BGE (BGE-m3) để embedding các Chunks tài liệu, rồi đẩy vào Mongo Vector Search, sau đó embedding câu hỏi và truy vấn trong MongoDB Vector Search để lấy top K số Chunks liên quan, và rồi đẩy câu hỏi text kèm top K Chunks text vào LLM (Qwen2.5-3B) để trả lời."
-   - **Vì sao đáng đọc:** Cung cấp một case study thực tế, kỹ thuật rất rõ ràng về cách xây dựng hệ thống RAG local bằng các công nghệ cụ thể (Chunking, BGE-m3, MongoDB, Qwen), giúp định hình tư duy thực thi cho lập trình viên muốn chuyển dịch sang AI engineering.
+### [No Code | Không thể nào các lập trình viên kiểu này thực sự mất việc vào năm SAU?](https://www.youtube.com/watch?v=gxIKlsOzq70) (YouTube (Tips Javascript))
+**Điểm liên quan:** 66 · **Chủ đề:** thi_truong_tuyen_dung · **Vì sao chọn:** thi_truong_tuyen_dung: khớp 'mat viec' (+30); tương tác (+10); có 5 bình luận cộng đồng (+6); bình luận có giá trị định hướng (+12); tiếng nói chuyên gia/thâm niên (+2); ưu tiên thị trường VN (+4); mới <=7 ngày (+2)
+**Tóm tắt nội dung:** #anonystick #backend...
+**Bình luận nổi bật từ cộng đồng:**
+- *@phutran-z6h* (14 votes): "Vấn đề là ae làm việc theo kiểu chia task + chia role quen rồi, giờ bảo ae tìm hiểu nghiệp vụ của cả hệ thống thì hơi bị khó, kĩ năng đó hình thành từ nhiều năm đi làm chứ ko phải một sớm 1 chiều, mà ngay cả khi ae muốn tìm hiểu thì cũng chưa chắc có cơ hội. Chuyện AI tự thiết kế, tự chạy test từ performance,security,e2e, uiux,... giờ là chuyên quá dễ dàng rồi, tuy ko đc 100% nhưng nó cũng làm dc 95-98% tùy vào cách ae setup + research. Chuyện lập trình viên ko cần code là chuyện trước mặt rồi, ko phải tương lại nữa, thế nên ae nên tập trung vào việc hiểu bussiness + hệ thống + kĩ năng làm việc với mọi người xung quanh. Với tình trạng mất não ko thể đọc tài liệu quá 100 dòng hiện nay thì thị"
+- *@NguyênNguyễnVăn-m6e3o* (2 votes): "E nói thật chứ có kinh nghiệm kĩ thuật, năng lực,... Ở đâu cũng sống đc, chứ tại sao cứ phải suy nghĩ phải lm cho tư bản mới đc, như e làm tự do tháng đều đều trung bình cũng hơn 25 củ vưà lm vừa chơi, chưa kể sống ở nhà nông thôn nên chi phí sống vẫn dư giả chán, thấy nhiều người thất bại chỉ biết lắc đầu cười, ko phải cười họ thất bại, mà cười họ ko biết mình thất bại ở đâu rồi lấy cái lý do nào đó để tự nhủ cho cái thất bại của mình😅"
+- *@iuNgocDuong* (16 votes): "anh lead cũ của con nói với con là " thời này rồi nó cũng qua thôi, bám trụ đi em, không thiệt thòi đâu, ngành mình lương vẫn cao hơn rất nhiều hơn so với các ngành khác, cơ mà phải update bản thân nhiều hơn để không bị đào thải ""
 
-3. **Bình luận từ `anilgulecha` trên Hacker News** (Bài viết: *Tech market feels like a data entry job*)  
-   - **Votes:** 0 | **Insight Score:** 4.5  
-   - **Trích dẫn nguyên văn:**  
-     > "A friend of mine put this to me: Ai can do everything needed for a business currently, outside of anticipating future business needs constantly. Which means the job market will currently benefit those with this skill. Traditionally what EMs/PMs,leaders would do."
-   - **Vì sao đáng đọc:** Cô đọng bản chất sự thay đổi của thị trường lao động công nghệ toàn cầu: khi AI có thể làm hầu hết tác vụ kỹ thuật, giá trị của con người được dịch chuyển hoàn toàn về khả năng dự báo nhu cầu kinh doanh tương lai (kỹ năng vốn thuộc về quản lý/lãnh đạo).
+### [Did the AI bubble just pop?](https://www.youtube.com/watch?v=nEaJMdM1djM) (YouTube (Fireship))
+**Điểm liên quan:** 56 · **Chủ đề:** ai_va_huong_di_moi · **Vì sao chọn:** ai_va_huong_di_moi: khớp 'ai bubble' (+36); tương tác (+10); có 5 bình luận cộng đồng (+6); bình luận có giá trị định hướng (+2); mới <=7 ngày (+2)
+**Tóm tắt nội dung:** Are we cooked chat? Want more Fireship?...
+> English reference: Are we cooked chat? Want more Fireship?...
+**Bình luận nổi bật từ cộng đồng:**
+- *@diego4195* (6060 votes): "Remember: If the headline/title is a question instead of a statement, the answer is "no"."
+- *@logoplay23* (8431 votes): "The peak of this bubble will probably be the exact moment Mark changes the company's name to Meta AI."
+- *@sorrefly* (5724 votes): "Weekly AI bubble pop news"
 
----
+### [Ngành lập trình và IT năm 2026 ảm đạm ra sao??](https://www.youtube.com/watch?v=mOaakWt7txY) (YouTube (Tôi Đi Code Dạo))
+**Điểm liên quan:** 54 · **Chủ đề:** ai_va_huong_di_moi, career_survival, thi_truong_tuyen_dung · **Vì sao chọn:** ai_va_huong_di_moi: khớp 'ai agent' (+10); career_survival: khớp 'junior' (+16); thi_truong_tuyen_dung: khớp 'layoff' (+16); tương tác (+10); có 5 bình luận cộng đồng (+6); bình luận có giá trị định hướng (+2); ưu tiên thị trường VN (+4); cũ >30 ngày (-10)
+**Tóm tắt nội dung:** Chào anh em, lại là Tôi Đi Code Dạo đây! 👋 Năm 2025 ảm đạm đã qua, năm 2026 kinh tế có vẻ "dễ thở" hơn một chút nhưng ngành IT lại đang đối mặt với những nỗi lo mới, đặc biệt là sự bùng nổ của AI Agent. Trong Vlog này, mình sẽ chia sẻ góc nhìn thực tế về thị trường tuyển dụng, sự...
+**Bình luận nổi bật từ cộng đồng:**
+- *@thong9564* (40 votes): "Không chỉ người lao động mà chính các công ty it bây giờ cũng đang rất khó khăn đó nhiều công ty đang tìm cách lay hoay chuyển hướng nhưng chưa đi tới đâu cả"
+- *@yikudo_xyz* (17 votes): "Các ngành chúng ta là ở nơi đón đầu làn sóng mới. Tốc độ phát triển của AI quả thật kinh khủng. Tín hiệu ở đây là sau giai đoạn chuyển đổi chúng ta sẽ bắt đầu thống trị các ngành khác"
+- *@JavaOnly_* (38 votes): "Tóm tắt: bigtech layoff + sinh viên ra trường + AI + kinh tế xuống = ae dev tranh nhau số slot ít ỏi, ae mới ra trường cook số lượng lớn 😅"
 
-## 5. NGUỒN NÊN XEM / ĐỌC HÔM NAY
+### [Vibe Coding Cùng AI Từ Số 0 Dành Cho Người Mới Bắt Đầu | Tự Tin Dùng AI An Toàn và Hiệu Quả](https://www.youtube.com/watch?v=XkAlFe0EIsY) (YouTube (Hỏi Dân IT))
+**Điểm liên quan:** 53 · **Chủ đề:** ai_va_huong_di_moi · **Vì sao chọn:** ai_va_huong_di_moi: khớp 'vibe coding' (+36); tương tác (+7); có 1 bình luận cộng đồng (+2); ưu tiên thị trường VN (+4); mới <=2 ngày (+5)
+**Tóm tắt nội dung:** Tự tin vibe coding với AI Agents (Claude Code, Gemini, ChatGPT...) theo quy trình (workflow) để tạo ra sản phẩm của riêng bạn Bạn có ý tưởng muốn làm một website hoặc ứng dụng đơn giản, nhưng chưa biết lập trình và không biết bắt đầu từ đâu? Bạn từng thử nhờ AI viết code, nhưng l...
+**Bình luận nổi bật từ cộng đồng:**
+- *@hoidanit* (HN comment): "Tự tin vibe coding hiệu quả với AI Agents (Claude Code, Gemini, ChatGPT...) theo quy trình (workflow) để tạo ra sản phẩm của riêng bạn 🔥Link series:"
 
-1. **[No Code | Không thể nào các lập trình viên kiểu này thực sự mất việc vào năm SAU?](https://www.youtube.com/watch?v=gxIKlsOzq70)** (YouTube - Tips Javascript)
-   - **Tóm tắt luận điểm:** Phân tích thực trạng các lập trình viên phụ thuộc vào chia task truyền thống đang đối mặt với nguy cơ đào thải lớn thế nào trước sự càn quét của các công cụ AI tự động hóa.
-   - **Góc nhìn nổi bật:** Nhấn mạnh việc AI đã thay thế 95-98% các khâu kỹ thuật, buộc dev phải chuyển dịch sang tư duy hệ thống và thấu hiểu nghiệp vụ.
-   - **Lý do chọn:** Có bình luận đạt insight score cao nhất (12.0), mang lại góc nhìn tỉnh táo và thực chiến cho dev Việt Nam.
+### [Vibe Coding Cùng AI Siêu An Toàn và Kiểm Soát với Git - Không Sợ Mất Code/Hỏng Code Khi Dùng AI](https://www.youtube.com/watch?v=r_4pDELxZz8) (YouTube (Hỏi Dân IT))
+**Điểm liên quan:** 52 · **Chủ đề:** ai_va_huong_di_moi · **Vì sao chọn:** ai_va_huong_di_moi: khớp 'vibe coding' (+36); tương tác (+9); có 1 bình luận cộng đồng (+2); bình luận có giá trị định hướng (+1); ưu tiên thị trường VN (+4)
+**Tóm tắt nội dung:** Đây là video demo kết quả đạt được trong series "Git Siêu Dễ Dành Cho Người Mới Bắt Đầu - Tự Tin Code Bằng AI", mục tiêu là giúp bạn vibe coding không sợ mất code/hỏng code khi dùng AI để code sản phẩm của bạn. 🌎 Tìm mình tại đây: #vibecoding #git...
+**Bình luận nổi bật từ cộng đồng:**
+- *@hoidanit* (HN comment): "Series "Git Siêu Dễ Dành Cho Người Mới Bắt Đầu - Tự Tin Code Bằng AI", mục tiêu là giúp bạn vibe coding không sợ mất code/hỏng code khi dùng AI để code sản phẩm của bạn. 🔥Link series:"
 
-2. **[Vector Databases - Video này để hiểu sự nâng cấp từ Kỹ sư lập trình đến Kỹ sư AI](https://www.youtube.com/watch?v=kRXoK02KJow)** (YouTube - Tips Javascript)
-   - **Tóm tắt luận điểm:** Hướng dẫn con đường chuyển đổi từ lập trình viên backend sang kỹ sư AI thông qua việc làm chủ các công nghệ lưu trữ và truy vấn vector.
-   - **Góc nhìn nổi bật:** Chia sẻ kỹ thuật thực tế từ cộng đồng về cách xây dựng hệ thống RAG local hiệu quả và bảo mật dữ liệu.
-   - **Lý do chọn:** Mang tính kỹ thuật cao, giải đáp đúng trăn trở "có nên chuyển hướng sang AI engineering" của các backend dev có thâm niên.
+### [Tech market feels like a data entry job](https://news.ycombinator.com/item?id=50254751) (Hacker News)
+**Điểm liên quan:** 50 · **Chủ đề:** thi_truong_tuyen_dung · **Vì sao chọn:** thi_truong_tuyen_dung: khớp 'tech market' (+36); tương tác (+2); có 2 bình luận cộng đồng (+3); bình luận có giá trị định hướng (+6); mới <=7 ngày (+2)
+**Tóm tắt nội dung:** I spent two hours every day filling my resume data to freshly developed forms made specifically to the hiring process of one or two companies. I have a good resume, worked well for a few years before AI, and know it has got a lot harder to land a development gig. I&#x27;ve worked...
+> English reference: I spent two hours every day filling my resume data to freshly developed forms made specifically to the hiring process of one or two companies. I have a good resume, worked well for...
+**Bình luận nổi bật từ cộng đồng:**
+- *anilgulecha* (HN comment): "A friend of mine put this to me: Ai can do everything needed for a business currently, outside of anticipating future business needs constantly. Which means the job market will currently benefit those with this skill. Traditionally what EMs&#x2F;PMs,leaders would do. I&#x27;m not sure where this will land, but the above rings true - Juniors are"
+- *sdevonoes* (HN comment): "I guess it depends on how your cv&#x2F;experience looks like? I don’t have problems getting interviews (so I guess my cv&#x2F;experience is relevant to the job… at least I do tailor my cv for each application). I do have problems in some stages of the tech interview (but that’s another story)"
 
-3. **[Ngành lập trình và IT năm 2026 ảm đạm ra sao??](https://www.youtube.com/watch?v=mOaakWt7txY)** (YouTube - Tôi Đi Code Dạo)
-   - **Tóm tắt luận điểm:** Phân tích bức tranh toàn cảnh năm 2026 khi kinh tế có phần hồi phục nhưng ngành IT vẫn đối mặt với áp lực từ AI Agent, sự bão hòa của thị trường và khó khăn cho tầng lớp Junior/Fresher.
-   - **Góc nhìn nổi bật:** Đưa ra lời khuyên sống còn: Đừng ghét AI, hãy học cách tận dụng nó để làm việc năng suất hơn.
-   - **Lý do chọn:** Phản ánh đúng tâm lý và thực trạng của thị trường IT trong nước hiện tại.
+### [Software Development Isn't Dead… But Hiring Has Changed in 2026](https://www.youtube.com/watch?v=L2Gi3iKRMC8) (YouTube (Akash Tolanur))
+**Điểm liên quan:** 49 · **Chủ đề:** career_survival, thi_truong_tuyen_dung · **Vì sao chọn:** career_survival: khớp 'fresher' (+10); thi_truong_tuyen_dung: khớp 'hiring' (+30); tương tác (+7); mới <=7 ngày (+2)
+**Tóm tắt nội dung:** Software Development Is Dead? 🤔 Or has hiring simply changed in 2026? Bhai, har jagah sunne ko mil raha hai ki AI developers ki jobs kha jayega, companies layoffs kar rahi hain, freshers ko interview calls nahi aa rahe, aur competition din ba din badhta ja raha hai. 😵‍💫 But is so...
+> English reference: Software Development Is Dead? 🤔 Or has hiring simply changed in 2026? Bhai, har jagah sunne ko mil raha hai ki AI developers ki jobs kha jayega, companies layoffs kar rahi hain, fr...
+
+### [Looking for a tech job is a helpless data-entry nightmare](https://news.ycombinator.com/item?id=50254873) (Hacker News)
+**Điểm liên quan:** 48 · **Chủ đề:** thi_truong_tuyen_dung · **Vì sao chọn:** thi_truong_tuyen_dung: khớp 'tech job' (+30); tương tác (+3); có 4 bình luận cộng đồng (+6); bình luận có giá trị định hướng (+8); mới <=7 ngày (+2)
+**Tóm tắt nội dung:** I spent hundred of hours (distributed over many days) filling my resume data to freshly developed forms made specifically to the hiring process of one or two companies, even though I feel like I have a top 10% resume and years of in hands-down software development experience. I l...
+> English reference: I spent hundred of hours (distributed over many days) filling my resume data to freshly developed forms made specifically to the hiring process of one or two companies, even though...
+**Bình luận nổi bật từ cộng đồng:**
+- *shahbaby* (HN comment): "This post is Astroturfed AI fear. I&#x27;m guessing the AI oligarchs want fewer developers in the future so companies will become increasingly dependent on their tools."
+- *Gravyness* (HN comment): "I know my english could use some improvement and I will leave this first comment to clarify I am a Brazilian developer: My main language is Portuguese, but I&#x27;ve been a productive software engineer for over 3 consecutive years in companies with daily meetings and did a good job. All I am asking is what should we (software engineers) focus our e"
+- *AlexITC* (HN comment): "I&#x27;m sorry for you and everyone else going through this, its madness; besides this you also need to deal with fake jobs, malware in take-home challenges, a pile of incoming messages selling you the &quot;best&quot; AI job search tool, etc. I&#x27;m aware how bad it fills to put your heart on filling an application for the perfect role just to"
+
+### [Vibe Coding Chuyên Nghiệp Cùng Gemini AI và Antigravity IDE | Series Gemini AI Dành Cho Beginners](https://www.youtube.com/watch?v=34oUbddPlcw) (YouTube (Hỏi Dân IT))
+**Điểm liên quan:** 43 · **Chủ đề:** ai_va_huong_di_moi · **Vì sao chọn:** ai_va_huong_di_moi: khớp 'vibe coding' (+36); tiêu đề dạng series/khóa học (-15); tương tác (+10); có 5 bình luận cộng đồng (+6); bình luận có giá trị định hướng (+2); ưu tiên thị trường VN (+4)
+**Tóm tắt nội dung:** Nếu bạn muốn vibe coding, muốn nêu ý tưởng để tạo ra sản phẩm coding với AI, muốn tận dụng Gemini thì Antigravity IDE là điều bạn đang tìm kiếm. Đây là video #11 trong series: Gemini AI Siêu Dễ Từ A tới Z - Tự Học Cấp Tốc Dành Cho Beginners 🌎 Tìm mình tại đây: Nội dung video: 0:0...
+**Bình luận nổi bật từ cộng đồng:**
+- *@hoidanit* (HN comment): "👉 Xem Full Series này tại đây: 🌹Bạn nào muốn donate hay mua cho mình cốc cà phê, cái pizza hay chỉ là gói mì tôm hảo hảo, dùng link này nhé: 🎦 Học Live Theo Yêu Cầu cùng mentor qua Zoom online (Claude Code, Antigravity, Codex, ChatGPT...), tham khảo tại đây: 🔥 Series Dùng AI & Vibe Coding hiệu quả (Claude Code, Antigravity, Codex, ChatGPT...), tham khảo tại đây:"
+- *@menhthien7320* (HN comment): "cuối cùng ông anh cũng làm về coding local, mấy nay e chuyển qua xài antigravity cli chạy multi-agent với multi-task khá đã"
+- *@Jakes115* (HN comment): "Bác có dùng skill nào cho Antigravity không bác?"
+
+### [System Design Interview: Loại bỏ 80% những lập trình backend xung quanh không khó như bạn nghĩ...](https://www.youtube.com/watch?v=95vD_r9hsY0) (YouTube (Tips Javascript))
+**Điểm liên quan:** 40 · **Chủ đề:** career_survival · **Vì sao chọn:** career_survival: khớp 'interview' (+30); tương tác (+10); có 5 bình luận cộng đồng (+6); ưu tiên thị trường VN (+4); cũ >30 ngày (-10)
+**Tóm tắt nội dung:** #anonystick #backend #systemdesign...
+**Bình luận nổi bật từ cộng đồng:**
+- *@anonystick* (1 votes): "Link ebooks:"
+- *@nhoxcub2707* (1 votes): "Hay quá a Tips ơj"
+- *@javadevold17* (1 votes): "Tks Sếp nhiều"
+
+### [Goldman says AI layoffs are leaving 'long-lasting' scar, like the last 40 years](https://fortune.com/2026/10/30/goldman-sachs-ai-layoffs-displaced-workers-older-workers-past-tech-disruptions/) (Hacker News)
+**Điểm liên quan:** 39 · **Chủ đề:** thi_truong_tuyen_dung · **Vì sao chọn:** thi_truong_tuyen_dung: khớp 'layoff' (+30); tương tác (+1); có 2 bình luận cộng đồng (+3); mới <=2 ngày (+5)
+**Tóm tắt nội dung:** Goldman says AI layoffs are leaving 'long-lasting' scar, like the last 40 years...
+> English reference: Goldman says AI layoffs are leaving 'long-lasting' scar, like the last 40 years...
+**Bình luận nổi bật từ cộng đồng:**
+- *randycupertino* (HN comment): "&gt; Goldman economist Pierfra"
+- *toomuchtodo* (HN comment): "Surely there will be no political consequences for this."
+
+### [Đằng sau ‘mỏ vàng’ 30 tỷ USD của ngành dệt may: Nước đi bất ngờ từ những thị trường ít ai ngờ tới](https://news.google.com/rss/articles/CBMiygFBVV95cUxOZzZYaW1RdHlFTE9rSkQ0Qk9Namx5UW1tcnk3aGU2ekJVa0hvVjhVcVZDXzY3NG5iZ0pDVEJmR2lkTWhMWm5LSWo0NnVRMUtrdzZHUTNPOXM5aHpjR25BSEZYMkl6dzZPZnBrZU0tY3ZxU2ZubXpKQmtIWDhoVFdGUnlyUjl2aG5kOTlMRElzN0RQWjl0OFFjcEtqV2tqQXpkUjNxRmx1MDFhNVZEdGRHVC04aGFhTEVRcWpYaGdRMzVwazh0XzZpWTZB?oc=5) (Google News VN · Thị trường IT)
+**Điểm liên quan:** 36 · **Chủ đề:** thi_truong_tuyen_dung · **Vì sao chọn:** thi_truong_tuyen_dung: khớp 'thi truong it' (+30); ưu tiên thị trường VN (+4); mới <=7 ngày (+2)
+**Tóm tắt nội dung:** Đằng sau ‘mỏ vàng’ 30 tỷ USD của ngành dệt may: Nước đi bất ngờ từ những thị trường ít ai ngờ tới&nbsp;&nbsp;nguoiquansat.vn...
+
+### [Tiêu chí tuyển dụng 5 vị trí đầu tiên của Tesla tại Việt Nam](https://news.google.com/rss/articles/CBMitwFBVV95cUxPbFVOaHhramo2NzBxdWV6VzE5R2w1eXd2cDBWbVEyYmdLaTZBUTVQQzlBc2EwZ1Bvc0ZsaE81YWEzZERXTzhxb0FpdzhxYUxtN2FsU2EtNWpzMmxkbE9SOEhzejZORW1lQVcyaG9PalMxODNOOWFWUGl4Ylo5Y0FBSlVRM0FJcHBsSlZkTWlIekp6WTdIWGRoRkRPX0dkM2RNeVhSSk1selZYZ0Y5SUJrcndyNlFkalU?oc=5) (Google News VN · Tuyển dụng IT)
+**Điểm liên quan:** 36 · **Chủ đề:** thi_truong_tuyen_dung · **Vì sao chọn:** thi_truong_tuyen_dung: khớp 'tuyen dung' (+30); ưu tiên thị trường VN (+4); mới <=7 ngày (+2)
+**Tóm tắt nội dung:** Tiêu chí tuyển dụng 5 vị trí đầu tiên của Tesla tại Việt Nam&nbsp;&nbsp;Báo Dân trí...
