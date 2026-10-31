@@ -105,35 +105,43 @@ class YouTubeCollector:
         ).strftime("%Y-%m-%dT%H:%M:%SZ")
 
         region_by_video: Dict[str, str] = {}
-        for query_cfg in self.search_queries:
-            try:
-                response = requests.get(
-                    f"{API_BASE}/search",
-                    params={
-                        "part": "snippet",
-                        "type": "video",
-                        "q": query_cfg.get("query", ""),
-                        "order": "viewCount",
-                        "publishedAfter": published_after,
-                        "maxResults": 10,
-                        "regionCode": query_cfg.get("region", "VN")
-                        if query_cfg.get("region") in ("VN", "US")
-                        else "VN",
-                        "relevanceLanguage": query_cfg.get("language", "vi"),
-                        "key": self.api_key,
-                    },
-                    timeout=15,
-                )
-                if response.status_code != 200:
-                    print(f"YouTube search failed for '{query_cfg.get('query', '')[:40]}': HTTP {response.status_code}")
+        # Two passes per query (PR #10): order=date surfaces what was
+        # published in the last few hours; order=viewCount keeps the
+        # proven popular hits. Date results are inserted first so the
+        # freshest videos survive the videos.list cap below. Cost:
+        # 2 calls x 100 units x ~10 queries = ~2,000 units/run of the
+        # 10,000/day quota; if the quota is exhausted the search calls
+        # fail soft and channel feeds still run.
+        for order in ("date", "viewCount"):
+            for query_cfg in self.search_queries:
+                try:
+                    response = requests.get(
+                        f"{API_BASE}/search",
+                        params={
+                            "part": "snippet",
+                            "type": "video",
+                            "q": query_cfg.get("query", ""),
+                            "order": order,
+                            "publishedAfter": published_after,
+                            "maxResults": 10,
+                            "regionCode": query_cfg.get("region", "VN")
+                            if query_cfg.get("region") in ("VN", "US")
+                            else "VN",
+                            "relevanceLanguage": query_cfg.get("language", "vi"),
+                            "key": self.api_key,
+                        },
+                        timeout=15,
+                    )
+                    if response.status_code != 200:
+                        print(f"YouTube search failed for '{query_cfg.get('query', '')[:40]}': HTTP {response.status_code}")
+                        continue
+                    for entry in response.json().get("items", []):
+                        video_id = entry.get("id", {}).get("videoId", "")
+                        if video_id and video_id not in seen_video_ids:
+                            region_by_video.setdefault(video_id, query_cfg.get("region", "GLOBAL"))
+                except Exception as error:
+                    print(f"YouTube search error: {error}")
                     continue
-                for entry in response.json().get("items", []):
-                    video_id = entry.get("id", {}).get("videoId", "")
-                    if video_id and video_id not in seen_video_ids:
-                        region_by_video.setdefault(video_id, query_cfg.get("region", "GLOBAL"))
-            except Exception as error:
-                print(f"YouTube search error: {error}")
-                continue
 
         if not region_by_video:
             return []
