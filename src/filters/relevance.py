@@ -42,6 +42,22 @@ DEFAULT_TOPIC_GROUPS: Dict[str, List[str]] = {
         "kinh nghiệm xin việc", "phỏng vấn", "interview", "experienced dev",
         "sự nghiệp", "career",
     ],
+    # Major technology/security incidents (a Log4Shell/PHP2Shell-class
+    # event, a mass breach, a hyperscaler outage). The keywords here are
+    # deliberately BROAD candidate generators ("lỗ hổng", "vulnerability")
+    # — admission is decided by the severity gate in score_item: without
+    # hard severity evidence (CVE/CVSS/KEV/exploitation...) the match is
+    # discarded, so routine "a vulnerability was found" items cannot ride
+    # this group into the briefing. (Verified against the real CMC
+    # PHP2Shell headline, which contains no neat keyword phrase.)
+    "su_co_lon": [
+        "lỗ hổng", "lỗ hổng bảo mật", "lỗ hổng nghiêm trọng", "zero-day",
+        "zero day", "ransomware", "mã độc tống tiền", "data breach",
+        "breach", "rò rỉ dữ liệu", "sự cố an ninh mạng", "sự cố bảo mật",
+        "an ninh mạng", "tấn công mạng", "critical vulnerability",
+        "vulnerability", "exploit", "security breach", "mass outage",
+        "sập hệ thống", "khai thác lỗ hổng",
+    ],
 }
 
 # Titles that look like pure tutorials / course episodes. They are only a
@@ -80,6 +96,64 @@ INSIGHT_PHRASES = [
 
 EXPERT_BONUS_CAP = 10.0
 VN_REGION_BOOST = 4.0
+
+# --- Major-incident severity gate -------------------------------------
+# An item may *mention* a vulnerability and still be routine noise. It
+# only counts as a major incident when independent severity evidence is
+# present: a CVE id, a critical CVSS score, CISA KEV listing, confirmed
+# in-the-wild exploitation, emergency patching, or mass scale. The gate
+# is deliberately evidence-based rather than keyword-based.
+INCIDENT_TOPIC = "su_co_lon"
+INCIDENT_GATE_MIN = 6.0
+INCIDENT_BONUS_CAP = 12.0
+
+_CVE_RE = re.compile(r"cve-\d{4}-\d{4,}")
+_CVSS_CRITICAL_RE = re.compile(r"cvss[^0-9]{0,16}(9\.\d|10(?:\.0)?)")
+_EXPLOITATION_PHRASES = [
+    "exploited in the wild", "actively exploited", "known exploited",
+    "dang bi khai thac", "khai thac thuc te", "khai thac trong thuc te",
+    "da bi khai thac",
+]
+_EMERGENCY_PATCH_PHRASES = [
+    "emergency patch", "emergency security release", "out-of-cycle",
+    "va khan cap", "ban va khan", "cap nhat ngay lap tuc", "patch now",
+]
+_SCALE_PHRASES = [
+    "million", "trieu", "dien rong", "nationwide", "toan cau",
+    "global outage", "worldwide", "hang trieu", "hang chuc trieu",
+]
+
+
+def incident_severity_score(item: RawItem) -> float:
+    """Evidence-based severity of a suspected major incident (0..~19).
+
+    Signals stack: a bare CVE id (5) is not enough to pass the gate on
+    its own; CVE + exploitation, KEV + CVSS, exploitation + emergency
+    patching, etc. are. Matching runs on folded title + body + comments.
+    """
+    haystack = fold_text(
+        f"{item.title} {item.summary_text} "
+        + " ".join(c.text for c in item.top_comments)
+    )
+    score = 0.0
+    if _CVE_RE.search(haystack):
+        score += 5.0
+    if _CVSS_CRITICAL_RE.search(haystack):
+        score += 4.0
+    if "kev" in haystack or "known exploited vulnerabilities" in haystack:
+        score += 4.0
+    if any(phrase in haystack for phrase in _EXPLOITATION_PHRASES):
+        score += 4.0
+    if any(phrase in haystack for phrase in _EMERGENCY_PATCH_PHRASES):
+        score += 2.0
+    scale_hits = sum(1 for phrase in _SCALE_PHRASES if phrase in haystack)
+    score += min(4.0, scale_hits * 2.0)
+    return score
+
+
+def is_major_incident(item: RawItem) -> bool:
+    """True when the scorer kept the incident topic (gate passed)."""
+    return INCIDENT_TOPIC in (item.matched_topics or [])
 
 # Signals that the author/speaker is a seasoned practitioner — a senior,
 # tech lead, PM or engineering manager — rather than a beginner or a news
@@ -242,6 +316,21 @@ class RelevanceScorer:
                         topic_points += BODY_MATCH_POINTS
                         hit = kw
                         break
+            if topic_points and topic == INCIDENT_TOPIC:
+                severity = incident_severity_score(item)
+                if severity < INCIDENT_GATE_MIN:
+                    reasons.append(
+                        f"su_co_lon: khớp '{hit}' nhưng không đạt cổng "
+                        f"nghiêm trọng (severity {severity:.0f} < "
+                        f"{INCIDENT_GATE_MIN:.0f}) — không tính điểm"
+                    )
+                    continue
+                severity_bonus = min(INCIDENT_BONUS_CAP, severity)
+                score += severity_bonus
+                reasons.append(
+                    f"sự cố lớn đạt cổng nghiêm trọng "
+                    f"(severity {severity:.0f}, +{severity_bonus:.0f})"
+                )
             if topic_points:
                 comment_points = 0.0
                 for kw in keywords:

@@ -3,7 +3,13 @@ import json
 import requests
 from google import genai
 from typing import List
-from src.filters.relevance import comment_insight_score, expert_voice_score, rank_comments
+from src.filters.relevance import (
+    comment_insight_score,
+    expert_voice_score,
+    incident_severity_score,
+    is_major_incident,
+    rank_comments,
+)
 from src.models.raw_item import RawItem
 
 # Current Gemini model ids, most preferred first. gemini-3.8-flash is
@@ -20,6 +26,9 @@ DEFAULT_MODELS = [
 
 TOP_ITEMS_FOR_PROMPT = 20
 VN_PROMPT_MIN = 8
+# Major incidents are high-value but must not flood the briefing: at
+# most this many gate-passing incident items reach the prompt per day.
+INCIDENT_PROMPT_MAX = 3
 
 # OpenCode Zen fallback (OpenAI-compatible). Free ids rotate often —
 # override with the OPENCODE_MODELS env (comma-separated) instead of
@@ -60,7 +69,7 @@ class MarketBriefingSynthesizer:
         selected = list(ranked[:TOP_ITEMS_FOR_PROMPT])
         vn_in = [i for i in selected if i.region == "VN"]
         if len(vn_in) >= VN_PROMPT_MIN:
-            return selected
+            return self._cap_incidents(selected, ranked)
         vn_pool = [
             i for i in ranked[TOP_ITEMS_FOR_PROMPT:] if i.region == "VN"
         ]
@@ -70,6 +79,27 @@ class MarketBriefingSynthesizer:
                 if selected[idx].region != "VN":
                     selected[idx] = vn_item
                     break
+        selected = sorted(selected, key=lambda i: i.relevance_score, reverse=True)
+        return self._cap_incidents(selected, ranked)
+
+    @staticmethod
+    def _cap_incidents(selected: List[RawItem], ranked: List[RawItem]) -> List[RawItem]:
+        """At most INCIDENT_PROMPT_MAX major incidents reach the prompt.
+
+        Excess incidents (lowest-scored first) are swapped for the best
+        unselected non-incident items, keeping the selection size stable.
+        """
+        incidents = [i for i in selected if is_major_incident(i)]
+        if len(incidents) <= INCIDENT_PROMPT_MAX:
+            return selected
+        excess = incidents[INCIDENT_PROMPT_MAX:]
+        replacements = [
+            i for i in ranked if i not in selected and not is_major_incident(i)
+        ]
+        for old in excess:
+            selected.remove(old)
+            if replacements:
+                selected.append(replacements.pop(0))
         return sorted(selected, key=lambda i: i.relevance_score, reverse=True)
 
     def analyze_and_synthesize(self, items: List[RawItem]) -> str:
@@ -98,6 +128,8 @@ class MarketBriefingSynthesizer:
                 "url": item.url,
                 "relevance_score": item.relevance_score,
                 "expert_voice_score": round(expert_voice_score(item), 1),
+                "is_major_incident": is_major_incident(item),
+                "incident_severity": round(incident_severity_score(item), 1),
                 "matched_topics": item.matched_topics,
                 "content_preview": item.summary_text[:1000],
                 "top_comments": comments_data,
@@ -139,7 +171,7 @@ class MarketBriefingSynthesizer:
         - Trích dẫn nguyên văn tiếng Anh đắt giá: đặt ngay bên dưới dạng
           `> English reference: ...`.
 
-        CẤU TRÚC BÁO CÁO BẮT BUỘC (đúng 5 mục):
+        CẤU TRÚC BÁO CÁO BẮT BUỘC (đúng 6 mục; mục 6 có điều kiện):
 
         # BÁO CÁO ĐỊNH HƯỚNG NGÀNH IT
 
@@ -176,6 +208,21 @@ class MarketBriefingSynthesizer:
         - Các nguồn điểm liên quan cao nhất: tiêu đề + link + nhãn [VN] hoặc
           [Quốc tế], 2-3 câu tóm tắt luận điểm chính, góc nhìn nổi bật nhất từ
           bình luận, lý do được chọn. Ưu tiên nguồn có expert_voice_score cao.
+
+        ## 6. SỰ CỐ CÔNG NGHỆ LỚN & BÀI HỌC NGHỀ NGHIỆP
+        - CHỈ viết mục này khi dữ liệu có mục với `is_major_incident` = true
+          (sự cố đã qua cổng nghiêm trọng: có CVE/CVSS cao/KEV/bị khai thác
+          thực tế...). Nếu KHÔNG có mục nào như vậy, bỏ qua mục 6 hoàn toàn,
+          không nhắc tới nó.
+        - Với mỗi sự cố (tối đa 3): chuyện gì xảy ra trong 2-3 dòng (kèm mã
+          CVE, điểm CVSS, trạng thái KEV/khai thác nếu dữ liệu có), quy mô
+          ảnh hưởng, và quan trọng nhất là BÀI HỌC NGHỀ NGHIỆP: kỹ năng nào
+          bỗng trở nên đắt giá (kiểm kê hệ thống, vá lỗi khẩn cấp, ứng phó
+          sự cố, hardening, săn dấu hiệu xâm nhập...), nhu cầu nhân lực
+          security thay đổi ra sao, và người đọc (dev Java/Spring Boot đang
+          học Python/network security) nên làm hoặc học gì cụ thể trong
+          tuần này liên quan đến sự cố. Không đăng lại tin tức thuần túy —
+          chỉ lấy phần có giá trị định hướng nghề nghiệp.
         """
 
         candidate_models = []
@@ -356,6 +403,20 @@ class MarketBriefingSynthesizer:
         else:
             lines.append("Chưa thu được bình luận cộng đồng nào trong lần chạy này.")
             lines.append("")
+
+        incidents = [i for i in ranked if is_major_incident(i)][:INCIDENT_PROMPT_MAX]
+        if incidents:
+            lines.append("## SỰ CỐ CÔNG NGHỆ LỚN HÔM NAY")
+            lines.append("")
+            for item in incidents:
+                lines.append(f"### [{item.title}]({item.url}) ({item.source_name})")
+                lines.append(
+                    f"**Mức nghiêm trọng (severity):** "
+                    f"{incident_severity_score(item):.0f} · {item.score_reason}"
+                )
+                if item.summary_text:
+                    lines.append(f"**Tóm tắt nội dung:** {item.summary_text[:280]}...")
+                lines.append("")
 
         lines.append("## NGUỒN ĐÃ LỌC THEO ĐIỂM LIÊN QUAN")
         lines.append("")
