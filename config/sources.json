@@ -50,7 +50,7 @@
     {
       "name": "Viblo",
       "region": "VN",
-      "url": "https://viblo.asia/feed.rss"
+      "url": "https://viblo.asia/rss"
     },
     {
       "name": "TopDev Blog",
@@ -132,6 +132,11 @@
       "hl": "en-US",
       "name": "Google News · Major security incidents",
       "region": "GLOBAL"
+    },
+    {
+      "name": "Tuổi Trẻ · Công nghệ",
+      "region": "VN",
+      "url": "https://tuoitre.vn/rss/cong-nghe.rss"
     }
   ],
   "subreddits": [
@@ -316,5 +321,18 @@
       "query": "critical vulnerability exploit zero day incident",
       "region": "GLOBAL"
     }
+  ],
+  "mastodon_hashtags": [
+    "programming",
+    "ai",
+    "infosec",
+    "cybersecurity",
+    "technology"
+  ],
+  "devto_tags": [
+    "career",
+    "ai",
+    "programming",
+    "discuss"
   ]
 }
