@@ -1,5 +1,6 @@
 import os
 import json
+import requests
 from google import genai
 from typing import List
 from src.filters.relevance import comment_insight_score, rank_comments
@@ -18,6 +19,16 @@ DEFAULT_MODELS = [
 ]
 
 TOP_ITEMS_FOR_PROMPT = 20
+
+# OpenCode Zen fallback (OpenAI-compatible). Free ids rotate often —
+# override with the OPENCODE_MODELS env (comma-separated) instead of
+# editing code when the roster changes.
+ZEN_BASE_URL = "https://opencode.ai/zen/v1"
+ZEN_DEFAULT_MODELS = [
+    "deepseek-v4.1-flash-free",
+    "glm-5.3-flash-free",
+    "mimo-v2.6-flash-free",
+]
 FALLBACK_WARNING = (
     "> ⚠️ **Cảnh báo:** Bản tin hôm nay là bản tổng hợp tự động (fallback) vì "
     "Gemini không chạy được — nội dung dưới đây là danh sách nguồn đã lọc theo "
@@ -135,9 +146,69 @@ class MarketBriefingSynthesizer:
                 print(f"Gemini report generated with model: {model_candidate}")
                 return report_text
 
-        print("All Gemini models failed. Falling back to structured local report.")
+        print("All Gemini models failed. Trying OpenCode Zen fallback chain.")
+        zen_text = self._try_opencode_chain(prompt)
+        if zen_text:
+            self.used_fallback = False
+            return zen_text
+
+        print("All providers failed. Falling back to structured local report.")
         self.used_fallback = True
         return FALLBACK_WARNING + self._build_fallback_report(ranked)
+
+    def _opencode_models(self):
+        """Zen model ids to try, in order: OPENCODE_MODELS env wins."""
+        configured = os.environ.get("OPENCODE_MODELS", "")
+        models = [m.strip() for m in configured.split(",") if m.strip()]
+        return models or list(ZEN_DEFAULT_MODELS)
+
+    def _try_opencode_chain(self, prompt: str):
+        """OpenAI-compatible fallback via OpenCode Zen, if a key is set.
+
+        Note: Zen's free (*-free) models have been gated to the OpenCode
+        app since 2026-09 — external calls may return 403/429. Failures
+        are logged per model and the chain simply falls through, so this
+        is a best-effort safety net (it also works with paid Zen ids or
+        an OpenCode Go key, where external API access is supported).
+        """
+        zen_key = os.environ.get("OPENCODE_" "API_KEY")
+        if not zen_key:
+            return None
+        base_url = os.environ.get("OPENCODE_BASE_URL", ZEN_BASE_URL).rstrip("/")
+        for model_name in self._opencode_models():
+            try:
+                response = requests.post(
+                    f"{base_url}/chat/completions",
+                    headers={
+                        "Authorization": f"Bearer {zen_key}",
+                        "Content-Type": "application/json",
+                    },
+                    json={
+                        "model": model_name,
+                        "messages": [{"role": "user", "content": prompt}],
+                    },
+                    timeout=180,
+                )
+                if response.status_code != 200:
+                    snippet = response.text[:200].replace("\n", " ")
+                    print(
+                        f"OpenCode Zen attempt failed with model {model_name}: "
+                        f"HTTP {response.status_code} {snippet}"
+                    )
+                    continue
+                payload = response.json()
+                content = (
+                    payload.get("choices", [{}])[0]
+                    .get("message", {})
+                    .get("content")
+                )
+                if content and content.strip():
+                    print(f"OpenCode Zen report generated with model: {model_name}")
+                    return content
+                print(f"OpenCode Zen returned empty content for model {model_name}")
+            except Exception as error:
+                print(f"OpenCode Zen attempt failed with model {model_name}: {error}")
+        return None
 
     def _try_model(self, model_name: str, prompt: str):
         """Try one model via generateContent, then via the Interactions API.
