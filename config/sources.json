@@ -1,0 +1,76 @@
+{
+  "youtube_channels": [
+    {
+      "id": "UCVkBcokjObNZiXavfAE1-fA",
+      "name": "Hỏi Dân IT",
+      "region": "VN"
+    },
+    {
+      "id": "UCky92hx0lZxVBi2BJ6Zm2Hg",
+      "name": "Tips Javascript",
+      "region": "VN"
+    },
+    {
+      "id": "UCdV9tn79v3ecSDpC1AjVKaw",
+      "name": "Tôi Đi Code Dạo",
+      "region": "VN"
+    },
+    {
+      "id": "UCsBjURrPoezykLs9EqgamOA",
+      "name": "Fireship",
+      "region": "GLOBAL"
+    },
+    {
+      "id": "UC_xD029-79lGuUM-h_6186w",
+      "name": "ThePrimeTime",
+      "region": "GLOBAL"
+    },
+    {
+      "id": "UCzT8Pz74V4Q9-9m01bU_m8A",
+      "name": "ByteByteGo",
+      "region": "GLOBAL"
+    }
+  ],
+  "rss_feeds": [
+    {
+      "name": "Viblo",
+      "url": "https://viblo.asia/feed.rss",
+      "region": "VN"
+    },
+    {
+      "name": "TopDev Blog",
+      "url": "https://topdev.vn/blog/feed/",
+      "region": "VN"
+    },
+    {
+      "name": "Hacker News Frontpage",
+      "url": "https://hnrss.org/frontpage",
+      "region": "GLOBAL"
+    },
+    {
+      "name": "Dev.to Tech",
+      "url": "https://dev.to/feed",
+      "region": "GLOBAL"
+    }
+  ],
+  "subreddits": [
+    "ExperiencedDevs",
+    "cscareerquestions",
+    "programming"
+  ],
+  "keywords": [
+    "layoff",
+    "hiring",
+    "tuyển dụng",
+    "sa thải",
+    "thị trường",
+    "lương",
+    "career advice",
+    "junior",
+    "fresher",
+    "senior",
+    "xu hướng",
+    "ai",
+    "future of coding"
+  ]
+}

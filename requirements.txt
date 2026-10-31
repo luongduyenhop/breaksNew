@@ -1,0 +1,9 @@
+google-genai>=1.0.0
+google-api-python-client>=2.100.0
+google-auth>=2.20.0
+requests>=2.31.0
+feedparser>=6.0.10
+youtube-transcript-api>=0.6.2
+youtube-comment-downloader>=0.1.84
+markdown>=3.5.0
+python-dotenv>=1.0.0
