@@ -48,6 +48,22 @@ ZEN_DEFAULT_MODELS = [
     "glm-5.3-flash-free",
     "mimo-v2.6-flash-free",
 ]
+OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
+# Free lineup verified live on 2026-11-01 via the public models API.
+# Free ids rotate over time; OPENROUTER_MODELS overrides, and the
+# openrouter/free router id (auto-picks an available free model)
+# stays last as a catch-all.
+OPENROUTER_DEFAULT_MODELS = [
+    "nvidia/nemotron-3-ultra-550b-a55b:free",
+    "google/gemma-4-31b-it:free",
+    "openrouter/free",
+]
+GROQ_BASE_URL = "https://api.groq.com/openai/v1"
+# Groq free tier caps large models by tokens/minute (llama-3.3-70b:
+# 12K TPM, 100K tokens/day), so Groq receives the COMPACT payload
+# (see _build_payload) and a single strong default model.
+GROQ_DEFAULT_MODELS = ["llama-3.3-70b-versatile"]
+GROQ_COMPACT_ITEMS = 10
 FALLBACK_WARNING = (
     "> ⚠️ **Cảnh báo:** Bản tin hôm nay là bản tổng hợp tự động (fallback) vì "
     "Gemini không chạy được — nội dung dưới đây là danh sách nguồn đã lọc theo "
@@ -111,23 +127,30 @@ class MarketBriefingSynthesizer:
                 selected.append(replacements.pop(0))
         return sorted(selected, key=lambda i: i.relevance_score, reverse=True)
 
-    def analyze_and_synthesize(self, items: List[RawItem]) -> str:
-        ranked = self._ranked(items)
-        if not self.client:
-            print("Gemini API skipped: No GEMINI_API_KEY provided.")
-            self.used_fallback = True
-            return FALLBACK_WARNING + self._build_fallback_report(ranked)
+    def _build_payload(self, ranked: List[RawItem], compact: bool = False):
+        """JSON payload for the synthesis prompt.
 
+        compact=True builds the trimmed variant for providers with tight
+        per-minute token caps (Groq free tier: 12K TPM): fewer items,
+        shorter previews, fewer and shorter comments — sized to stay
+        around 6-7K input tokens so input + report fit under the cap.
+        """
+        selected = self._select_for_prompt(ranked)
+        if compact:
+            selected = selected[:GROQ_COMPACT_ITEMS]
+        preview_limit = 400 if compact else 1000
+        comment_limit = 2 if compact else 4
+        comment_chars = 350 if compact else 0
         payload = []
-        for item in self._select_for_prompt(ranked):
+        for item in selected:
             comments_data = [
                 {
                     "author": c.author,
                     "votes": c.votes,
                     "insight_score": round(comment_insight_score(c.text), 1),
-                    "text": c.text,
+                    "text": c.text[:comment_chars] if comment_chars else c.text,
                 }
-                for c in rank_comments(item.top_comments, limit=4)
+                for c in rank_comments(item.top_comments, limit=comment_limit)
             ]
             payload.append({
                 "title": item.title,
@@ -140,13 +163,14 @@ class MarketBriefingSynthesizer:
                 "is_major_incident": is_major_incident(item),
                 "incident_severity": round(incident_severity_score(item), 1),
                 "matched_topics": item.matched_topics,
-                "content_preview": item.summary_text[:1000],
+                "content_preview": item.summary_text[:preview_limit],
                 "top_comments": comments_data,
             })
+        return payload
 
+    def _render_prompt(self, payload) -> str:
         context_json = json.dumps(payload, ensure_ascii=False, indent=2)
-
-        prompt = f"""
+        return f"""
         Bạn là chuyên gia phân tích định hướng nghề nghiệp IT cho lập trình viên Việt Nam.
         Dưới đây là các bài viết / video / thảo luận ĐÃ ĐƯỢC LỌC theo điểm liên quan,
         kèm BÌNH LUẬN của cộng đồng. Mỗi bình luận có `insight_score` — điểm giá trị
@@ -234,35 +258,56 @@ class MarketBriefingSynthesizer:
           chỉ lấy phần có giá trị định hướng nghề nghiệp.
         """
 
-        candidate_models = []
-        env_model = os.environ.get("GEMINI_MODEL")
-        if env_model:
-            candidate_models.append(env_model)
-        candidate_models.extend(m for m in DEFAULT_MODELS if m not in candidate_models)
+    def analyze_and_synthesize(self, items: List[RawItem]) -> str:
+        ranked = self._ranked(items)
+        prompt = self._render_prompt(self._build_payload(ranked))
 
-        budget_secs = self._gemini_budget_secs()
-        deadline = time.monotonic() + budget_secs
-        budget_exhausted = False
-        for model_candidate in candidate_models:
-            remaining = deadline - time.monotonic()
-            if remaining <= 0:
-                budget_exhausted = True
-                break
-            report_text = self._try_model_with_timeout(
-                model_candidate, prompt, remaining
-            )
-            if report_text:
-                self.used_fallback = False
-                print(f"Gemini report generated with model: {model_candidate}")
-                return report_text
-
-        if budget_exhausted:
-            print(
-                f"Gemini time budget ({budget_secs:.0f}s) exhausted — "
-                "switching to OpenCode Zen chain."
-            )
+        if not self.client:
+            print("Gemini API skipped: No GEMINI_API_KEY provided.")
         else:
-            print("All Gemini models failed. Trying OpenCode Zen fallback chain.")
+            candidate_models = []
+            env_model = os.environ.get("GEMINI_MODEL")
+            if env_model:
+                candidate_models.append(env_model)
+            candidate_models.extend(m for m in DEFAULT_MODELS if m not in candidate_models)
+
+            budget_secs = self._gemini_budget_secs()
+            deadline = time.monotonic() + budget_secs
+            budget_exhausted = False
+            for model_candidate in candidate_models:
+                remaining = deadline - time.monotonic()
+                if remaining <= 0:
+                    budget_exhausted = True
+                    break
+                report_text = self._try_model_with_timeout(
+                    model_candidate, prompt, remaining
+                )
+                if report_text:
+                    self.used_fallback = False
+                    print(f"Gemini report generated with model: {model_candidate}")
+                    return report_text
+
+            if budget_exhausted:
+                print(
+                    f"Gemini time budget ({budget_secs:.0f}s) exhausted — "
+                    "switching to fallback provider chains."
+                )
+            else:
+                print("All Gemini models failed.")
+        print("Trying OpenRouter fallback chain.")
+        or_text = self._try_openrouter_chain(prompt)
+        if or_text:
+            self.used_fallback = False
+            return or_text
+
+        print("Trying Groq fallback chain (trimmed payload).")
+        groq_prompt = self._render_prompt(self._build_payload(ranked, compact=True))
+        groq_text = self._try_groq_chain(groq_prompt)
+        if groq_text:
+            self.used_fallback = False
+            return groq_text
+
+        print("Trying OpenCode Zen fallback chain.")
         zen_text = self._try_opencode_chain(prompt)
         if zen_text:
             self.used_fallback = False
@@ -315,31 +360,36 @@ class MarketBriefingSynthesizer:
 
     def _opencode_models(self):
         """Zen model ids to try, in order: OPENCODE_MODELS env wins."""
-        configured = os.environ.get("OPENCODE_MODELS", "")
+        return self._env_models("OPENCODE_MODELS", ZEN_DEFAULT_MODELS)
+
+    @staticmethod
+    def _env_models(env_name: str, defaults):
+        """Model roster from an env var (comma-separated), else defaults."""
+        configured = os.environ.get(env_name, "")
         models = [m.strip() for m in configured.split(",") if m.strip()]
-        return models or list(ZEN_DEFAULT_MODELS)
+        return models or list(defaults)
 
-    def _try_opencode_chain(self, prompt: str):
-        """OpenAI-compatible fallback via OpenCode Zen, if a key is set.
+    def _try_openai_compatible(self, label, base_url, api_key, models, prompt,
+                               extra_headers=None):
+        """Shared runner for OpenAI-compatible chat providers.
 
-        Note: Zen's free (*-free) models have been gated to the OpenCode
-        app since 2026-09 — external calls may return 403/429. Failures
-        are logged per model and the chain simply falls through, so this
-        is a best-effort safety net (it also works with paid Zen ids or
-        an OpenCode Go key, where external API access is supported).
+        Returns the report text from the first model that answers with
+        non-empty content; per-model failures are logged and the chain
+        falls through. No key -> None without any HTTP call.
         """
-        zen_key = os.environ.get("OPENCODE_" "API_KEY")
-        if not zen_key:
+        if not api_key:
             return None
-        base_url = os.environ.get("OPENCODE_BASE_URL", ZEN_BASE_URL).rstrip("/")
-        for model_name in self._opencode_models():
+        headers = {
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json",
+        }
+        if extra_headers:
+            headers.update(extra_headers)
+        for model_name in models:
             try:
                 response = requests.post(
                     f"{base_url}/chat/completions",
-                    headers={
-                        "Authorization": f"Bearer {zen_key}",
-                        "Content-Type": "application/json",
-                    },
+                    headers=headers,
                     json={
                         "model": model_name,
                         "messages": [{"role": "user", "content": prompt}],
@@ -349,7 +399,7 @@ class MarketBriefingSynthesizer:
                 if response.status_code != 200:
                     snippet = response.text[:200].replace("\n", " ")
                     print(
-                        f"OpenCode Zen attempt failed with model {model_name}: "
+                        f"{label} attempt failed with model {model_name}: "
                         f"HTTP {response.status_code} {snippet}"
                     )
                     continue
@@ -360,12 +410,60 @@ class MarketBriefingSynthesizer:
                     .get("content")
                 )
                 if content and content.strip():
-                    print(f"OpenCode Zen report generated with model: {model_name}")
+                    print(f"{label} report generated with model: {model_name}")
                     return content
-                print(f"OpenCode Zen returned empty content for model {model_name}")
+                print(f"{label} returned empty content for model {model_name}")
             except Exception as error:
-                print(f"OpenCode Zen attempt failed with model {model_name}: {error}")
+                print(f"{label} attempt failed with model {model_name}: {error}")
         return None
+
+    def _try_openrouter_chain(self, prompt: str):
+        """Fallback #1: OpenRouter free models (full prompt).
+
+        Free tier is capped by requests (20/min, 50/day), not tokens,
+        and contexts run 128K-1M, so the full briefing prompt fits.
+        The free lineup rotates; OPENROUTER_MODELS overrides the roster.
+        """
+        return self._try_openai_compatible(
+            "OpenRouter",
+            os.environ.get("OPENROUTER_BASE_URL", OPENROUTER_BASE_URL).rstrip("/"),
+            os.environ.get("OPENROUTER_" "API_KEY"),
+            self._env_models("OPENROUTER_MODELS", OPENROUTER_DEFAULT_MODELS),
+            prompt,
+            extra_headers={"X-Title": "breaksNew IT Briefing"},
+        )
+
+    def _try_groq_chain(self, prompt: str):
+        """Fallback #2: Groq free tier (COMPACT prompt — see caller).
+
+        Groq's free tier is permanent and card-free, but large models
+        are capped at 8-12K tokens/minute, so this chain is only ever
+        called with the trimmed payload.
+        """
+        return self._try_openai_compatible(
+            "Groq",
+            os.environ.get("GROQ_BASE_URL", GROQ_BASE_URL).rstrip("/"),
+            os.environ.get("GROQ_" "API_KEY"),
+            self._env_models("GROQ_MODELS", GROQ_DEFAULT_MODELS),
+            prompt,
+        )
+
+    def _try_opencode_chain(self, prompt: str):
+        """Fallback #3: OpenCode Zen, if a key/token is set.
+
+        Note: Zen's free (*-free) models have been gated to the OpenCode
+        app since 2026-09 — external calls from datacenter IPs get
+        HTTP 429 FreeUsageLimitError (verified live 2026-11-01), so this
+        chain is a best-effort last resort; it still works with paid
+        Zen ids or an OpenCode Go key, where external access is allowed.
+        """
+        return self._try_openai_compatible(
+            "OpenCode Zen",
+            os.environ.get("OPENCODE_BASE_URL", ZEN_BASE_URL).rstrip("/"),
+            os.environ.get("OPENCODE_" "API_KEY"),
+            self._opencode_models(),
+            prompt,
+        )
 
     def _try_model(self, model_name: str, prompt: str):
         """Try one model via generateContent, then via the Interactions API.
