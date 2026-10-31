@@ -1,13 +1,15 @@
 # DIGEST TUẦN — TÍN HIỆU THỊ TRƯỜNG IT CHO LỘ TRÌNH NGHỀ NGHIỆP
 
-- Giai đoạn dữ liệu: 2026-10-30 → 2026-10-31 (2 bản tin ngày)
+- Giai đoạn dữ liệu: 2026-10-26 → 2026-10-31 (6 bản tin ngày)
 - Ngày sinh digest: 2026-10-31
 - Nguồn: bản tin định hướng ngành IT hằng ngày (đã lọc theo chủ đề thị trường/hướng đi/sự nghiệp, ưu tiên bình luận của senior/tech lead/PM).
 - Cách đọc: tín hiệu xuất hiện nhiều ngày = xu hướng đáng tin; tín hiệu 1 ngày = tham khảo, chờ xác nhận thêm.
 
 ## A. TÍN HIỆU LẶP LẠI NHIỀU NGÀY (xu hướng)
 
-- (Chưa có tín hiệu nào lặp lại — dữ liệu mới tích lũy vài ngày đầu.)
+- (3 ngày) **AI Agent IDEs & Tools:** Claude Code, Antigravity IDE, Gemini AI kết hợp các CLI tool hỗ trợ multi-agent.
+- (2 ngày) **Git & CI/CD tự động hóa:** Công cụ kiểm soát mã nguồn là chốt chặn an toàn bắt buộc khi làm việc chung với AI sinh code tự động.
+- (2 ngày) **Vector Databases & RAG Frameworks:** MongoDB Vector Search, các embedding model như BGE-m3, và các mô hình local (như Qwen2.5-3B) để tự xây dựng hệ thống tri thức nội bộ.
 
 ## B. TÍN HIỆU ĐÁNG CHÚ Ý KHÁC TRONG TUẦN
 
@@ -18,9 +20,6 @@
 - (2026-10-31) **Kỹ năng nắm bắt Business và toàn bộ hệ thống (System Thinking):** Thay vì chỉ nhận task đơn lẻ rồi viết code, dev phải học cách thấu hiểu nghiệp vụ cốt lõi của toàn bộ hệ thống. *(Dựa trên bình luận của `@phutran-z6h` - YouTube Tips Javascript).*
 - (2026-10-31) **Kỹ năng phối hợp với AI Agent và quản lý version control (Git):** Biết cách thiết lập prompt, chia nhỏ tác vụ cho Agent, kiểm soát luồng suy nghĩ (thinking process) của model và sử dụng Git thành thạo để "vibe coding" an toàn mà không sợ hỏng code. *(Dựa trên series của Hỏi Dân IT).*
 - (2026-10-31) **Kỹ năng đặt câu hỏi, truy vấn và xử lý dữ liệu phi cấu trúc:** Nắm vững cấu trúc Vector Databases, Chunking, và giải pháp RAG để phục vụ việc tích hợp AI vào hệ thống nội bộ. *(Dựa trên chia sẻ của `@vantran_devopsinfra` về giải pháp BGE-m3, MongoDB Vector Search và Qwen).*
-- (2026-10-31) **Vector Databases & RAG Frameworks:** MongoDB Vector Search, các embedding model như BGE-m3, và các mô hình local (như Qwen2.5-3B) để tự xây dựng hệ thống tri thức nội bộ.
-- (2026-10-31) **AI Agent IDEs & Tools:** Claude Code, Antigravity IDE, Gemini AI kết hợp các CLI tool hỗ trợ multi-agent.
-- (2026-10-31) **Git & CI/CD tự động hóa:** Công cụ kiểm soát mã nguồn là chốt chặn an toàn bắt buộc khi làm việc chung với AI sinh code tự động.
 - (2026-10-31) **Phân biệt Xu hướng thật vs Hype:** Các giải pháp RAG, Vector DB cục bộ, và tối ưu AI local cho doanh nghiệp là xu hướng thực tế do nhu cầu bảo mật. Trong khi đó, việc chạy đua mua phần cứng đắt tiền hay phụ thuộc hoàn toàn vào các AI trend ngắn hạn trên mạng xã hội cần được cân nhắc thực tế theo bài toán chi phí.
 - (2026-10-30) **[Vibe Coding Cùng AI Siêu An Toàn và Kiểm Soát với Git - Không Sợ Mất Code/Hỏng Code Khi Dùng AI](https://www.youtube.com/watch?v=r_4pDELxZz8)** (YouTube (Hỏi Dân IT))
 - (2026-10-30) **[Vibe Coding Chuyên Nghiệp Cùng Gemini AI và Antigravity IDE | Series Gemini AI Dành Cho Beginners](https://www.youtube.com/watch?v=34oUbddPlcw)** (YouTube (Hỏi Dân IT))
@@ -36,6 +35,9 @@
 - (2026-10-30) **[China just dropped a new frontier model... and nobody can explain how](https://www.youtube.com/watch?v=G_em1hHPnXY)** (YouTube (Fireship))
 - (2026-10-30) **[The most vulnerable week in internet history...](https://www.youtube.com/watch?v=SMGg7iisHmc)** (YouTube (Fireship))
 - (2026-10-30) **[AI Isn't Replacing SREs. It's Deskilling Them](https://newsletter.signoz.io/p/ai-isnt-replacing-sres-its-deskilling)** (Hacker News)
+- (2026-10-30) **[Northflank Breached](https://status.northflank.com)** (Hacker News)
+- (2026-10-30) **[Backdoor in Claude Code for VS Code extension on the Cursor Marketplace](https://phorion.io/blog/offical-claude-code-vsx-compromise/)** (Hacker News)
+- (2026-10-30) **[Azure's Weakest Link – Five Full Cross-Tenant Compromises](https://www.binarysecurity.no/posts/2026/10/one-root-case)** (Hacker News)
 
 ## C. LỜI KHUYÊN / BÌNH LUẬN ĐỊNH HƯỚNG NỔI BẬT
 
@@ -62,6 +64,45 @@ _(ngày 2026-10-31)_
    - **Trích dẫn nguyên văn:**  
      > "A friend of mine put this to me: Ai can do everything needed for a business currently, outside of anticipating future business needs constantly. Which means the job market will currently benefit those with this skill. Traditionally what EMs/PMs,leaders would do."
    - **Vì sao đáng đọc:** Cô đọng bản chất sự thay đổi của thị trường lao động công nghệ toàn cầu: khi AI có thể làm hầu hết tác vụ kỹ thuật, giá trị của con người được dịch chuyển hoàn toàn về khả năng dự báo nhu cầu kinh doanh tương lai (kỹ năng vốn thuộc về quản lý/lãnh đạo).
+
+---
+
+_(ngày 2026-10-27)_
+
+1. **Bình luận từ `anilgulecha`** (Hacker News - bài *Tech market feels like a data entry job*)
+   - **Trích dẫn nguyên văn:**
+     > "A friend of mine put this to me: Ai can do everything needed for a business currently, outside of anticipating future business needs constantly. Which means the job market will currently benefit those with this skill. Traditionally what EMs/PMs,leaders would do."
+   - **Vì sao đáng đọc:** Cô đọng bản chất sự dịch chuyển của thị trường: khi AI làm được hầu hết tác vụ kỹ thuật, giá trị con người nằm ở khả năng dự báo nhu cầu kinh doanh — kỹ năng của người làm quản lý/lãnh đạo.
+
+_(ngày 2026-10-27)_
+
+2. **Bình luận từ `AlexITC`** (Hacker News - bài *Looking for a tech job is a helpless data-entry nightmare*)
+   - **Trích dẫn nguyên văn:**
+     > "I'm sorry for you and everyone else going through this, its madness; besides this you also need to deal with fake jobs, malware in take-home challenges, a pile of incoming messages selling you the 'best' AI job search tool, etc."
+   - **Vì sao đáng đọc:** Cảnh báo thực tế ít ai nói: thị trường tuyển dụng IT hiện có cả tin giả và bài test chứa mã độc — kỹ năng tự bảo vệ mình khi xin việc cũng là một phần của nghề, đặc biệt với người học security.
+
+_(ngày 2026-10-27)_
+
+3. **Bình luận từ `sdevonoes`** (Hacker News - cùng chủ đề xin việc)
+   - **Trích dẫn nguyên văn:**
+     > "I guess it depends on how your cv/experience looks like? I don't have problems getting interviews (so I guess my cv/experience is relevant to the job… at least I do tailor my cv for each application)."
+   - **Vì sao đáng đọc:** Góc nhìn ngược cân bằng: người tùy biến CV theo từng vị trí vẫn nhận được phỏng vấn đều — vấn đề nằm ở cách tiếp cận, không chỉ ở thị trường.
+
+---
+
+_(ngày 2026-10-26)_
+
+1. **Bình luận từ `vrighter`** (Hacker News - bài *Apollo says AI has delivered 'zero financial payoff' outside the tech industry*, 74 điểm / 62 bình luận)
+   - **Trích dẫn nguyên văn:**
+     > "It has delivered negative financial payoff here. Everyone is using it, nobody knows how anything works anymore, and I am a caveman for refusing to NOT understand the code I write. And they still have to pay the developers. And they still have to pay for the AI. They pay more for an inferior result."
+   - **Vì sao đáng đọc:** Góc nhìn người trong cuộc tại doanh nghiệp ngoài ngành tech: chi phí tăng gấp đôi (vẫn trả dev + trả thêm AI) trong khi hiểu biết về hệ thống giảm — lời cảnh báo trực diện cho dev nào định phó mặc việc hiểu code cho AI.
+
+_(ngày 2026-10-26)_
+
+2. **Bình luận từ `asadotzler`** (Hacker News - cùng bài Apollo)
+   - **Trích dẫn nguyên văn:**
+     > "If AI helps with the mundane side of real work, great, but outside of mundane-only work, there generally isn't a conveyor belt of random mundane work backfilling the real work's now-fixed-by-AI mundane bits. Any mundane work that's gone unaddressed for long is unaddressed because management doesn't think it'll benefit the business..."
+   - **Vì sao đáng đọc:** Bóc tách ngộ nhận "AI xử lý việc nhàm chán thì con người tự động làm việc giá trị cao hơn" — việc tồn đọng lâu ngày thường là việc ban lãnh đạo cố tình không ưu tiên vì không tạo giá trị kinh doanh; hiểu điều này là hiểu cách doanh nghiệp ra quyết định.
 
 ---
 
