@@ -22,6 +22,10 @@ from dotenv import load_dotenv
 from src.collectors.youtube_collector import YouTubeCollector
 from src.collectors.reddit_collector import RedditCollector
 from src.collectors.hackernews_collector import HackerNewsCollector
+from src.collectors.lobsters_collector import LobstersCollector
+from src.collectors.lemmy_collector import LemmyCollector
+from src.collectors.mastodon_collector import MastodonCollector
+from src.collectors.devto_collector import DevToCollector
 from src.collectors.rss_collector import RssCollector
 from src.normalizers.data_normalizer import DataNormalizer
 from src.filters.relevance import RelevanceScorer, DEFAULT_TOPIC_GROUPS
@@ -77,6 +81,33 @@ def run_pipeline(dry_run: bool = False):
         rss_max_age = int(relevance_cfg.get("rss_max_age_days", max_age_days))
         rss_collector = RssCollector(rss_feeds, max_age_days=rss_max_age)
         collected_items.extend(rss_collector.fetch_items())
+
+    # Community expansion (PR #11): developer-dense social sources,
+    # all public/keyless and fail-soft like the existing collectors.
+    lobsters_collector = LobstersCollector(max_age_days=max_age_days)
+    collected_items.extend(lobsters_collector.fetch_items())
+
+    lemmy_queries = sources.get("lemmy_queries") or hn_queries
+    if lemmy_queries:
+        # Lemmy's volume is low (a 3-day window yielded a single post in
+        # live testing), so it always gets at least a week; the hourly
+        # freshness gradient still ranks its newest posts first.
+        lemmy_collector = LemmyCollector(
+            queries=lemmy_queries, max_age_days=max(7, max_age_days)
+        )
+        collected_items.extend(lemmy_collector.fetch_items())
+
+    mastodon_hashtags = sources.get("mastodon_hashtags", [])
+    if mastodon_hashtags:
+        mastodon_collector = MastodonCollector(
+            hashtags=mastodon_hashtags, max_age_days=max_age_days
+        )
+        collected_items.extend(mastodon_collector.fetch_items())
+
+    devto_tags = sources.get("devto_tags", [])
+    if devto_tags:
+        devto_collector = DevToCollector(tags=devto_tags, max_age_days=max_age_days)
+        collected_items.extend(devto_collector.fetch_items())
 
     normalizer = DataNormalizer()
     normalized_items = normalizer.deduplicate_and_normalize(collected_items)
