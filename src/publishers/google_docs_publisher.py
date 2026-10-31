@@ -4,6 +4,9 @@ import requests
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 
+from src.publishers.markdown_to_docs import build_docs_requests
+
+
 class GoogleDocsPublisher:
     def __init__(self):
         self.webhook_url = os.environ.get("GOOGLE_DOCS_WEBHOOK_URL")
@@ -11,7 +14,7 @@ class GoogleDocsPublisher:
         self.sa_env = os.environ.get("GOOGLE_SERVICE_ACCOUNT_JSON")
         self.scopes = [
             "https://www.googleapis.com/auth/documents",
-            "https://www.googleapis.com/auth/drive"
+            "https://www.googleapis.com/auth/drive",
         ]
         self.credentials = None
         if self.sa_env:
@@ -35,7 +38,7 @@ class GoogleDocsPublisher:
         try:
             payload = {
                 "date": tab_title,
-                "content": markdown_content
+                "content": markdown_content,
             }
             response = requests.post(self.webhook_url, json=payload, timeout=35, allow_redirects=True)
             if response.status_code == 200:
@@ -49,6 +52,30 @@ class GoogleDocsPublisher:
             print(f"Google Docs Webhook request failed: {error}")
         return ""
 
+    def _insert_formatted(self, docs_service, doc_id: str, markdown_content: str,
+                          tab_id: str = None) -> bool:
+        """Insert markdown as styled Docs content (headings/bullets/links).
+
+        Falls back to a plain-text insert if the formatted batch fails, so
+        a styling problem can never lose the day's report.
+        """
+        built = build_docs_requests(markdown_content, start_index=1, tab_id=tab_id)
+        try:
+            docs_service.documents().batchUpdate(
+                documentId=doc_id, body={"requests": built["requests"]}
+            ).execute()
+            return True
+        except Exception as error:
+            print(f"Formatted Docs insert failed ({error}); falling back to plain text.")
+        location = {"index": 1}
+        if tab_id:
+            location["tabId"] = tab_id
+        docs_service.documents().batchUpdate(
+            documentId=doc_id,
+            body={"requests": [{"insertText": {"location": location, "text": built["full_text"]}}]},
+        ).execute()
+        return True
+
     def _publish_via_api(self, tab_title: str, markdown_content: str) -> str:
         try:
             docs_service = build("docs", "v1", credentials=self.credentials)
@@ -60,7 +87,7 @@ class GoogleDocsPublisher:
                 target_doc_id = new_doc.get("documentId")
                 drive_service.permissions().create(
                     fileId=target_doc_id,
-                    body={"type": "anyone", "role": "reader"}
+                    body={"type": "anyone", "role": "reader"},
                 ).execute()
 
             try:
@@ -76,45 +103,17 @@ class GoogleDocsPublisher:
                                 }
                             }
                         ]
-                    }
+                    },
                 ).execute()
 
                 tab_id = add_tab_response["replies"][0]["addDocumentTab"]["tabProperties"]["tabId"]
-
-                docs_service.documents().batchUpdate(
-                    documentId=target_doc_id,
-                    body={
-                        "requests": [
-                            {
-                                "insertText": {
-                                    "location": {
-                                        "tabId": tab_id,
-                                        "index": 1
-                                    },
-                                    "text": markdown_content
-                                }
-                            }
-                        ]
-                    }
-                ).execute()
-
+                self._insert_formatted(docs_service, target_doc_id, markdown_content, tab_id=tab_id)
                 return f"https://docs.google.com/document/d/{target_doc_id}/edit?tab={tab_id}"
             except Exception:
-                docs_service.documents().batchUpdate(
-                    documentId=target_doc_id,
-                    body={
-                        "requests": [
-                            {
-                                "insertText": {
-                                    "location": {
-                                        "index": 1
-                                    },
-                                    "text": f"\n\n# {tab_title}\n\n{markdown_content}\n"
-                                }
-                            }
-                        ]
-                    }
-                ).execute()
+                self._insert_formatted(
+                    docs_service, target_doc_id,
+                    f"# {tab_title}\n\n{markdown_content}\n",
+                )
                 return f"https://docs.google.com/document/d/{target_doc_id}/edit"
         except Exception as error:
             print(f"Google Docs API failed: {error}")

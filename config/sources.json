@@ -1,4 +1,136 @@
 {
+  "hackernews_queries": [
+    "developer layoffs",
+    "tech hiring",
+    "programmer job market",
+    "AI replacing developers",
+    "software engineer career",
+    "tech layoff"
+  ],
+  "keywords": [
+    "layoff",
+    "hiring",
+    "tuyển dụng",
+    "sa thải",
+    "thị trường",
+    "mức lương",
+    "career advice",
+    "junior",
+    "fresher",
+    "senior",
+    "xu hướng",
+    "future of coding",
+    "mất việc",
+    "khó xin việc",
+    "ai agent",
+    "vibe coding",
+    "hướng đi mới"
+  ],
+  "relevance": {
+    "max_age_days": 7,
+    "min_score": 25,
+    "per_source_cap": 6,
+    "rss_max_age_days": 30,
+    "total_cap": 40
+  },
+  "rss_feeds": [
+    {
+      "name": "Viblo",
+      "region": "VN",
+      "url": "https://viblo.asia/feed.rss"
+    },
+    {
+      "name": "TopDev Blog",
+      "region": "VN",
+      "url": "https://topdev.vn/blog/feed/"
+    },
+    {
+      "name": "Hacker News Frontpage",
+      "region": "GLOBAL",
+      "url": "https://hnrss.org/frontpage"
+    },
+    {
+      "name": "Dev.to Tech",
+      "region": "GLOBAL",
+      "url": "https://dev.to/feed"
+    }
+  ],
+  "subreddits": [
+    "ExperiencedDevs",
+    "cscareerquestions",
+    "programming"
+  ],
+  "topic_groups": {
+    "ai_va_huong_di_moi": [
+      "ai agent",
+      "ai bubble",
+      "ai engineer",
+      "ai thay thế",
+      "bong bóng ai",
+      "deskilling",
+      "future of coding",
+      "future of programming",
+      "hướng đi mới",
+      "isn't replacing",
+      "kỹ sư ai",
+      "llm engineer",
+      "prompt engineer",
+      "replacing developers",
+      "replacing programmers",
+      "thay thế lập trình viên",
+      "trí tuệ nhân tạo",
+      "tương lai của lập trình",
+      "vibe coding",
+      "xu hướng mới"
+    ],
+    "career_survival": [
+      "junior",
+      "fresher",
+      "senior",
+      "mới ra trường",
+      "career advice",
+      "lời khuyên nghề nghiệp",
+      "bám trụ",
+      "survive",
+      "survival",
+      "nên học gì",
+      "học gì để",
+      "chuyển ngành",
+      "career change",
+      "kinh nghiệm xin việc",
+      "phỏng vấn",
+      "interview",
+      "experienced dev",
+      "sự nghiệp",
+      "career"
+    ],
+    "thi_truong_tuyen_dung": [
+      "cắt giảm nhân sự",
+      "hiring",
+      "it market",
+      "job market",
+      "khó xin việc",
+      "laid off",
+      "layoff",
+      "lương dev",
+      "lương it",
+      "mất việc",
+      "mức lương",
+      "nhu cầu tuyển dụng",
+      "sa thải",
+      "salary",
+      "tech job",
+      "tech jobs",
+      "tech market",
+      "thất nghiệp",
+      "thị trường it",
+      "thị trường tuyển dụng",
+      "thị trường việc làm",
+      "tuyển dụng",
+      "unemployment",
+      "đóng băng tuyển dụng"
+    ]
+  },
   "youtube_channels": [
     {
       "id": "UCVkBcokjObNZiXavfAE1-fA",
@@ -30,47 +162,5 @@
       "name": "ByteByteGo",
       "region": "GLOBAL"
     }
-  ],
-  "rss_feeds": [
-    {
-      "name": "Viblo",
-      "url": "https://viblo.asia/feed.rss",
-      "region": "VN"
-    },
-    {
-      "name": "TopDev Blog",
-      "url": "https://topdev.vn/blog/feed/",
-      "region": "VN"
-    },
-    {
-      "name": "Hacker News Frontpage",
-      "url": "https://hnrss.org/frontpage",
-      "region": "GLOBAL"
-    },
-    {
-      "name": "Dev.to Tech",
-      "url": "https://dev.to/feed",
-      "region": "GLOBAL"
-    }
-  ],
-  "subreddits": [
-    "ExperiencedDevs",
-    "cscareerquestions",
-    "programming"
-  ],
-  "keywords": [
-    "layoff",
-    "hiring",
-    "tuyển dụng",
-    "sa thải",
-    "thị trường",
-    "lương",
-    "career advice",
-    "junior",
-    "fresher",
-    "senior",
-    "xu hướng",
-    "ai",
-    "future of coding"
   ]
 }

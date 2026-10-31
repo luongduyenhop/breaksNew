@@ -1,18 +1,40 @@
 import time
 import requests
 from typing import List
+from src.filters.relevance import fold_text
 from src.models.raw_item import RawItem, CommentItem
 
+
 class RedditCollector:
-    def __init__(self, subreddits: List[str]):
+    """Reddit posts from career/dev subreddits.
+
+    Window widened from 24h to `max_age_days` (market discussions are not
+    daily), and when `keywords` are supplied a post must mention one of
+    them (accent-insensitive) or be exceptionally upvoted to be collected.
+    Relevance scoring later in the pipeline makes the final call.
+    """
+
+    def __init__(self, subreddits: List[str], keywords: List[str] = None,
+                 max_age_days: int = 7, viral_score: int = 200):
         self.subreddits = subreddits
+        self.keywords = [fold_text(k) for k in (keywords or [])]
+        self.max_age_days = max_age_days
+        self.viral_score = viral_score
         self.headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) ITMarketTracker/1.0"}
+
+    def _is_relevant_enough(self, post: dict) -> bool:
+        if not self.keywords:
+            return True
+        haystack = fold_text(f"{post.get('title', '')} {post.get('selftext', '')}")
+        if any(kw and kw in haystack for kw in self.keywords):
+            return True
+        return (post.get("score", 0) or 0) >= self.viral_score
 
     def fetch_items(self) -> List[RawItem]:
         items: List[RawItem] = []
-        one_day_ago = time.time() - (24 * 3600)
+        cutoff = time.time() - (self.max_age_days * 24 * 3600)
         for sub in self.subreddits:
-            url = f"https://www.reddit.com/r/{sub}/hot.json?limit=15"
+            url = f"https://www.reddit.com/r/{sub}/hot.json?limit=25"
             try:
                 response = requests.get(url, headers=self.headers, timeout=10)
                 if response.status_code != 200:
@@ -22,7 +44,9 @@ class RedditCollector:
                 for child in children:
                     post = child.get("data", {})
                     created_utc = post.get("created_utc", 0)
-                    if created_utc < one_day_ago or post.get("stickied", False):
+                    if created_utc < cutoff or post.get("stickied", False):
+                        continue
+                    if not self._is_relevant_enough(post):
                         continue
                     post_id = post.get("id", "")
                     permalink = post.get("permalink", "")
@@ -39,9 +63,9 @@ class RedditCollector:
                             region="GLOBAL",
                             metrics={
                                 "score": post.get("score", 0),
-                                "comments": post.get("num_comments", 0)
+                                "comments": post.get("num_comments", 0),
                             },
-                            top_comments=top_comments
+                            top_comments=top_comments,
                         )
                     )
             except Exception:
@@ -70,4 +94,5 @@ class RedditCollector:
                             break
         except Exception:
             return comments
+        comments.sort(key=lambda c: c.votes, reverse=True)
         return comments
