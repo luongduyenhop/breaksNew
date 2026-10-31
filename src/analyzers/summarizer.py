@@ -5,13 +5,16 @@ from typing import List
 from src.filters.relevance import comment_insight_score, rank_comments
 from src.models.raw_item import RawItem
 
-# Verified Gemini model ids, most capable first. The previous default
-# ("gemini-3.8-flash") does not exist, which silently forced every run
-# into the fallback report. GEMINI_MODEL env still takes precedence.
+# Current Gemini model ids, most preferred first. gemini-3.8-flash is
+# the current Flash model (GA 2026-09-02). The Gemini 2.5 family has
+# been limited to past users since 2026-09-18, so fresh AI Studio API
+# keys cannot call gemini-2.5-flash — it stays last as a legacy option
+# for older keys. GEMINI_MODEL env still takes precedence.
 DEFAULT_MODELS = [
+    "gemini-3.8-flash",
+    "gemini-3.6-flash",
+    "gemini-3.5-flash-lite",
     "gemini-2.5-flash",
-    "gemini-2.0-flash",
-    "gemini-2.5-flash-lite",
 ]
 
 TOP_ITEMS_FOR_PROMPT = 20
@@ -126,21 +129,76 @@ class MarketBriefingSynthesizer:
         candidate_models.extend(m for m in DEFAULT_MODELS if m not in candidate_models)
 
         for model_candidate in candidate_models:
-            try:
-                response = self.client.models.generate_content(
-                    model=model_candidate,
-                    contents=prompt,
-                )
-                if response and response.text:
-                    self.used_fallback = False
-                    return response.text
-            except Exception as error:
-                print(f"Gemini API attempt failed with model {model_candidate}: {error}")
-                continue
+            report_text = self._try_model(model_candidate, prompt)
+            if report_text:
+                self.used_fallback = False
+                print(f"Gemini report generated with model: {model_candidate}")
+                return report_text
 
         print("All Gemini models failed. Falling back to structured local report.")
         self.used_fallback = True
         return FALLBACK_WARNING + self._build_fallback_report(ranked)
+
+    def _try_model(self, model_name: str, prompt: str):
+        """Try one model via generateContent, then via the Interactions API.
+
+        Newer models (3.8 family) are served through Google's Interactions
+        API; generateContent may refuse them, so both surfaces are tried
+        before giving up on the model.
+        """
+        try:
+            response = self.client.models.generate_content(
+                model=model_name,
+                contents=prompt,
+            )
+            if response and getattr(response, "text", None):
+                return response.text
+        except Exception as error:
+            print(f"Gemini API attempt failed with model {model_name}: {error}")
+
+        interactions = getattr(self.client, "interactions", None)
+        if interactions is not None:
+            try:
+                interaction = interactions.create(model=model_name, input=prompt)
+                text = self._extract_interaction_text(interaction)
+                if text:
+                    return text
+            except Exception as error:
+                print(f"Gemini Interactions attempt failed with model {model_name}: {error}")
+        return None
+
+    @staticmethod
+    def _extract_interaction_text(interaction) -> str | None:
+        """Best-effort text extraction from an Interactions API response."""
+        if interaction is None:
+            return None
+        output_text = getattr(interaction, "output_text", None)
+        if isinstance(output_text, str) and output_text.strip():
+            return output_text
+        for container_name in ("outputs", "output"):
+            container = getattr(interaction, container_name, None)
+            if isinstance(container, str) and container.strip():
+                return container
+            if isinstance(container, (list, tuple)):
+                parts = []
+                for entry in container:
+                    if isinstance(entry, str):
+                        parts.append(entry)
+                        continue
+                    entry_text = getattr(entry, "text", None)
+                    if isinstance(entry_text, str):
+                        parts.append(entry_text)
+                        continue
+                    content = getattr(entry, "content", None)
+                    if isinstance(content, (list, tuple)):
+                        for part in content:
+                            part_text = getattr(part, "text", None)
+                            if isinstance(part_text, str):
+                                parts.append(part_text)
+                joined = "".join(parts).strip()
+                if joined:
+                    return joined
+        return None
 
     def _top_insight_comments(self, items: List[RawItem], limit: int = 5):
         """Best directional comments across all items: (item, comment, insight)."""
