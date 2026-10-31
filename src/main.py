@@ -107,24 +107,47 @@ def run_pipeline(dry_run: bool = False):
     today_str = datetime.now().strftime("%Y-%m-%d")
     report_title = f"IT Market & Career Briefing - {today_str}"
 
-    reports_dir = str(PROJECT_ROOT / "reports")
-    markdown_pub = MarkdownPublisher(output_dir=reports_dir)
-    saved_markdown_path = markdown_pub.publish(report_content, today_str)
-    print(f"Markdown report generated: {saved_markdown_path}")
-
+    # Publish to Google Docs FIRST so the Docs link can be embedded at the
+    # top of every delivered copy (committed markdown + email). Previously
+    # the markdown was saved before Docs existed, so no copy the reader
+    # opened ever contained the link. A Docs failure is now visible in the
+    # report itself instead of only in CI logs.
     google_docs_url = ""
     if not dry_run:
         docs_pub = GoogleDocsPublisher()
         google_docs_url = docs_pub.publish_document(today_str, report_content)
         if google_docs_url:
             print(f"Google Docs published: {google_docs_url}")
+        else:
+            print("Google Docs publishing produced no URL.")
+
+    if dry_run:
+        final_content = report_content
+    elif google_docs_url:
+        final_content = (
+            f"📑 **Google Docs (bản đã chuẩn hóa, dễ đọc):** "
+            f"[Mở Google Docs hôm nay]({google_docs_url})\n\n---\n\n"
+            + report_content
+        )
+    else:
+        final_content = (
+            "> ⚠️ **Chưa tạo được Google Docs trong lần chạy này** — kiểm tra "
+            "GOOGLE_DOCS_WEBHOOK_URL / GOOGLE_SERVICE_ACCOUNT_JSON và quyền "
+            "truy cập của bản deploy Apps Script (phải là Anyone).\n\n"
+            + report_content
+        )
+
+    reports_dir = str(PROJECT_ROOT / "reports")
+    markdown_pub = MarkdownPublisher(output_dir=reports_dir)
+    saved_markdown_path = markdown_pub.publish(final_content, today_str)
+    print(f"Markdown report generated: {saved_markdown_path}")
 
     email_sent = False
     if not dry_run:
         gmail_pub = GmailPublisher()
         email_sent = gmail_pub.send_briefing_email(
             subject=f"[Daily Briefing] {report_title}",
-            markdown_content=report_content,
+            markdown_content=final_content,
             google_docs_url=google_docs_url,
         )
         print(f"Email sent status: {email_sent}")

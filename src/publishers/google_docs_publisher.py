@@ -42,12 +42,26 @@ class GoogleDocsPublisher:
             }
             response = requests.post(self.webhook_url, json=payload, timeout=35, allow_redirects=True)
             if response.status_code == 200:
-                result = response.json()
+                try:
+                    result = response.json()
+                except Exception:
+                    # Apps Script returns an HTML sign-in/error page when the
+                    # deployment is not shared with "Anyone" — surface that
+                    # instead of failing silently.
+                    print(
+                        "Google Docs Webhook returned non-JSON (HTTP 200). "
+                        "Likely the Apps Script deployment access is not set to "
+                        f"'Anyone'. Body starts: {response.text[:200]!r}"
+                    )
+                    return ""
                 if result.get("status") == "success":
                     return result.get("url", "")
                 print(f"Google Docs Webhook message: {result.get('message')}")
             else:
-                print(f"Google Docs Webhook HTTP status: {response.status_code}")
+                print(
+                    f"Google Docs Webhook HTTP status: {response.status_code}. "
+                    f"Body starts: {response.text[:200]!r}"
+                )
         except Exception as error:
             print(f"Google Docs Webhook request failed: {error}")
         return ""

@@ -84,7 +84,7 @@ class DataNormalizer:
 
             cleaned_comments = []
             for comment in item.top_comments:
-                cleaned_comment_text = self.clean_text(comment.text)[:300]
+                cleaned_comment_text = self.clean_text(comment.text)[:700]  # long practitioner comments carry the directional insight — do not truncate at 300
                 if cleaned_comment_text and len(cleaned_comment_text) > 8:
                     cleaned_comments.append(
                         CommentItem(
