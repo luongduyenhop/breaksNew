@@ -248,6 +248,32 @@ def _contains(folded_text: str, folded_keyword: str) -> bool:
     return folded_keyword in folded_text
 
 
+
+# Freshness gradient (PR #10): the old flat "+5 if <=2 days" treated a
+# 1-hour-old and a 47-hour-old item as equally fresh, so re-running the
+# pipeline later the same day resurfaced the same stories. The bonus now
+# decays by AGE IN HOURS, so whatever was published most recently at run
+# time floats to the top of every run.
+FRESHNESS_TIERS_HOURS = [
+    (3, 12.0), (6, 10.0), (12, 8.0), (24, 6.0),
+    (48, 4.0), (72, 2.0), (168, 1.0),
+]
+STALE_PENALTY_DAYS = 30
+STALE_PENALTY = -10.0
+
+
+def freshness_bonus(age_hours: float) -> float:
+    """Recency bonus for an item's age in hours (negative if ancient)."""
+    if age_hours is None:
+        return 0.0
+    if age_hours > STALE_PENALTY_DAYS * 24:
+        return STALE_PENALTY
+    for limit_hours, bonus in FRESHNESS_TIERS_HOURS:
+        if age_hours <= limit_hours:
+            return bonus
+    return 0.0
+
+
 def _parse_published_ts(published_at: str) -> float:
     """Best-effort parse of the collectors' published_at formats."""
     if not published_at:
@@ -383,16 +409,14 @@ class RelevanceScorer:
 
         published_ts = _parse_published_ts(item.published_at)
         if published_ts:
-            age_days = max(0.0, (now_ts - published_ts) / 86400)
-            if age_days <= 2:
-                score += 5
-                reasons.append("mới <=2 ngày (+5)")
-            elif age_days <= self.max_age_days:
-                score += 2
-                reasons.append("mới <=7 ngày (+2)")
-            elif age_days > 30:
-                score -= 10
-                reasons.append("cũ >30 ngày (-10)")
+            age_hours = max(0.0, (now_ts - published_ts) / 3600)
+            bonus = freshness_bonus(age_hours)
+            if bonus > 0:
+                score += bonus
+                reasons.append(f"độ mới {age_hours:.0f}h (+{bonus:.0f})")
+            elif bonus < 0:
+                score += bonus
+                reasons.append(f"cũ >{STALE_PENALTY_DAYS} ngày ({bonus:.0f})")
 
         item.relevance_score = round(score, 1)
         item.matched_topics = matched_topics
@@ -402,7 +426,10 @@ class RelevanceScorer:
     def score_and_filter(self, items: List[RawItem]) -> Tuple[List[RawItem], List[RawItem]]:
         """Score everything, return (kept sorted by score, dropped)."""
         scored = [self.score_item(item) for item in items]
-        scored.sort(key=lambda i: i.relevance_score, reverse=True)
+        scored.sort(
+            key=lambda i: (i.relevance_score, _parse_published_ts(i.published_at)),
+            reverse=True,
+        )
 
         kept: List[RawItem] = []
         dropped: List[RawItem] = []
