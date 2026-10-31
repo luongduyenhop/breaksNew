@@ -36,6 +36,7 @@ jobs:
           GOOGLE_DOCS_WEBHOOK_URL: ${{ secrets.GOOGLE_DOCS_WEBHOOK_URL }}
           GOOGLE_DOC_ID: ${{ secrets.GOOGLE_DOC_ID }}
           GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
         run: |
           python src/main.py
 
