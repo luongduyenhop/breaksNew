@@ -7,6 +7,7 @@ import requests
 from google import genai
 from typing import List
 from src.filters.relevance import (
+    _parse_published_ts,
     comment_insight_score,
     expert_voice_score,
     incident_severity_score,
@@ -79,8 +80,16 @@ class MarketBriefingSynthesizer:
         self.used_fallback = False
 
     def _ranked(self, items: List[RawItem]) -> List[RawItem]:
-        """Highest relevance first — never raw collection order."""
-        return sorted(items, key=lambda i: i.relevance_score, reverse=True)
+        """Highest relevance first — never raw collection order.
+
+        Equal scores break toward the NEWER item (PR #10), so a re-run
+        later in the day leads with what was published most recently.
+        """
+        return sorted(
+            items,
+            key=lambda i: (i.relevance_score, _parse_published_ts(i.published_at)),
+            reverse=True,
+        )
 
     def _select_for_prompt(self, ranked: List[RawItem]) -> List[RawItem]:
         """Top-N for the prompt, with a soft floor for Vietnam-market items.

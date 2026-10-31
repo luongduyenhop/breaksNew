@@ -40,7 +40,7 @@
     "major security breach vulnerability incident"
   ],
   "relevance": {
-    "max_age_days": 7,
+    "max_age_days": 3,
     "min_score": 25,
     "per_source_cap": 6,
     "rss_max_age_days": 30,
