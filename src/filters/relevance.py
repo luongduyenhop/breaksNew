@@ -78,6 +78,55 @@ INSIGHT_PHRASES = [
 ]
 
 
+EXPERT_BONUS_CAP = 10.0
+VN_REGION_BOOST = 4.0
+
+# Signals that the author/speaker is a seasoned practitioner — a senior,
+# tech lead, PM or engineering manager — rather than a beginner or a news
+# aggregator. The reader explicitly wants advice from people in those
+# seats. Written unfolded; folded before matching.
+EXPERT_ROLE_TERMS = [
+    "senior engineer", "senior developer", "senior software",
+    "tech lead", "team lead", "engineering manager", "project manager",
+    "product manager", "staff engineer", "principal engineer",
+    "principal software", "software architect", "solutions architect",
+    "cto", "chief technology officer", "head of engineering",
+    "vp of engineering", "trưởng nhóm", "trưởng phòng kỹ thuật",
+    "quản lý dự án", "quản lý sản phẩm", "giám đốc công nghệ",
+    "kiến trúc sư phần mềm", "techlead",
+]
+
+EXPERIENCE_PHRASES = [
+    "years of experience", "in my experience", "my team", "our team",
+    "when i led", "i have worked", "i've worked", "after years",
+    "năm kinh nghiệm", "kinh nghiệm của tôi", "team của tôi",
+    "đội của tôi", "khi tôi làm lead", "tôi từng làm", "sau nhiều năm đi làm",
+    "nhiều năm đi làm",
+]
+
+
+def expert_voice_score(item: RawItem) -> float:
+    """How strongly an item reads as a seasoned practitioner's voice (0-10).
+
+    Role terms in the title are the strongest signal; role terms in the
+    body and first-person experience phrases in body/comments add less.
+    """
+    title = fold_text(item.title)
+    body = fold_text(item.summary_text)
+    comments_text = fold_text(" ".join(c.text for c in item.top_comments))
+    score = 0.0
+    if any(_contains(title, fold_text(term)) for term in EXPERT_ROLE_TERMS):
+        score += 6.0
+    elif any(_contains(body, fold_text(term)) for term in EXPERT_ROLE_TERMS):
+        score += 3.0
+    haystack = f"{body} {comments_text}"
+    exp_hits = sum(
+        1 for phrase in EXPERIENCE_PHRASES if _contains(haystack, fold_text(phrase))
+    )
+    score += min(3.0, exp_hits * 1.5)
+    return min(EXPERT_BONUS_CAP, score)
+
+
 def comment_insight_score(text: str) -> float:
     """Score one comment's directional-insight value (0..~12).
 
@@ -233,6 +282,15 @@ class RelevanceScorer:
             if insight_bonus > 0:
                 score += insight_bonus
                 reasons.append(f"bình luận có giá trị định hướng (+{insight_bonus:.0f})")
+
+        expert_bonus = expert_voice_score(item)
+        if expert_bonus > 0:
+            score += expert_bonus
+            reasons.append(f"tiếng nói chuyên gia/thâm niên (+{expert_bonus:.0f})")
+
+        if item.region == "VN":
+            score += VN_REGION_BOOST
+            reasons.append(f"ưu tiên thị trường VN (+{VN_REGION_BOOST:.0f})")
 
         published_ts = _parse_published_ts(item.published_at)
         if published_ts:

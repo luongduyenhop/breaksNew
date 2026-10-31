@@ -26,12 +26,18 @@
     "vibe coding",
     "hướng đi mới"
   ],
+  "reddit_search_queries": [
+    "senior engineer career advice",
+    "engineering manager tech lead experience",
+    "developer job market layoffs",
+    "staff engineer career"
+  ],
   "relevance": {
     "max_age_days": 7,
     "min_score": 25,
     "per_source_cap": 6,
     "rss_max_age_days": 30,
-    "total_cap": 40
+    "total_cap": 60
   },
   "rss_feeds": [
     {
@@ -53,6 +59,56 @@
       "name": "Dev.to Tech",
       "region": "GLOBAL",
       "url": "https://dev.to/feed"
+    },
+    {
+      "name": "The Pragmatic Engineer",
+      "region": "GLOBAL",
+      "url": "https://newsletter.pragmaticengineer.com/feed"
+    },
+    {
+      "name": "LeadDev",
+      "region": "GLOBAL",
+      "url": "https://leaddev.com/feed"
+    },
+    {
+      "ceid": "VN:vi",
+      "gl": "VN",
+      "google_news_query": "thị trường IT Việt Nam",
+      "hl": "vi",
+      "name": "Google News VN · Thị trường IT",
+      "region": "VN"
+    },
+    {
+      "ceid": "VN:vi",
+      "gl": "VN",
+      "google_news_query": "tuyển dụng lập trình viên Việt Nam",
+      "hl": "vi",
+      "name": "Google News VN · Tuyển dụng IT",
+      "region": "VN"
+    },
+    {
+      "ceid": "VN:vi",
+      "gl": "VN",
+      "google_news_query": "sa thải ngành công nghệ Việt Nam",
+      "hl": "vi",
+      "name": "Google News VN · Nhân sự công nghệ",
+      "region": "VN"
+    },
+    {
+      "ceid": "US:en",
+      "gl": "US",
+      "google_news_query": "tech layoffs developer job market",
+      "hl": "en-US",
+      "name": "Google News · Tech layoffs & jobs",
+      "region": "GLOBAL"
+    },
+    {
+      "ceid": "US:en",
+      "gl": "US",
+      "google_news_query": "AI replacing software engineers careers",
+      "hl": "en-US",
+      "name": "Google News · AI & dev careers",
+      "region": "GLOBAL"
     }
   ],
   "subreddits": [
@@ -160,6 +216,48 @@
     {
       "id": "UCzT8Pz74V4Q9-9m01bU_m8A",
       "name": "ByteByteGo",
+      "region": "GLOBAL"
+    }
+  ],
+  "youtube_search_queries": [
+    {
+      "language": "vi",
+      "query": "thị trường IT Việt Nam tuyển dụng lập trình viên",
+      "region": "VN"
+    },
+    {
+      "language": "vi",
+      "query": "lập trình viên Việt Nam sa thải lương thưởng thị trường",
+      "region": "VN"
+    },
+    {
+      "language": "vi",
+      "query": "senior lập trình viên chia sẻ kinh nghiệm đi làm",
+      "region": "VN"
+    },
+    {
+      "language": "vi",
+      "query": "AI thay thế lập trình viên hướng đi mới",
+      "region": "VN"
+    },
+    {
+      "language": "en",
+      "query": "senior software engineer career advice",
+      "region": "GLOBAL"
+    },
+    {
+      "language": "en",
+      "query": "tech lead engineering manager advice developers",
+      "region": "GLOBAL"
+    },
+    {
+      "language": "en",
+      "query": "developer job market layoffs hiring",
+      "region": "GLOBAL"
+    },
+    {
+      "language": "en",
+      "query": "staff engineer principal engineer career path",
       "region": "GLOBAL"
     }
   ]

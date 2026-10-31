@@ -31,16 +31,22 @@ class YouTubeCollector:
     # per run. The Data API path has no such problem and is unlimited.
     SCRAPER_BUDGET = 6
 
+    # Search-discovered videos that get API comments per run (bounds the
+    # runtime; the rest still compete on title/topic/engagement).
+    SEARCH_COMMENT_BUDGET = 12
+
     def __init__(self, channels: List[Dict[str, str]], pool_per_channel: int = 6,
-                 api_key: str = None):
+                 api_key: str = None, search_queries: List[Dict[str, str]] = None):
         self.channels = channels
         self.pool_per_channel = pool_per_channel
         self.api_key = api_key if api_key is not None else os.environ.get("YOUTUBE_API_KEY", "")
+        self.search_queries = search_queries or []
         self.comment_downloader = YoutubeCommentDownloader()
         self._scraper_budget = self.SCRAPER_BUDGET
 
     def fetch_items(self) -> List[RawItem]:
         items: List[RawItem] = []
+        seen_video_ids = set()
         for channel in self.channels:
             channel_id = channel.get("id", "")
             channel_name = channel.get("name", "YouTube")
@@ -50,6 +56,8 @@ class YouTubeCollector:
                 feed = feedparser.parse(feed_url)
                 for entry in feed.entries[: self.pool_per_channel]:
                     video_id = getattr(entry, "yt_videoid", "")
+                    if video_id:
+                        seen_video_ids.add(video_id)
                     transcript = self._get_transcript(video_id)
                     description = getattr(entry, "summary", "")
                     content = transcript if transcript else description
@@ -77,6 +85,114 @@ class YouTubeCollector:
                     )
             except Exception:
                 continue
+        if self.api_key and self.search_queries:
+            items.extend(self._fetch_search_items(seen_video_ids))
+        return items
+
+    # -- Search discovery (escapes the fixed channel list) -------------------
+    def _fetch_search_items(self, seen_video_ids: set) -> List[RawItem]:
+        """YouTube Data API search by topic/role queries (last 72h).
+
+        Each search.list call costs 100 quota units; ~8 queries/day is
+        well inside the 10,000-unit daily quota. Results are enriched in
+        one batched videos.list call, ranked by views, and the top few
+        also get API comments — the practitioner discussion is the point.
+        """
+        from datetime import datetime, timedelta, timezone
+
+        published_after = (
+            datetime.now(timezone.utc) - timedelta(hours=72)
+        ).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+        region_by_video: Dict[str, str] = {}
+        for query_cfg in self.search_queries:
+            try:
+                response = requests.get(
+                    f"{API_BASE}/search",
+                    params={
+                        "part": "snippet",
+                        "type": "video",
+                        "q": query_cfg.get("query", ""),
+                        "order": "viewCount",
+                        "publishedAfter": published_after,
+                        "maxResults": 10,
+                        "regionCode": query_cfg.get("region", "VN")
+                        if query_cfg.get("region") in ("VN", "US")
+                        else "VN",
+                        "relevanceLanguage": query_cfg.get("language", "vi"),
+                        "key": self.api_key,
+                    },
+                    timeout=15,
+                )
+                if response.status_code != 200:
+                    print(f"YouTube search failed for '{query_cfg.get('query', '')[:40]}': HTTP {response.status_code}")
+                    continue
+                for entry in response.json().get("items", []):
+                    video_id = entry.get("id", {}).get("videoId", "")
+                    if video_id and video_id not in seen_video_ids:
+                        region_by_video.setdefault(video_id, query_cfg.get("region", "GLOBAL"))
+            except Exception as error:
+                print(f"YouTube search error: {error}")
+                continue
+
+        if not region_by_video:
+            return []
+
+        details: Dict[str, dict] = {}
+        video_ids = list(region_by_video.keys())[:50]
+        try:
+            response = requests.get(
+                f"{API_BASE}/videos",
+                params={
+                    "part": "snippet,statistics",
+                    "id": ",".join(video_ids),
+                    "key": self.api_key,
+                },
+                timeout=15,
+            )
+            if response.status_code == 200:
+                for entry in response.json().get("items", []):
+                    details[entry.get("id", "")] = entry
+        except Exception as error:
+            print(f"YouTube videos.list error: {error}")
+            return []
+
+        candidates = []
+        for video_id, region in region_by_video.items():
+            entry = details.get(video_id)
+            if not entry:
+                continue
+            snippet = entry.get("snippet", {})
+            stats = entry.get("statistics", {})
+            candidates.append((video_id, region, snippet, stats))
+        candidates.sort(key=lambda c: int(c[3].get("viewCount", 0) or 0), reverse=True)
+
+        items: List[RawItem] = []
+        for rank, (video_id, region, snippet, stats) in enumerate(candidates):
+            video_url = f"https://www.youtube.com/watch?v={video_id}"
+            top_comments = (
+                self._get_comments_via_api(video_id, limit=5)
+                if rank < self.SEARCH_COMMENT_BUDGET
+                else []
+            )
+            items.append(
+                RawItem(
+                    id=f"yt_{video_id}",
+                    title=snippet.get("title", ""),
+                    source_name=f"YouTube ({snippet.get('channelTitle', 'Search')})",
+                    source_type="video",
+                    url=video_url,
+                    published_at=snippet.get("publishedAt", ""),
+                    summary_text=(snippet.get("description", "") or "")[:4000],
+                    region=region,
+                    metrics={
+                        "views": int(stats.get("viewCount", 0) or 0),
+                        "likes": int(stats.get("likeCount", 0) or 0),
+                        "comments": int(stats.get("commentCount", 0) or 0),
+                    },
+                    top_comments=top_comments,
+                )
+            )
         return items
 
     def _get_transcript(self, video_id: str) -> str:

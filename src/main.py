@@ -49,15 +49,20 @@ def run_pipeline(dry_run: bool = False):
     collected_items = []
 
     youtube_channels = sources.get("youtube_channels", [])
-    if youtube_channels:
-        youtube_collector = YouTubeCollector(youtube_channels)
+    youtube_search_queries = sources.get("youtube_search_queries", [])
+    if youtube_channels or youtube_search_queries:
+        youtube_collector = YouTubeCollector(
+            youtube_channels, search_queries=youtube_search_queries
+        )
         collected_items.extend(youtube_collector.fetch_items())
 
     flat_keywords = sources.get("keywords", [])
     subreddits = sources.get("subreddits", [])
-    if subreddits:
+    reddit_search_queries = sources.get("reddit_search_queries", [])
+    if subreddits or reddit_search_queries:
         reddit_collector = RedditCollector(
-            subreddits, keywords=flat_keywords, max_age_days=max_age_days
+            subreddits, keywords=flat_keywords, max_age_days=max_age_days,
+            search_queries=reddit_search_queries,
         )
         collected_items.extend(reddit_collector.fetch_items())
 

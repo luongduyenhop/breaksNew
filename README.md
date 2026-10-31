@@ -12,6 +12,12 @@ Hệ thống tự động thu thập thông tin thị trường IT hàng ngày, 
 - **Quốc Tế:**
   - YouTube Channels: Fireship, ThePrimeTime, ByteByteGo.
   - Diễn đàn & Cộng đồng kỹ sư: Hacker News, Reddit (r/ExperiencedDevs, r/cscareerquestions, r/programming), Dev.to.
+- **Tìm kiếm theo chủ đề (PR #5, không còn bó hẹp ở kênh cố định):**
+  - YouTube: tìm kiếm toàn nền tảng bằng Data API theo truy vấn chủ đề/vai trò (`youtube_search_queries`), video 72 giờ gần nhất, xếp theo lượt xem — kênh nào có video hay đều vào được.
+  - Google News RSS theo truy vấn (`google_news_query` trong `rss_feeds`): gom tin từ mọi tòa soạn (VnExpress, ICTnews, The Verge...) cho cả VN (hl=vi, gl=VN) và quốc tế.
+  - Reddit: tìm kiếm toàn site theo từ khóa vai trò/chủ đề (`reddit_search_queries`), có fallthrough khi bị chặn 403.
+  - Nguồn chuyên gia cố định: The Pragmatic Engineer, LeadDev.
+- **Điểm thâm niên & ưu tiên Việt Nam (PR #5):** Bộ lọc cộng điểm khi tác giả/nội dung mang dấu hiệu senior/tech lead/PM/engineering manager hoặc kinh nghiệm nhiều năm (`expert_voice_score`), cộng điểm ưu tiên cho mục region=VN, và khâu chọn 20 mục cho Gemini giữ tối thiểu 8 mục VN (nếu đủ bài đạt chuẩn). Prompt yêu cầu tách mục hướng đi thành "Tại Việt Nam" / "Trên thế giới (và ý nghĩa với Việt Nam)" và ghi rõ vai trò người khuyên.
 
 ---
 
