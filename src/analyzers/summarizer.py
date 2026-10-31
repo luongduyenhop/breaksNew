@@ -1,5 +1,8 @@
 import os
 import json
+import threading
+import time
+
 import requests
 from google import genai
 from typing import List
@@ -26,6 +29,12 @@ DEFAULT_MODELS = [
 
 TOP_ITEMS_FOR_PROMPT = 20
 VN_PROMPT_MIN = 8
+# Hard wall-clock budget for the WHOLE Gemini phase (all candidate
+# models together). Luong's rule (2026-10-31): if Gemini has not
+# produced a report within 2 minutes, stop waiting on it and switch to
+# the OpenCode Zen chain — a slow Gemini must not hold the briefing
+# hostage. Override with GEMINI_TIME_BUDGET_SECS.
+GEMINI_TIME_BUDGET_SECS = 120
 # Major incidents are high-value but must not flood the briefing: at
 # most this many gate-passing incident items reach the prompt per day.
 INCIDENT_PROMPT_MAX = 3
@@ -231,14 +240,29 @@ class MarketBriefingSynthesizer:
             candidate_models.append(env_model)
         candidate_models.extend(m for m in DEFAULT_MODELS if m not in candidate_models)
 
+        budget_secs = self._gemini_budget_secs()
+        deadline = time.monotonic() + budget_secs
+        budget_exhausted = False
         for model_candidate in candidate_models:
-            report_text = self._try_model(model_candidate, prompt)
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                budget_exhausted = True
+                break
+            report_text = self._try_model_with_timeout(
+                model_candidate, prompt, remaining
+            )
             if report_text:
                 self.used_fallback = False
                 print(f"Gemini report generated with model: {model_candidate}")
                 return report_text
 
-        print("All Gemini models failed. Trying OpenCode Zen fallback chain.")
+        if budget_exhausted:
+            print(
+                f"Gemini time budget ({budget_secs:.0f}s) exhausted — "
+                "switching to OpenCode Zen chain."
+            )
+        else:
+            print("All Gemini models failed. Trying OpenCode Zen fallback chain.")
         zen_text = self._try_opencode_chain(prompt)
         if zen_text:
             self.used_fallback = False
@@ -247,6 +271,47 @@ class MarketBriefingSynthesizer:
         print("All providers failed. Falling back to structured local report.")
         self.used_fallback = True
         return FALLBACK_WARNING + self._build_fallback_report(ranked)
+
+    @staticmethod
+    def _gemini_budget_secs() -> float:
+        """Total wall-clock budget for the Gemini phase, in seconds."""
+        raw = os.environ.get("GEMINI_TIME_BUDGET_SECS", "")
+        try:
+            value = float(raw)
+            if value > 0:
+                return value
+        except (TypeError, ValueError):
+            pass
+        return float(GEMINI_TIME_BUDGET_SECS)
+
+    def _try_model_with_timeout(self, model_name: str, prompt: str, timeout_secs: float):
+        """Run one Gemini attempt under a hard wall-clock cap.
+
+        The genai SDK calls carry no reliable per-request timeout, so a
+        hung model could previously block the pipeline for many minutes.
+        The attempt runs on a daemon thread; if it has not finished when
+        the remaining Gemini budget runs out, it is abandoned (its result
+        is discarded) and the caller moves on to the Zen chain.
+        """
+        outcome = {}
+
+        def _run():
+            try:
+                outcome["text"] = self._try_model(model_name, prompt)
+            except Exception as error:  # _try_model already guards, be safe
+                print(f"Gemini attempt error with model {model_name}: {error}")
+                outcome["text"] = None
+
+        worker = threading.Thread(target=_run, daemon=True)
+        worker.start()
+        worker.join(timeout=max(0.1, timeout_secs))
+        if worker.is_alive():
+            print(
+                f"Gemini attempt with model {model_name} exceeded the "
+                f"remaining time budget ({timeout_secs:.0f}s) — abandoning it."
+            )
+            return None
+        return outcome.get("text")
 
     def _opencode_models(self):
         """Zen model ids to try, in order: OPENCODE_MODELS env wins."""
