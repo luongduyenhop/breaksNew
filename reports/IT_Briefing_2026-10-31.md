@@ -56,8 +56,8 @@
 **Tóm tắt nội dung:** Are we cooked chat? Want more Fireship?...
 > English reference: Are we cooked chat? Want more Fireship?...
 **Bình luận nổi bật từ cộng đồng:**
-- *@diego4195* (6060 votes): "Remember: If the headline/title is a question instead of a statement, the answer is "no"."
-- *@logoplay23* (8431 votes): "The peak of this bubble will probably be the exact moment Mark changes the company's name to Meta AI."
+- *@diego4195* (6062 votes): "Remember: If the headline/title is a question instead of a statement, the answer is "no"."
+- *@logoplay23* (8435 votes): "The peak of this bubble will probably be the exact moment Mark changes the company's name to Meta AI."
 - *@sorrefly* (5724 votes): "Weekly AI bubble pop news"
 
 ### [Ngành lập trình và IT năm 2026 ảm đạm ra sao??](https://www.youtube.com/watch?v=mOaakWt7txY) (YouTube (Tôi Đi Code Dạo))
