@@ -3,6 +3,17 @@ from typing import List
 from urllib.parse import urlparse, parse_qs, urlunparse
 from src.models.raw_item import RawItem, CommentItem
 
+# Lines that are channel/description boilerplate rather than content:
+# subscription pitches, course/member sales, social links, sponsor blocks.
+_BOILERPLATE_MARKERS = (
+    "subscribe", "đăng ký kênh", "nhớ subscribe", "follow me", "discord",
+    "khóa học", "khoa hoc", "hội viên", "member", "tham gia làm",
+    "mua sách", "ủng hộ mình", "link đăng ký", "hot hot", "tiktok",
+    "try ", " for free", "sign in with", "get 20%", "get 10%", "% off",
+    "newsletter:", "courses:", "sponsor",
+)
+
+
 class DataNormalizer:
     def clean_text(self, text: str) -> str:
         if not text:
@@ -13,6 +24,33 @@ class DataNormalizer:
         no_duplicate_spaces = re.sub(r"\s+", " ", no_links).strip()
         cleaned = re.sub(r"\s+([.,!?:;])", r"\1", no_duplicate_spaces)
         return cleaned
+
+    def strip_boilerplate(self, text: str) -> str:
+        """Drop promotional/description boilerplate lines before cleaning.
+
+        YouTube descriptions in particular are mostly sales copy; feeding
+        them to the summarizer made reports quote course ads as 'content'.
+        Works line-by-line, so it must run before clean_text collapses
+        whitespace.
+        """
+        if not text:
+            return ""
+        kept_lines = []
+        for raw_line in text.splitlines():
+            line = raw_line.strip()
+            if not line:
+                continue
+            lowered = line.lower()
+            if "http" in lowered or "www." in lowered:
+                continue
+            if any(marker in lowered for marker in _BOILERPLATE_MARKERS):
+                continue
+            if line.count("👉") or line.count("🔥") or line.count("🎦"):
+                continue
+            kept_lines.append(line)
+        # Fallback: if line-based filtering removed everything (single-line
+        # transcripts etc.), keep the original text untouched.
+        return " ".join(kept_lines) if kept_lines else text
 
     def clean_url(self, url: str) -> str:
         if not url:
@@ -39,7 +77,10 @@ class DataNormalizer:
             seen_titles.add(normalized_title)
             item.url = cleaned_url
             item.title = self.clean_text(item.title)
-            item.summary_text = self.clean_text(item.summary_text)[:1500]
+            summary_source = item.summary_text
+            if item.source_type == "video":
+                summary_source = self.strip_boilerplate(summary_source)
+            item.summary_text = self.clean_text(summary_source)[:1500]
 
             cleaned_comments = []
             for comment in item.top_comments:
@@ -52,6 +93,9 @@ class DataNormalizer:
                             votes=comment.votes
                         )
                     )
+            # Highest-voted community voices first — the summarizer and the
+            # fallback report both rely on this ordering.
+            cleaned_comments.sort(key=lambda c: c.votes, reverse=True)
             item.top_comments = cleaned_comments
             normalized_items.append(item)
         return normalized_items
