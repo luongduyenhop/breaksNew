@@ -5,7 +5,9 @@
     "programmer job market",
     "AI replacing developers",
     "software engineer career",
-    "tech layoff"
+    "tech layoff",
+    "critical vulnerability exploit",
+    "zero day ransomware breach"
   ],
   "keywords": [
     "layoff",
@@ -24,13 +26,18 @@
     "khó xin việc",
     "ai agent",
     "vibe coding",
-    "hướng đi mới"
+    "hướng đi mới",
+    "lỗ hổng",
+    "ransomware",
+    "an ninh mạng",
+    "zero-day"
   ],
   "reddit_search_queries": [
     "senior engineer career advice",
     "engineering manager tech lead experience",
     "developer job market layoffs",
-    "staff engineer career"
+    "staff engineer career",
+    "major security breach vulnerability incident"
   ],
   "relevance": {
     "max_age_days": 7,
@@ -109,6 +116,22 @@
       "hl": "en-US",
       "name": "Google News · AI & dev careers",
       "region": "GLOBAL"
+    },
+    {
+      "ceid": "VN:vi",
+      "gl": "VN",
+      "google_news_query": "lỗ hổng bảo mật nghiêm trọng an ninh mạng Việt Nam",
+      "hl": "vi",
+      "name": "Google News VN · Sự cố bảo mật",
+      "region": "VN"
+    },
+    {
+      "ceid": "US:en",
+      "gl": "US",
+      "google_news_query": "critical vulnerability exploited zero-day data breach",
+      "hl": "en-US",
+      "name": "Google News · Major security incidents",
+      "region": "GLOBAL"
     }
   ],
   "subreddits": [
@@ -159,6 +182,29 @@
       "experienced dev",
       "sự nghiệp",
       "career"
+    ],
+    "su_co_lon": [
+      "lỗ hổng",
+      "lỗ hổng bảo mật",
+      "lỗ hổng nghiêm trọng",
+      "zero-day",
+      "zero day",
+      "ransomware",
+      "mã độc tống tiền",
+      "data breach",
+      "breach",
+      "rò rỉ dữ liệu",
+      "sự cố an ninh mạng",
+      "sự cố bảo mật",
+      "an ninh mạng",
+      "tấn công mạng",
+      "critical vulnerability",
+      "vulnerability",
+      "exploit",
+      "security breach",
+      "mass outage",
+      "sập hệ thống",
+      "khai thác lỗ hổng"
     ],
     "thi_truong_tuyen_dung": [
       "cắt giảm nhân sự",
@@ -258,6 +304,16 @@
     {
       "language": "en",
       "query": "staff engineer principal engineer career path",
+      "region": "GLOBAL"
+    },
+    {
+      "language": "vi",
+      "query": "lỗ hổng bảo mật nghiêm trọng sự cố an ninh mạng",
+      "region": "VN"
+    },
+    {
+      "language": "en",
+      "query": "critical vulnerability exploit zero day incident",
       "region": "GLOBAL"
     }
   ]
