@@ -1,6 +1,7 @@
 import calendar
 import time
 from typing import List, Dict
+from urllib.parse import quote_plus
 import feedparser
 from src.models.raw_item import RawItem
 
@@ -29,10 +30,36 @@ class RssCollector:
         published_ts = calendar.timegm(published_parsed)
         return published_ts >= time.time() - self.max_age_days * 24 * 3600
 
+    @staticmethod
+    def google_news_url(feed_config: Dict[str, str]) -> str:
+        """Build a Google News RSS *search* URL from a query config.
+
+        Query-based, so it aggregates every publisher Google News indexes
+        (VnExpress, ICTnews, The Verge, ...) instead of one fixed outlet.
+        """
+        query = quote_plus(feed_config.get("google_news_query", ""))
+        hl = feed_config.get("hl", "en-US")
+        gl = feed_config.get("gl", "US")
+        ceid = feed_config.get("ceid", "US:en")
+        return f"https://news.google.com/rss/search?q={query}&hl={hl}&gl={gl}&ceid={ceid}"
+
+    @staticmethod
+    def clean_title(title: str, is_google_news: bool) -> str:
+        """Google News appends ' - Publisher' to titles; strip it so the
+        same story from different outlets dedupes and reads cleanly."""
+        if is_google_news and " - " in title:
+            return title.rsplit(" - ", 1)[0].strip()
+        return title
+
     def fetch_items(self) -> List[RawItem]:
         items: List[RawItem] = []
         for feed_config in self.feeds:
-            feed_url = feed_config.get("url", "")
+            is_google_news = bool(feed_config.get("google_news_query"))
+            feed_url = (
+                self.google_news_url(feed_config)
+                if is_google_news
+                else feed_config.get("url", "")
+            )
             feed_name = feed_config.get("name", "RSS")
             region = feed_config.get("region", "GLOBAL")
             try:
@@ -41,7 +68,7 @@ class RssCollector:
                     if not self._is_fresh_enough(entry):
                         continue
                     entry_id = getattr(entry, "id", entry.link)
-                    title = getattr(entry, "title", "")
+                    title = self.clean_title(getattr(entry, "title", ""), is_google_news)
                     link = getattr(entry, "link", "")
                     summary = getattr(entry, "summary", "")
                     published = getattr(entry, "published", "")

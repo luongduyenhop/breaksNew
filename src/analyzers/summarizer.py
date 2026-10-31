@@ -3,7 +3,7 @@ import json
 import requests
 from google import genai
 from typing import List
-from src.filters.relevance import comment_insight_score, rank_comments
+from src.filters.relevance import comment_insight_score, expert_voice_score, rank_comments
 from src.models.raw_item import RawItem
 
 # Current Gemini model ids, most preferred first. gemini-3.8-flash is
@@ -19,6 +19,7 @@ DEFAULT_MODELS = [
 ]
 
 TOP_ITEMS_FOR_PROMPT = 20
+VN_PROMPT_MIN = 8
 
 # OpenCode Zen fallback (OpenAI-compatible). Free ids rotate often —
 # override with the OPENCODE_MODELS env (comma-separated) instead of
@@ -47,6 +48,30 @@ class MarketBriefingSynthesizer:
         """Highest relevance first — never raw collection order."""
         return sorted(items, key=lambda i: i.relevance_score, reverse=True)
 
+    def _select_for_prompt(self, ranked: List[RawItem]) -> List[RawItem]:
+        """Top-N for the prompt, with a soft floor for Vietnam-market items.
+
+        Global sources are far more numerous, so a pure score ranking can
+        crowd out VN items entirely — yet the reader's decisions happen in
+        the Vietnamese market. Guarantee at least VN_PROMPT_MIN VN items
+        (when that many cleared the relevance bar), swapping them in for
+        the lowest-scored non-VN selections.
+        """
+        selected = list(ranked[:TOP_ITEMS_FOR_PROMPT])
+        vn_in = [i for i in selected if i.region == "VN"]
+        if len(vn_in) >= VN_PROMPT_MIN:
+            return selected
+        vn_pool = [
+            i for i in ranked[TOP_ITEMS_FOR_PROMPT:] if i.region == "VN"
+        ]
+        need = VN_PROMPT_MIN - len(vn_in)
+        for vn_item in vn_pool[:need]:
+            for idx in range(len(selected) - 1, -1, -1):
+                if selected[idx].region != "VN":
+                    selected[idx] = vn_item
+                    break
+        return sorted(selected, key=lambda i: i.relevance_score, reverse=True)
+
     def analyze_and_synthesize(self, items: List[RawItem]) -> str:
         ranked = self._ranked(items)
         if not self.client:
@@ -55,7 +80,7 @@ class MarketBriefingSynthesizer:
             return FALLBACK_WARNING + self._build_fallback_report(ranked)
 
         payload = []
-        for item in ranked[:TOP_ITEMS_FOR_PROMPT]:
+        for item in self._select_for_prompt(ranked):
             comments_data = [
                 {
                     "author": c.author,
@@ -72,6 +97,7 @@ class MarketBriefingSynthesizer:
                 "region": item.region,
                 "url": item.url,
                 "relevance_score": item.relevance_score,
+                "expert_voice_score": round(expert_voice_score(item), 1),
                 "matched_topics": item.matched_topics,
                 "content_preview": item.summary_text[:1000],
                 "top_comments": comments_data,
@@ -95,6 +121,16 @@ class MarketBriefingSynthesizer:
           thay đổi TƯ DUY ra sao.
         - Nguồn giá trị nhất là các bình luận dài của người trong nghề (insight_score
           cao): họ nói thẳng điều bài viết/video không nói. Ưu tiên khai thác chúng.
+        - ƯU TIÊN TIẾNG NÓI CHUYÊN GIA: mỗi mục có `expert_voice_score` — điểm cho
+          thấy tác giả/người nói là senior, tech lead, PM, engineering manager hay
+          người nhiều năm kinh nghiệm. Lời khuyên từ những người này phải được ưu
+          tiên trích và phân tích trước tin tức thông thường. Khi nhận diện được
+          vai trò (từ tiêu đề/nội dung), PHẢI ghi rõ: "theo một tech lead...",
+          "góc nhìn của engineering manager...", "một senior 10 năm kinh nghiệm...".
+        - PHẠM VI ĐỊA LÝ: mỗi mục có trường `region` (VN = Việt Nam, GLOBAL = quốc
+          tế). Người đọc ra quyết định ở thị trường Việt Nam: tin VN là trọng tâm,
+          xu hướng quốc tế chỉ có giá trị khi nói rõ nó áp dụng được gì vào bối
+          cảnh VN (tuyển dụng, lương, văn hóa công ty, nhu cầu khách hàng).
         - Mọi nhận định phải bám dữ liệu: nguồn/bình luận nào nói. Không bịa số liệu,
           không viết sáo rỗng kiểu "AI đang phát triển mạnh mẽ".
 
@@ -108,8 +144,16 @@ class MarketBriefingSynthesizer:
         # BÁO CÁO ĐỊNH HƯỚNG NGÀNH IT
 
         ## 1. HƯỚNG ĐI CỦA NGÀNH IT HIỆN NAY
-        - 3-5 dịch chuyển quan trọng nhất (AI thay đổi cách làm việc ra sao, tuyển
-          dụng/layoff, vai trò dev đang biến đổi thế nào), mỗi ý kèm nguồn dẫn chứng.
+        - Tách rõ hai phần:
+          ### Tại Việt Nam
+          - Các dịch chuyển từ nguồn region=VN: tuyển dụng/layoff, lương, nhu cầu
+            kỹ năng ở thị trường VN.
+          ### Trên thế giới (và ý nghĩa với Việt Nam)
+          - Các dịch chuyển từ nguồn region=GLOBAL, mỗi ý PHẢI chốt một câu: điều
+            này có ý nghĩa gì với dev Việt Nam.
+        - Tổng cộng 3-5 dịch chuyển quan trọng nhất (AI thay đổi cách làm việc ra
+          sao, tuyển dụng/layoff, vai trò dev đang biến đổi thế nào), mỗi ý kèm
+          nguồn dẫn chứng. Nếu một phần thiếu dữ liệu thì nói rõ thay vì bịa.
 
         ## 2. NGƯỜI HỌC IT BÂY GIỜ CẦN HỌC GÌ
         - Kỹ năng cần học: liệt kê cụ thể, kèm vì sao và nguồn/bình luận nào nhắc tới.
@@ -129,8 +173,9 @@ class MarketBriefingSynthesizer:
           và 1-2 câu vì sao bình luận này đáng đọc.
 
         ## 5. NGUỒN NÊN XEM / ĐỌC HÔM NAY
-        - Các nguồn điểm liên quan cao nhất: tiêu đề + link, 2-3 câu tóm tắt luận
-          điểm chính, góc nhìn nổi bật nhất từ bình luận, lý do được chọn.
+        - Các nguồn điểm liên quan cao nhất: tiêu đề + link + nhãn [VN] hoặc
+          [Quốc tế], 2-3 câu tóm tắt luận điểm chính, góc nhìn nổi bật nhất từ
+          bình luận, lý do được chọn. Ưu tiên nguồn có expert_voice_score cao.
         """
 
         candidate_models = []
