@@ -26,6 +26,7 @@ from src.collectors.lobsters_collector import LobstersCollector
 from src.collectors.lemmy_collector import LemmyCollector
 from src.collectors.mastodon_collector import MastodonCollector
 from src.collectors.devto_collector import DevToCollector
+from src.collectors.facebook_collector import FacebookCollector
 from src.collectors.rss_collector import RssCollector
 from src.normalizers.data_normalizer import DataNormalizer
 from src.filters.relevance import RelevanceScorer, DEFAULT_TOPIC_GROUPS
@@ -108,6 +109,19 @@ def run_pipeline(dry_run: bool = False):
     if devto_tags:
         devto_collector = DevToCollector(tags=devto_tags, max_age_days=max_age_days)
         collected_items.extend(devto_collector.fetch_items())
+
+    # Facebook groups: Actions cannot read Facebook, so the data file
+    # is synced into the repo by scripts/sync_facebook_groups.py
+    # running on Muse's side; this collector only reads that file.
+    facebook_groups = sources.get("facebook_groups", [])
+    if facebook_groups:
+        fb_data_file = sources.get("facebook_data_file", "data/facebook_posts.json")
+        if not os.path.isabs(fb_data_file):
+            fb_data_file = str(PROJECT_ROOT / fb_data_file)
+        facebook_collector = FacebookCollector(
+            data_file=fb_data_file, max_age_days=max_age_days
+        )
+        collected_items.extend(facebook_collector.fetch_items())
 
     normalizer = DataNormalizer()
     normalized_items = normalizer.deduplicate_and_normalize(collected_items)

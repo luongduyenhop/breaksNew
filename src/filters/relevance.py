@@ -155,6 +155,81 @@ def is_major_incident(item: RawItem) -> bool:
     """True when the scorer kept the incident topic (gate passed)."""
     return INCIDENT_TOPIC in (item.matched_topics or [])
 
+
+# --- Community lane (Facebook groups) ----------------------------------
+# Group posts are long-form practitioner writing, not market news: in
+# live testing the topic-keyword scorer kept only 1 of 20 real VNJUG
+# posts (deep technical / mindset pieces match no topic keyword), so
+# this lane admits them on an evidence-based quality gate instead —
+# substantive length plus real community engagement — mirroring how
+# the incident lane admits on severity evidence rather than keywords.
+# The summarizer still caps how many community-only items reach the
+# prompt (see COMMUNITY_PROMPT_MAX in summarizer.py).
+COMMUNITY_TOPIC = "cong_dong"
+COMMUNITY_BONUS = 14.0
+COMMUNITY_MIN_LENGTH = 800
+COMMUNITY_GATE_POINTS = 7.0
+COMMUNITY_GATE_LONG_LENGTH = 1200
+
+_LENGTH_TIERS = [(3000, 8.0), (1500, 6.0), (800, 4.0), (400, 1.0)]
+_ENGAGEMENT_TIERS = [(300, 6.0), (120, 5.0), (60, 4.0), (30, 3.0), (10, 1.0)]
+
+
+def community_quality_score(item: RawItem) -> float:
+    """Quality-gate points for a Facebook group post (0..14).
+
+    Only applies to source_type == "facebook"; anything else scores 0.
+    Length points come from len(summary_text); engagement points from
+    reactions + 5 * comments (a discussion thread is a stronger signal
+    than a bare reaction).
+    """
+    if item.source_type != "facebook":
+        return 0.0
+    length = len(item.summary_text or "")
+    length_points = 0.0
+    for limit, points in _LENGTH_TIERS:
+        if length >= limit:
+            length_points = points
+            break
+    metrics = item.metrics or {}
+    engagement = (
+        int(metrics.get("reactions", 0) or 0)
+        + 5 * int(metrics.get("comments", 0) or 0)
+    )
+    engagement_points = 0.0
+    for limit, points in _ENGAGEMENT_TIERS:
+        if engagement >= limit:
+            engagement_points = points
+            break
+    return length_points + engagement_points
+
+
+def community_gate_passed(item: RawItem) -> bool:
+    """Gate for the community lane: real substance, proven one of two ways.
+
+    A post must be at least COMMUNITY_MIN_LENGTH chars, and either
+    score COMMUNITY_GATE_POINTS on length+engagement, or be long
+    enough (>= COMMUNITY_GATE_LONG_LENGTH) to stand on substance
+    alone — slow, low-traffic groups (e.g. System Design Vietnam,
+    max ~6 reactions/post) publish deep posts that would never clear
+    an engagement threshold.
+    """
+    if item.source_type != "facebook":
+        return False
+    length = len(item.summary_text or "")
+    if length < COMMUNITY_MIN_LENGTH:
+        return False
+    return (
+        community_quality_score(item) >= COMMUNITY_GATE_POINTS
+        or length >= COMMUNITY_GATE_LONG_LENGTH
+    )
+
+
+def is_community_only(item: RawItem) -> bool:
+    """True when the community lane is the item's ONLY admission path."""
+    topics = item.matched_topics or []
+    return bool(topics) and all(t == COMMUNITY_TOPIC for t in topics)
+
 # Signals that the author/speaker is a seasoned practitioner — a senior,
 # tech lead, PM or engineering manager — rather than a beginner or a news
 # aggregator. The reader explicitly wants advice from people in those
@@ -366,6 +441,26 @@ class RelevanceScorer:
                 score += topic_points + comment_points
                 matched_topics.append(topic)
                 reasons.append(f"{topic}: khớp '{hit}' (+{topic_points + comment_points:.0f})")
+
+        # Community lane: Facebook group posts are admitted on the
+        # quality gate (length + engagement), not on topic keywords —
+        # see community_quality_score. Passing the gate adds the
+        # "cong_dong" topic; ordinary topic points above still count
+        # when a post happens to match them too.
+        if item.source_type == "facebook":
+            quality = community_quality_score(item)
+            if community_gate_passed(item):
+                score += COMMUNITY_BONUS
+                matched_topics.append(COMMUNITY_TOPIC)
+                reasons.append(
+                    f"lane cộng đồng đạt cổng chất lượng "
+                    f"(điểm cổng {quality:.0f}, +{COMMUNITY_BONUS:.0f})"
+                )
+            elif quality > 0:
+                reasons.append(
+                    f"lane cộng đồng chưa đạt cổng "
+                    f"(điểm cổng {quality:.0f})"
+                )
 
         if re.search(r"\bseries\b|#\d+|\bepisode\b", title):
             score -= 15
