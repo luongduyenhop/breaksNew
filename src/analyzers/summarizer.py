@@ -11,6 +11,7 @@ from src.filters.relevance import (
     comment_insight_score,
     expert_voice_score,
     incident_severity_score,
+    is_community_only,
     is_major_incident,
     rank_comments,
 )
@@ -39,6 +40,10 @@ GEMINI_TIME_BUDGET_SECS = 120
 # Major incidents are high-value but must not flood the briefing: at
 # most this many gate-passing incident items reach the prompt per day.
 INCIDENT_PROMPT_MAX = 3
+# Same anti-flood rule for the community lane: at most this many
+# Facebook items that were admitted ONLY by the community quality
+# gate (no topic match) reach the prompt per day.
+COMMUNITY_PROMPT_MAX = 4
 
 # OpenCode Zen fallback (OpenAI-compatible). Free ids rotate often —
 # override with the OPENCODE_MODELS env (comma-separated) instead of
@@ -103,7 +108,7 @@ class MarketBriefingSynthesizer:
         selected = list(ranked[:TOP_ITEMS_FOR_PROMPT])
         vn_in = [i for i in selected if i.region == "VN"]
         if len(vn_in) >= VN_PROMPT_MIN:
-            return self._cap_incidents(selected, ranked)
+            return self._cap_community(self._cap_incidents(selected, ranked), ranked)
         vn_pool = [
             i for i in ranked[TOP_ITEMS_FOR_PROMPT:] if i.region == "VN"
         ]
@@ -114,7 +119,30 @@ class MarketBriefingSynthesizer:
                     selected[idx] = vn_item
                     break
         selected = sorted(selected, key=lambda i: i.relevance_score, reverse=True)
-        return self._cap_incidents(selected, ranked)
+        return self._cap_community(self._cap_incidents(selected, ranked), ranked)
+
+    @staticmethod
+    def _cap_community(selected: List[RawItem], ranked: List[RawItem]) -> List[RawItem]:
+        """At most COMMUNITY_PROMPT_MAX community-lane-only items in the prompt.
+
+        Mirrors _cap_incidents: excess items (lowest-scored first) are
+        swapped for the best unselected items that are not community-
+        lane-only, keeping the selection size stable. Items admitted
+        by the lane AND a real topic are not capped — they earned a
+        topical place in the briefing on their own.
+        """
+        community = [i for i in selected if is_community_only(i)]
+        if len(community) <= COMMUNITY_PROMPT_MAX:
+            return selected
+        excess = community[COMMUNITY_PROMPT_MAX:]
+        replacements = [
+            i for i in ranked if i not in selected and not is_community_only(i)
+        ]
+        for old in excess:
+            selected.remove(old)
+            if replacements:
+                selected.append(replacements.pop(0))
+        return sorted(selected, key=lambda i: i.relevance_score, reverse=True)
 
     @staticmethod
     def _cap_incidents(selected: List[RawItem], ranked: List[RawItem]) -> List[RawItem]:
@@ -170,6 +198,7 @@ class MarketBriefingSynthesizer:
                 "relevance_score": item.relevance_score,
                 "expert_voice_score": round(expert_voice_score(item), 1),
                 "is_major_incident": is_major_incident(item),
+                "is_community_lane": is_community_only(item),
                 "incident_severity": round(incident_severity_score(item), 1),
                 "matched_topics": item.matched_topics,
                 "content_preview": item.summary_text[:preview_limit],

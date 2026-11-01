@@ -334,5 +334,24 @@
     "ai",
     "programming",
     "discuss"
-  ]
+  ],
+  "facebook_groups": [
+    {
+      "id": "vnjug",
+      "name": "Vietnam Java User Group"
+    },
+    {
+      "id": "j2team.community",
+      "name": "J2TEAM Community"
+    },
+    {
+      "id": "machinelearningcoban",
+      "name": "Forum Machine Learning cơ bản"
+    },
+    {
+      "id": "systemdesignvietnam",
+      "name": "System Design Vietnam"
+    }
+  ],
+  "facebook_data_file": "data/facebook_posts.json"
 }

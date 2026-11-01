@@ -1,0 +1,257 @@
+{
+ "generated_at": "2026-11-01T14:32:25.427932+00:00",
+ "items": [
+  {
+   "id": "2577119272713377",
+   "group_id": "vnjug",
+   "group_name": "Vietnam Java User Group",
+   "title": "Bài viết lần trước về feature mới ra gần đây của Claude có vẻ thu hút được rất nhiều sự chú ý cho những ae làm việc với workflow, ",
+   "content": "Bài viết lần trước về feature mới ra gần đây của Claude có vẻ thu hút được rất nhiều sự chú ý cho những ae làm việc với workflow, complicated tasks. Lần này mình cũng muốn chia sẻ thêm 1 feature nữa cho ae hay làm việc với long-running task. Đối với mình đây là 2 features hay nhất đợt release ngày 15 tháng 10 qua.",
+   "url": "https://facebook.com/groups/vnjug/permalink/2577119272713377/",
+   "published_at": "2026-11-01T13:33:51+00:00",
+   "reactions": 1,
+   "comments_count": 0,
+   "top_comments": []
+  },
+  {
+   "id": "2576815729410398",
+   "group_id": "vnjug",
+   "group_name": "Vietnam Java User Group",
+   "title": "",
+   "content": "",
+   "url": "https://facebook.com/groups/vnjug/permalink/2576815729410398/",
+   "published_at": "2026-11-01T07:10:10+00:00",
+   "reactions": 3,
+   "comments_count": 0,
+   "top_comments": []
+  },
+  {
+   "id": "2576853536073284",
+   "group_id": "vnjug",
+   "group_name": "Vietnam Java User Group",
+   "title": "[Spring AI 2.1] Vì sao tool calling cần giữ nguyên reasoning từ response đến database?",
+   "content": "**[Spring AI 2.1] Vì sao tool calling cần giữ nguyên reasoning từ response đến database?**\n\n**TLDR; Vì sao Spring AI cần thay đổi?**\n\nCác API reasoning và agent hiện nay đòi hỏi cấu trúc tin nhắn phong phú hơn nhiều so với mô hình truyền thống chỉ gồm một chuỗi văn bản kèm các danh sách tool/media riêng lẻ. Thay đổi trên Spring AI 2.1 xuất phát từ ba động lực chính:\n* **Anthropic Preserving thinking blocks (mới ra mắt đầu tháng 10 này nhằm ngăn chặn distillation):** Trong một tool-use turn, Claude yêu cầu **bắt buộc** phải gửi trả lại nguyên vẹn các thinking block và chữ ký đi kèm theo đúng thứ tự xuất hiện; việc gửi thiếu hoặc chỉnh sửa khối suy luận có thể dẫn đến lỗi HTTP 400.\n* **Google GenAI (Vấn đề đã có từ lâu với rất nhiều Issues được tạo trên Github):** Chữ ký thought_signature bắt buộc phải đi cùng chính xác từng part đã nhận; trên Gemini 3+, việc thiếu chữ ký ở function call có thể khiến API trả về lỗi HTTP 400 \n* **OpenAI Responses API (trước đó chỉ hỗ trợ ChatCompletion API, nên các model mới như Astra không được hỗ trợ):** Giao thức mới trả về một danh sách các output item có thứ tự tuần tự (reasoning, function call, message, server tools), trong đó các reasoning item mang id riêng và chuỗi suy luận mã hóa cần được client gửi lại nguyên vẹn ở request tiếp theo.\n\nĐể xử lý đồng bộ, Spring AI 2.1 chuyển sang dùng MessagePart nhằm bảo toàn thứ tự và payload trên từng part, kết hợp cùng Spring AI Session để lưu trữ đầy đủ các part xuyên suốt qua nhiều lượt gọi và qua cả các lần restart ứng dụng.\n\n--> OK vào bài, ae nào không đang làm việc với Spring AI thì có thể ngừng ở đây là được rồi, bài rất dài và chỉ nói về các Classes trong Spring AI <--\n\nChào anh em VNJUG,\n\nTrong các ứng dụng backend xây dựng agentic workflow hiện nay, mô hình thường không chỉ trả lời một lần là xong. Ở các tác vụ phức tạp, mô hình sẽ thực hiện suy luận, sinh lệnh gọi công cụ (tool call), phía backend chạy logic nghiệp vụ rồi gửi trả kết quả (tool_result) để mô hình hoàn thành câu trả lời.\n\nThế nhưng, khi chuyển sang các dòng reasoning model, một vấn đề kỹ thuật phát sinh ngay tại vòng lặp này: nếu request tiếp theo gửi trả kết quả tool mà bị thiếu chuỗi suy luận (reasoning) hoặc chữ ký đi kèm (signature) từ response trước đó, kết nối có thể gặp trục trặc ngay lập tức. Tùy từng nhà cung cấp và model, hệ thống có thể bị từ chối với mã lỗi HTTP 400 hoặc bị gián đoạn tính liên tục của mạch suy luận (reasoning continuity), dẫn đến chất lượng phản hồi suy giảm.\n\nThao tác nhận các phần nội dung của response trước (gồm thinking, chữ ký, nội dung mã hóa, tool call) rồi gửi trả lại đầy đủ, nguyên vẹn ở request kế tiếp được gọi là **reasoning replay**. Để giải quyết bài toán này xuyên suốt từ tầng giao tiếp mạng đến tầng lưu trữ cơ sở dữ liệu, nhóm phát triển Spring AI đã thực hiện một bước tái cấu trúc quan trọng.\n\nBài viết phân tích kỹ thuật ngày 28/10/2026 của tác giả Dimitar Proynov trên Spring Blog đã giải thích chi tiết các thay đổi này, hiện đã có mặt trong bản phát hành **Spring AI 2.1.0-RC1** (phát hành ngày 23/10/2026, thuộc lộ trình hướng tới bản 2.1). Trọng tâm của giải pháp bao gồm cấu trúc tin nhắn có thứ tự **MessagePart** và giải pháp lưu trữ phiên làm việc **Spring AI Session**.\n\n**Bản chất vấn đề: Vì sao kiểu dữ liệu chuỗi đơn thuần không đáp ứng được reasoning replay?**\n\nĐể thấy rõ nguyên nhân, hãy nhìn vào phản hồi thực tế của Claude khi bật tính năng thinking trong một tác vụ tra cứu thời tiết tại Paris. Phản hồi trả về từ mô hình bao gồm ba khối nội dung xuất hiện tuần tự:\n\n* Khối thinking: Chứa chuỗi suy luận \"Người dùng muốn biết thời tiết tại Paris. Cần gọi tool get_weather...\" kèm chữ ký signature: \"EqQBCgIYAhIM...\".\n* Khối text: Lời phản hồi gửi người dùng \"Để tôi kiểm tra thời tiết giúp bạn.\"\n* Khối tool_use: Lệnh gọi hàm get_weather với tham số {\"location\": \"Paris\"}.\n\nTrong tool-use turn này, Anthropic yêu cầu request kế tiếp khi gửi kèm kết quả tool phải truyền lại đầy đủ phản hồi của Assistant y hệt như lúc nhận về: đúng các khối đó, đúng thứ tự tuần tự và chữ ký nguyên vẹn.\n\nTrước phiên bản 2.1, cấu trúc của Spring AI không thể đáp ứng trọn vẹn yêu cầu này vì bốn giới hạn kiến trúc:\n\n* **Phân tách trường dữ liệu làm mất thứ tự:** Lớp AssistantMessage trước đây tách riêng chuỗi văn bản, danh sách tool calls (List<ToolCall>) và media (List<Media>) thành các field độc lập. Khi cần dựng lại request gửi sang provider, framework buộc phải ghép các trường theo một trật tự giả định (thường đẩy toàn bộ text lên trước rồi mới đến tool calls), làm đảo lộn thứ tự ban đầu của mô hình.\n* **Thiếu cơ chế lưu trữ dữ liệu opaque:** Chữ ký (signature) hay reasoning đã mã hóa (encrypted_content) là các **dữ liệu opaque mà ứng dụng chỉ cần lưu và gửi lại nguyên vẹn**, không cần client phải hiểu hay can thiệp vào cấu trúc bên trong. Trước bản 2.1, các giá trị này bị đặt tạm vào map metadata của provider hoặc trong các subclass package-private, khiến dữ liệu dễ thất lạc khi đi qua các tầng xử lý.\n* **Cơ chế streaming làm rơi dữ liệu:** Khi sử dụng streaming, bộ tổng hợp MessageAggregator trước đây gộp metadata của từng chunk theo từng key riêng lẻ. Kết quả là thinking block thường chỉ giữ lại được đúng fragment cuối cùng thay vì tích lũy toàn vẹn toàn bộ chuỗi suy luận và chữ ký.\n* **Tầng JDBC chỉ lưu text thuần:** Triển khai JdbcChatMemoryRepository trước đây chỉ lưu trường văn bản và message_type vào cơ sở dữ liệu. Toàn bộ tool calls, tool results và chuỗi suy luận đều bị loại bỏ khi lưu trữ. Sau khi ứng dụng restart hoặc đọc lại từ DB, các dữ liệu này hoàn toàn không còn trong kho lưu trữ.\n\n**Mô hình dữ liệu mới: AbstractMessage, sealed interface MessagePart và OpaquePayload**\n\nĐể chuẩn hóa cách xử lý dữ liệu, Spring AI 2.1 thiết kế lại toàn bộ phân cấp lớp tin nhắn. Trong kiến trúc mới:\n\n* Content là interface gốc, kế thừa bởi Message.\n* AbstractMessage là lớp cơ sở dùng chung cho cả 4 loại tin nhắn: AssistantMessage, UserMessage, SystemMessage, và ToolResponseMessage.\n* Enum MessageType định danh 4 l",
+   "url": "https://facebook.com/groups/vnjug/permalink/2576853536073284/",
+   "published_at": "2026-11-01T08:00:20+00:00",
+   "reactions": 35,
+   "comments_count": 3,
+   "top_comments": [
+    {
+     "author": "Facebook user",
+     "text": "Thêm context cho các anh em về Stateless trong AI. \n\nKhi nhắc đến AI API thì nhiều người thường hay nghĩ đến Stateless có nghĩa là AI không có trí nhớ, bạn gửi câu hỏi 1 bạn nhận về câu trả lời 1 sau đó bạn gửi tiếp câu hỏi 2, thì lúc này AI xem câu hỏi 2 ý như câu hỏi mới, nó hoàn toàn không có thông tin về bộ câu hỏi và câu trả lời 1. Đó là stateless, đó là lý do tại sao bạn phải thiết kế để hệ thống gửi kèm cả bộ câu hỏi và câu trả lời 1 khi hỏi thêm câu hỏi 2.\n\nHầu như các AI Provider đều cung cấp AI dạng đó hay gọi theo chuẩn của OpenAI là ChatCompletion API, nhưng cũng có ngoại lệ và đó cũng là từ OpenAI gọi là Responses API, api này có thể giữ state phía server và bạn khi gửi câu hỏi 2 thì không cần đính kèm câu hỏi và câu trả lời 1 nữa. Và với những model mới như Astra 5 hay Sol 6.1 thì OpenAI chỉ hỗ trợ gọi thông qua Responses API này, đó là lý do Spring AI cần phải được cập nhật hỗ trợ Responses API nếu muốn tiếp tục hỗ trợ frontier models từ nhà OpenAI.",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Spring AI hiện tại vẫn đang là 2.0 GA, nhưng việc lên 2.1 gần như là bắt buộc với những thiếu sót hiện tại. Hiện tại Spring AI 2.1 vẫn chưa GA, nhưng bạn có thể sử dụng thử Spring AI 2.1-RC1 mới được released vài ngày trước.",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Spring AI 2.1 Message Parts: Reasoning That Survives the Round Trip https://spring.io/blog/2026/10/28/spring-ai-message-parts-reasoning-replay",
+     "votes": 0
+    }
+   ]
+  },
+  {
+   "id": "2576266686131969",
+   "group_id": "vnjug",
+   "group_name": "Vietnam Java User Group",
+   "title": "Bữa giờ admin @[61584857420167:2048:Linh Vu] cũng đã share nhiều bài về kiến trúc Microservices và xử lý khi bị sự cố , v.v. Lý th",
+   "content": "Bữa giờ admin @[61584857420167:2048:Linh Vu] cũng đã share nhiều bài về kiến trúc Microservices và xử lý khi bị sự cố , v.v. Lý thuyết nhiều là vậy, chi bằng kết hợp thêm AI và kinh nghiệm của mình, mình tự dựng lại một simple nhỏ về flow đó, quả thật tự dựng lại có nhiều cái vẫn phải ngồi mò mẫm mấy ae ạ, không phải cứ có AI là auto dựng full đủ đâu, vẫn cần ae tinh chỉnh.\n\nVì đây là simple nên lượt bỏ đi những phần như security các kiểu để dễ hình dung hơn.\n\nDetails này thì mình có để ở README, sử dụng hầu hết các công nghệ mới nhất, AWS SQS cho việc xử lý event, JobRuns để scan outbox table để gửi lại event FAILED, CockRoachDB dùng để consistency data và backup data, DragonFlyDB tăng performance của cache, toàn bộ được dựng trên minikube\n\nAe dựa vào kinh nghiệm của ae xem nó sẽ cần thêm những gì nhé.\n\nDưới đấy là link repo ae tham khảo.\n\nTks ae.\n\n> [https://github.com/longbui98/Simple-Payment-Minikube](https://github.com/longbui98/Simple-Payment-Minikube)",
+   "url": "https://facebook.com/groups/vnjug/permalink/2576266686131969/",
+   "published_at": "2026-10-31T18:44:09+00:00",
+   "reactions": 112,
+   "comments_count": 5,
+   "top_comments": [
+    {
+     "author": "Facebook user",
+     "text": "Cảm ơn anh",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Phải nói là nhóm hữu ích nhất VN về mọi mặt. Từ ngày tham gia ít nhiều cũng đọng lại nhiều thứ hay ho quá.",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Như admin có góp ý thêm mô tả về tại sao sử dụng các công nghê, thì ở đât dùng event trong trường hợp khi xử lý cộng trừ tiền ở wallet service thành công, thì khi đó sẽ gửi event để bên payment nhận và cập nhật vào outbox. Trong khi đó dùng JobRuns để scan lại những giao dịch và đã FAILED rồi gửi event để bắn qua wallet và xử lý cộng trừ tiền lại, ở bên wallet cũng có table tracking xem giao dịch đã được xử lý thành công hay chưa để tránh trường hợp đã trừ rồi nhưng event bên payment bắn qua.\n\nCòn dùng DragonFly, bản chất nó cũng là dùng để cache nhưng khách với Redis là nó handle multple thread khác với Redis chỉ có 1, nhưng lại sử dụng ít bộ nhớ hơn. Ở đây mình dùng nó để rate limit trong trường hợp user chuyển tiền nhiều lần trong 1 khoảng thời gian ngắn.",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Góp ý cá nhân: Vị huynh đệ này có thể giải thích thêm tại sao cần sử lý event, tại sao lại cần scan outbox table, outbox table được tạo như thế nào, tại sao lại là CockRoachDB... để người đọc có 1 khái niệm về bức tranh tổng quan (flows) trước thì bài viết sẽ hay hơn.",
+     "votes": 0
+    }
+   ]
+  },
+  {
+   "id": "2576159212809383",
+   "group_id": "vnjug",
+   "group_name": "Vietnam Java User Group",
+   "title": "Phillip Choi bắt đầu học code ở tuổi 30. Trong video này, anh nói một lỗi anh thường thấy ở người làm tech là coi việc kiếm được c",
+   "content": "Phillip Choi bắt đầu học code ở tuổi 30. Trong video này, anh nói một lỗi anh thường thấy ở người làm tech là coi việc kiếm được công việc đầu tiên như đích đến, rồi sau đó ngừng học thêm.\n\nTheo Choi, công cụ thay đổi, cách các đội làm việc thay đổi và kỹ năng có giá trị cũng thay đổi. Vì vậy, anh xem công việc đầu tiên là điểm bắt đầu để tiếp tục nâng kỹ năng.\n\nMỗi lần chỉ chọn một thứ để giỏi hơn\n\nChoi không khuyên học cùng lúc thật nhiều thứ.\n\nAnh gợi ý mỗi vài tháng chọn một kỹ năng hoặc trách nhiệm mới rồi tập trung vào nó.\n\n> Một quý học sâu hơn về testing.\n> Quý sau học system design.\n> Sau đó thử nhận trách nhiệm dẫn một project.\n\nCách anh nhìn là mỗi kỹ năng mới nên chồng lên kỹ năng cũ.\n\nMột người chỉ biết code khác với một người vừa code được, vừa hiểu cách thiết kế hệ thống, vừa có thể dẫn nhóm và nói chuyện với người không làm kỹ thuật.\n\nChoi kể bản thân đi từ junior lên senior theo cách này: cứ vài tháng lại chọn một thứ để cải thiện, rồi đến lúc đánh giá công việc anh đã có những việc cụ thể để chứng minh mình tiến bộ.\n\nAnh cũng đưa một ví dụ giả định về hai lập trình viên cùng bắt đầu ở mức 70.000 USD/năm.\n\n> Một người gần như chỉ nhận những đợt tăng lương nhỏ.\n> Người kia liên tục học thêm kỹ năng và nhận thêm trách nhiệm.\n\nTrong ví dụ của Choi, sau 10 năm tổng thu nhập của hai người có thể chênh khoảng 300.000 USD. Đây là ví dụ anh dùng để cho thấy việc nâng kỹ năng đều đặn có thể ảnh hưởng lớn tới thu nhập về lâu dài, không phải mức tăng được đảm bảo cho mọi người.\n\nBỏ những việc nhìn có vẻ chăm nhưng không giúp mình tiến lên\n\nChoi nói anh thường thấy người học tech mất nhiều thời gian vào ba kiểu việc.\n\n> Xem tutorial hết tháng này sang tháng khác nhưng không làm project thật.\n> Dành quá nhiều thời gian chỉnh những chi tiết ít ảnh hưởng tới cơ hội nghề nghiệp.\n> Ở quá lâu trong một công việc rất quen thuộc mà không học thêm gì mới.\n\nVí dụ đầu tiên anh gọi là “tutorial purgatory”: học React tám tháng, xem hết video này tới khóa khác nhưng chưa từng làm một sản phẩm thật.\n\nTrong khi đó, một người biết ít hơn nhưng đã tự làm ba project có thể có nhiều thứ cụ thể hơn để đưa ra khi xin việc.\n\nMột ví dụ khác là dành nhiều tháng chỉnh CSS, animation hay gradient cho portfolio trong khi phần project chưa cho thấy rõ mình giải quyết được vấn đề gì.\n\nÝ của Choi không phải tutorial hay việc làm đẹp portfolio là vô ích. Vấn đề là dành quá nhiều thời gian cho chúng mà không chuyển sang làm thứ giúp mình luyện kỹ năng thật hoặc tạo ra sản phẩm có thể cho người khác xem.\n\nXác định mức hiện tại rồi học cho mức tiếp theo\n\nChoi gợi ý trước tiên xác định những kỹ năng cốt lõi mà công việc hiện tại yêu cầu.\n\nKhi đã làm ổn phần đó, thời gian học tiếp theo nên dành cho kỹ năng của mức kế tiếp, thay vì chỉ tiếp tục đánh bóng thứ mình đã quen.\n\nAnh còn khuyên dành riêng khoảng 5-10 giờ mỗi tuần cho việc học và coi đó như một lịch hẹn cố định. Đây là mức Choi đề xuất, không phải con số bắt buộc cho tất cả mọi người.\n\nKhi mới chuyển sang tech, anh kể mình ngồi vào bàn lúc 6 giờ sáng, học hai tiếng trước khi con thức dậy và trước giờ đi làm. Anh duy trì như vậy trong khoảng hai năm.\n\nChoi nói mình bắt đầu muộn nên không muốn học theo kiểu “khi nào rảnh thì học”. Anh chủ động dành sẵn thời gian cho nó.\n\nAnh còn gợi ý tăng dần mức đầu tư vào việc học:\n\n> Ban đầu chọn một kỹ năng để học.\n> Sau đó làm một project thật.\n> Tiếp theo có thể tìm người hướng dẫn hoặc người có thể góp ý.\n> Khi đã hiểu hơn, thử viết hoặc nói lại điều mình đang học cho người khác.\n\nPhản hồi có thể giúp tìm đúng chỗ đang thiếu\n\nChoi nói tài liệu miễn phí như YouTube, freeCodeCamp hay tài liệu chính thức có rất nhiều.\n\nNhưng theo trải nghiệm của anh, thứ khó tự có được là một người nhìn vào đúng code, CV, project hoặc tình huống của mình rồi chỉ ra phần còn yếu.\n\nAnh đưa một ví dụ giả định:\n\n> Một người đang kiếm 40.000 USD/năm ở công việc ngoài ngành tech.\n> Họ bỏ 2.000-5.000 USD cho một chương trình hướng dẫn có phản hồi trực tiếp.\n> Nếu sau đó họ chuyển được sang việc tech 75.000 USD/năm, phần chênh lệch thu nhập có thể lớn hơn nhiều so với khoản tiền đã bỏ ra.\n\nĐây là ví dụ Choi dùng để giải thích vì sao anh coi phản hồi trực tiếp là đáng giá. Nó không có nghĩa bỏ vài nghìn USD sẽ chắc chắn kiếm được việc hoặc tăng lương.\n\nAnh kể khi còn học, mình ưu tiên những tài nguyên có người thật xem code, project và CV, vì phản hồi đó giúp anh phát hiện nhanh hơn những chỗ còn thiếu.\n\nChoi nói anh đã hướng dẫn hơn 160 học viên và hơn 50 người trong số đó đang làm trong ngành. Theo quan sát của anh, những người tiến nhanh thường không phải lúc nào cũng là người có năng khiếu nhất.\n\nHọ thường là những người:\n\n> Chấp nhận mình chưa giỏi một việc.\n> Hỏi khi không biết.\n> Nhận góp ý.\n> Sửa ngay sau khi nhận phản hồi.\n\nGiúp người khác cũng là một cách học\n\nTrong cộng đồng của mình, Choi để ý những học viên thường xuyên trả lời câu hỏi, xem code cho người khác hoặc giải thích một khái niệm thường cũng học được rất nhiều.\n\nTheo cách anh giải thích:\n\n> Khi phải giải thích một ý cho người khác, mình buộc phải hiểu nó rõ hơn.\n> Khi xem code của người khác, mình gặp những lỗi và cách làm mà project của mình có thể chưa từng gặp.\n> Khi thường xuyên giúp người khác, mình cũng quen biết thêm những người cùng ngành.\n\nNếu đang học, anh gợi ý những việc rất cụ thể:\n\n> Giúp ai đó tìm lỗi trong code.\n> Xem portfolio của một người khác và góp ý.\n> Trả lời một câu hỏi mà mình biết.\n> Thử giải thích lại một khái niệm cho người mới học.\n\nChoi cho rằng với những việc như vậy, đôi khi mình học được nhiều hơn việc mở thêm một tutorial nữa.\n\nAnh cũng nói các công cụ AI đang trở thành một kỹ năng quan trọng với lập trình viên. Trong video, Choi cho rằng người biết dùng AI hiệu quả có thể làm việc nhanh gấp hai hoặc ba lần người không dùng. Đây là nhận định của anh, không phải mức tăng đã được đảm bảo cho mọi lập trình viên.",
+   "url": "https://facebook.com/groups/vnjug/permalink/2576159212809383/",
+   "published_at": "2026-10-31T16:39:54+00:00",
+   "reactions": 105,
+   "comments_count": 3,
+   "top_comments": [
+    {
+     "author": "Facebook user",
+     "text": "\"Xem tutorial hết tháng này sang tháng khác nhưng không làm project thật.\" -> Câu này giống \"đọc hết các bài viết system design trong group VNJUG hết tháng này sang tháng khác nhưng không làm project thật.\" -> bớt đọc lại ae (nhất là các bài không liên quan đến công nghệ mình đang làm) bắt tay vào làm đi.",
+     "votes": 0
+    }
+   ]
+  },
+  {
+   "id": "3231054583893306",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "j2team_share",
+   "content": "#j2team_share\nLại chuyên mục share phần mềm ngon cho PC.\nNếu máy tính của bạn đang đầy lên một cách khó hiểu, có lẽ đã đến lúc thử Cleanly. 🧹\n\nCleanly — \"Your computer, lighter.\"\n\nMột công cụ dọn dẹp ổ đĩa miễn phí, mã nguồn mở, không quảng cáo, không subscription và không dùng những cảnh báo hù dọa để ép bạn mua bản Pro.\n\nChỉ với một lần quét, Cleanly có thể tìm ra những thứ đang âm thầm chiếm dung lượng như cache, file tạm, log, file tải xuống cũ, dữ liệu trình duyệt, app cache, file update còn sót lại, Trash/Recycle Bin… và cho bạn biết chính xác chúng đang chiếm bao nhiêu dung lượng.\n\nĐiểm mình thích nhất là Cleanly không chỉ đơn giản là \"quét rồi xoá\":\n\n✨ Smart Scan — quét nhanh và cho biết bạn có thể giải phóng bao nhiêu dung lượng.\n🗺️ Space Map — trực quan hóa ổ đĩa bằng các bubble, nhìn phát biết thư mục nào đang ngốn dung lượng.\n📦 Large Files & Duplicates — tìm file cực lớn và các bản sao trùng nhau.\n⚡ Speed — quản lý những ứng dụng khởi động cùng máy.\n🗑️ Applications — xem app đã cài, dung lượng và lần sử dụng gần nhất, rồi gỡ cài đặt.\n🛡️ Protection — kiểm tra nhanh trạng thái Defender/Firewall trên Windows hoặc Gatekeeper, XProtect, SIP trên macOS.\n🤖 Assistant — có thể hỏi ChatGPT hoặc Claude xem “what can I safely delete?” bằng API key của chính bạn.\n\nVà quan trọng nhất: Cleanly được thiết kế với tiêu chí an toàn ngay từ đầu.\n\nCác file cá nhân như file lớn, duplicate, download cũ hay ứng dụng sẽ được đưa vào Trash/Recycle Bin để bạn có thể khôi phục. Những cache, temp files và log có thể được xoá trực tiếp vì chúng có thể tự tạo lại.\n\n🔒 Privacy cũng được đặt lên hàng đầu:\n\n• Scan hoàn toàn trên máy của bạn.\n• Không analytics, không tracking.\n• Không gửi nội dung file lên server.\n• Assistant chỉ gửi tên file, đường dẫn và dung lượng tới nhà cung cấp AI bạn chọn.\n• API key được bảo vệ bằng keychain của hệ thống.\n\nHỗ trợ cả Windows và macOS. \nMột lựa chọn khá đáng thử nếu bạn muốn một chiếc máy gọn hơn, nhẹ hơn mà không phải trả tiền cho những thứ vốn không cần thiết. Link phần mềm mình để dưới phần comment!",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3231054583893306/",
+   "published_at": "2026-11-01T08:42:25+00:00",
+   "reactions": 430,
+   "comments_count": 54,
+   "top_comments": [
+    {
+     "author": "Facebook user",
+     "text": "Lại còn nguồn mở cho PC. Béo nhỉ 😂",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "VIBE CODE KHÔNG ĐỒNG NGHĨA VỚI CODE RÁC.\n\nMình share phần mềm này vì chính mình đã dùng và thấy nó đáng để giới thiệu. Các bài chia sẻ trước đây của mình cũng được anh em đón nhận khá tích cực, nên mình tiếp tục đăng ở đây. Anh em cứ thử rồi tự đánh giá.\n\nRất nhiều dev có tên tuổi hiện nay vẫn dùng AI để build phần mềm. Khác biệt là họ đọc code, test kỹ và đứng ra chịu trách nhiệm với sản phẩm cuối. Đó là vibe có giới hạn, và đó là thứ mình đang nói đến. Còn vibe slop, kiểu học vài ba khóa rồi tự xưng pro, có gì build nấy, không hiểu mình đang làm cái gì, thì mình không nhắc ở đây. Hai thứ này khác nhau hoàn toàn, đừng gộp làm một.\n\nNếu thấy phần mềm có vấn đề, mình rất hoan nghênh góp ý cụ thể: lỗi bảo mật ở đâu, hành vi lạ là gì, hiệu năng kém ở khâu nào.\n\nAi không muốn tải thì cứ không tải, mình không ép. Nhưng những ai vào bài chỉ để phân bua, tranh cãi, phán kiểu \"nhìn là biết vibe code\", \"không an toàn\", \"rác\" mà không chỉ ra được điểm nào cụ thể, thì mình xin phép block để giữ bài viết sạch sẽ cho những người thật sự quan tâm.\n\nCông cụ không làm nên chất lượng. Cách dùng mới làm nên chất lượng.",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "cứ wiztree rồi thấy file nào to thì gg xem xóa đc không rồi tự dọn thôi, ngon bổ free",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Windirstat điểm danh",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "tôi vẫn trung thành với việc tự dọn =))",
+     "votes": 0
+    }
+   ]
+  },
+  {
+   "id": "3230793247252773",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "Mình có làm con game \" P.A.L.S: Lost at Sea\" co-op 2 đến 4 người.",
+   "content": "Mình có làm con game \" P.A.L.S: Lost at Sea\" co-op 2 đến 4 người.\nChào mọi người, nửa tháng trước mình có giới thiệu game mình làm, con game \" P.A.L.S: Lost at Sea\" co-op 2 đến 4 người. Hôm nay mình đã mở playtest demo cho ae có thể chơi thử. Bản thử này tầm 2 tiếng chơi với 2 vùng biển, bản full sẽ có 6 vùng biển. Mọi người có thể cùng bạn bè chơi thử. Vui vẻ hỗn loạn, nếu thấy trò chơi thú vị có thể chia sẻ giúp mình. Nếu gặp lỗi trong quá trình chơi có thể báo mình để mình fix luôn. cảm ơn anh em rất nhiều\n\nhttps://store.steampowered.com/app/5396330/PALS_Lost_at_Sea/\n\n#j2team_share",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3230793247252773/",
+   "published_at": "2026-11-01T03:35:02+00:00",
+   "reactions": 61,
+   "comments_count": 6,
+   "top_comments": []
+  },
+  {
+   "id": "3230789237253174",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "GHN làm lộ thông tin khách hàng cho... Scambodia?",
+   "content": "GHN làm lộ thông tin khách hàng cho... Scambodia?\nMấy nay mình có nhận dùm hàng cho người nhà khoảng 3-4 đơn từ GHN(3 ngày gần đây), mỗi đơn 30k tiền ship trả khi nhận đơn. \n\nXong nay mình nhận được cuộc gọi từ số này và kêu ck 30k lát hắn ship. Mình cũng nghi nghi vì chưa bao h gặp trường hợp này, mà thôi 30k cũng ko lớn nên ck luôn. Và y như rằng hắn gọi lại kêu \"em gửi nhầm stk, lát quản lý em gọi anh bảo là em bù cho anh rồi nha\" mình ok, thoải mái. \n\n5' sau có một số khác gọi tự xưng \"chào em, anh là quản lý của thằng đó\", nghe xưng anh là mình tính chửi rồi mà bình tĩnh lại chút nghe hắn yapping, yapping một hồi mình hỏi lại \"ơ a bên nào nhỉ?\" thì hắn quên bài hoặc tên kia chưa báo cho hắn là nãy khai với mình là bên VNpost và hắn là quản lý của tên Shipper nên hắn lại trả lời là hắn bên làm thẻ thành viên qq gì đó và shipper sẽ mất mấy chục củ nếu gửi nhầm stk sau đó kêu mình tải app này về đánh giá blah blah 🤡 cái thôi nghe là hiểu rồi nên mình tắt máy. \n\nMình hiếm khi nhận hàng GHN, có gần đây người nhà nhờ nhận nên mới dùng địa chỉ và sđt của mình, và mình dò hỏi tên người nhận, sđt, bên gửi. Chúng đều đọc đúng và rành mạch, nên anh em gặp trường hợp thế này thì nên cẩn thận nhé, đơn giản nhất là hãy copy sđt và check trên áp Dô La, không có shipper nào mà không xài Dô La hết 😆\n\n#J2team_share",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3230789237253174/",
+   "published_at": "2026-11-01T03:29:59+00:00",
+   "reactions": 25,
+   "comments_count": 3,
+   "top_comments": [
+    {
+     "author": "Facebook user",
+     "text": "Chắc làm bảo mật tồi nên bị bọn scambodia nó crawl dữ liệu thôi, chớ bán thì t nghĩ nó sẽ bán theo đợt, xác suất ông vừa đăng kí địa chỉ/sđt xong mà hôm sau đã bị làm phiền thì hơi thấp =.))\nMà, dù sao thì bảo mật bên mình có được chú trọng đâu, nên cũng chả ngạc nhiên lắm =.))",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "có thể cố tình cũng có thể bị lộ mà họ không biết. hồi trước t đăng ký hộ kinh doanh trên trang gov xong hôm sau cũng có scam gọi bảo mua hồ sơ để được miễn thuế qq gì luôn :))",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "VN Post nó còn lộ, một là bị hack db hai là nv bên trong nó bán",
+     "votes": 0
+    }
+   ]
+  },
+  {
+   "id": "3230645487267549",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "📣 ĐIỂM TIN BUỔI SÁNG CHỦ NHẬT (01/11/2026)",
+   "content": "📣 ĐIỂM TIN BUỔI SÁNG CHỦ NHẬT (01/11/2026)\n\nChào buổi sáng cả nhà J2TEAM! Chúc mọi người một ngày, một tháng 11 tràn đầy năng lượng. Dưới đây là những tin tức công nghệ và an ninh mạng nổi bật nhất trên thế giới sáng nay để mọi người cùng cập nhật nhé:\n\n1️⃣ Chainalysis xác nhận bị tấn công vào hệ thống nội bộ, làm lộ dữ liệu định danh khách hàng\n\n2️⃣ Tin tặc xâu chuỗi 3 lỗ hổng trên Ivanti Connect Secure để chiếm quyền Root từ xa không cần xác thực\n\n3️⃣ Cảnh báo liên kết chia sẻ ChatGPT độc hại có thể thực thi mã tùy ý và đọc lén lịch sử chat\n\n4️⃣ Thuật toán đề xuất YouTube và trào lưu nội dung kinh dị kỹ thuật số dịp Halloween\n\n5️⃣ Xu hướng bàn phím cơ và công thái học tối ưu hiệu suất cho lập trình viên năm 2026\n\n6️⃣ CEO Binance thông báo đã hoàn trả 90% tài sản cho khách hàng sau vụ hack tiền mã hóa\n\n7️⃣ CEO Apple khẳng định: 'Chúng tôi không chạy đua tung ra AI chỉ vì trào lưu'\n\n8️⃣ Cộng đồng công nghệ toàn cầu chuẩn bị hội tụ tại TechCrunch Founder Summit 2026\n\n9️⃣ Tòa án thụ lý vụ kiện trung tâm dữ liệu AI của xAI vi phạm quy định môi trường\n\n🔟 Hạ tầng đám mây Northflank bị xâm nhập, tin tặc chiếm dụng hàng loạt API Key AI của khách hàng\n\n1️⃣1️⃣ Công bố mã khai thác 'SMS of Death' trên Android có thể làm tê liệt điện thoại từ xa\n\n1️⃣2️⃣ Reddit siết chặt chính sách, yêu cầu đăng nhập để ngăn bot thu thập dữ liệu huấn luyện AI\n\n#j2team_news #diemtinsang #news",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3230645487267549/",
+   "published_at": "2026-11-01T00:36:46+00:00",
+   "reactions": 127,
+   "comments_count": 3,
+   "top_comments": [
+    {
+     "author": "Facebook user",
+     "text": "Nay lại có điểm tin hả b. Mình tưởng bỏ từ hồi liên quan gì đến bản quyền các thứ mà",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Hôm nay là ngày 32/10 nhé Admin",
+     "votes": 0
+    }
+   ]
+  },
+  {
+   "id": "3230266397305458",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "Mình mới tự làm cái app tên LyricProto, lấy cảm hứng từ cái Dynamic Island , hiện lyrics trên đó, tự chạy theo nhạc đang bật trên ",
+   "content": "Mình mới tự làm cái app tên LyricProto, lấy cảm hứng từ cái Dynamic Island , hiện lyrics trên đó, tự chạy theo nhạc đang bật trên Spotify với YouTube.\nNhạc Hàn Nhật Trung thì nó phiên âm với dịch tiếng Việt luôn cho dễ hát theo.\nMọi người dùng thử nhé: [https://dinhvanhieu3011.github.io/lyricproto/](https://dinhvanhieu3011.github.io/lyricproto/)\n\n#j2team_share",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3230266397305458/",
+   "published_at": "2026-10-31T16:49:15+00:00",
+   "reactions": 92,
+   "comments_count": 19,
+   "top_comments": []
+  },
+  {
+   "id": "3230223470643084",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "Em xin chào anh chị J2Team,",
+   "content": "Em xin chào anh chị J2Team,\n\nEm có xem được video chia sẻ của Lauren Tan về cách chị ý làm việc với AI agent để có thể tin vào code đầu ra của chúng.\n\nEm muốn học hỏi theo cách làm việc chị ý, em muốn xin một số lời khuyên, ý kiến từ mn ạ. Vd như em đang chưa bắt đầu từ đâu, nên dùng AI của bên nào (trong video chị ý dùng cursor và cloud agent của cursor luôn), các skill để verify thì cần nhiều kinh nghiệm (lv senior) để có thể tối ưu được thì không bt các lv thấp hơn có nên tự viết và áp dụng không ạ ?\n\nEm cảm ơn mn ạ.\nhttps://www.youtube.com/watch?v=EWSUvEyFwjc&t=2410s\n\nCảm ơn Admin đã duyệt bài giúp em ạ \n\n[#j2team_share]",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3230223470643084/",
+   "published_at": "2026-10-31T16:06:01+00:00",
+   "reactions": 648,
+   "comments_count": 78,
+   "top_comments": []
+  },
+  {
+   "id": "2678847742572616",
+   "group_id": "machinelearningcoban",
+   "group_name": "Forum Machine Learning cơ bản",
+   "title": "🎓 Irodori-Sen-TTS là mô hình đọc tiếng Việt do người làm kênh tự huấn luyện từ nền Irodori-TTS-500M-v3 của tác giả Aratako; video ",
+   "content": "🎓 Irodori-Sen-TTS là mô hình đọc tiếng Việt do người làm kênh tự huấn luyện từ nền Irodori-TTS-500M-v3 của tác giả Aratako; video ghi lại quá trình học tinh chỉnh (fine-tuning).\n🎓 Irodori-Sen-TTS là mô hình đọc tiếng Việt do người làm kênh tự huấn luyện từ nền Irodori-TTS-500M-v3 của tác giả Aratako; video ghi lại quá trình học tinh chỉnh (fine-tuning).\n\n🪛 Tinh chỉnh bằng LoRA trên Kaggle, hai GPU T4 miễn phí, khoảng 100 giờ qua nhiều phiên. Dữ liệu tiếng Việt khoảng 200 giờ do máy tạo (OmniVoice và Gemma4-e2b), không phải giọng người thật, cộng bộ dữ liệu tiếng Nhật do tác giả Aratako cho phép dùng.\n\n🫶 Xin cảm ơn Aratako vì đã chia sẻ mô hình nền mã nguồn mở và bộ dữ liệu tiếng Nhật.\n\n🎧 Video có sáu đoạn giọng mẫu do chính mô hình tạo, lấy từ các mẫu trong repo.\n\n😮‍💨 Hạn chế: emoji tiếng Việt chưa ổn định, câu dài và trộn Việt–Nhật còn yếu. Nên đổi chữ hoa về chữ thường trước khi đọc.\n\n🔒 Công khai trên Hugging Face, giấy phép MIT. Theo điều khoản mô hình nền: không nhân bản hay mạo danh giọng người khi chưa được đồng ý, không tạo thông tin sai lệch. Dùng thử, không phải sản phẩm của Aratako. Địa chỉ ở cuối video.\n\n#TextToSpeech #FineTuning #OpenSource #KySuAI",
+   "url": "https://facebook.com/groups/machinelearningcoban/permalink/2678847742572616/",
+   "published_at": "2026-11-01T06:36:20+00:00",
+   "reactions": 1,
+   "comments_count": 0,
+   "top_comments": []
+  },
+  {
+   "id": "2678377219286335",
+   "group_id": "machinelearningcoban",
+   "group_name": "Forum Machine Learning cơ bản",
+   "title": "Dạ chào anh chị, cho e hỏi là có bên nào thuê gpu theo giờ ổn không vậy? tại hồi trước e thử bên thuegpu.vn nhưng trang nó cứ bảo ",
+   "content": "Dạ chào anh chị, cho e hỏi là có bên nào thuê gpu theo giờ ổn không vậy? tại hồi trước e thử bên thuegpu.vn nhưng trang nó cứ bảo trì.Anh chị có biết bên nào xài ổn ổn không cho e thông tin đi.Cám ơn",
+   "url": "https://facebook.com/groups/machinelearningcoban/permalink/2678377219286335/",
+   "published_at": "2026-10-31T19:32:25+00:00",
+   "reactions": 5,
+   "comments_count": 3,
+   "top_comments": []
+  }
+ ]
+}
