@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-02T03:33:47.850425+00:00",
+ "generated_at": "2026-11-02T03:44:56.402711+00:00",
  "items": [
   {
    "id": "2577119272713377",
@@ -54,6 +54,18 @@
    ]
   },
   {
+   "id": "3231924520472979",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "Mình vừa làm một mod cho Claude Desktop để có thể tạo custom theme theo dạng Text-mode Pixel Art (Tile-based Pixel Art)",
+   "content": "Mình vừa làm một mod cho Claude Desktop để có thể tạo custom theme theo dạng Text-mode Pixel Art (Tile-based Pixel Art)\n\nMượn ý tưởng từ một anh designer trên X.\nLàm vui thôi chứ chắc vài bữa Claude Team cho ra tính năng native luôn 😅\n\nLink repo cho ai muốn vọc sớm, hiện tại chỉ support windows\nhttps://github.com/0toshigami/claude-desktop-themes\n\n#j2team_share",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3231924520472979/",
+   "published_at": "2026-11-02T01:50:58+00:00",
+   "reactions": 1,
+   "comments_count": 0,
+   "top_comments": []
+  },
+  {
    "id": "3231979507134147",
    "group_id": "j2team.community",
    "group_name": "J2TEAM Community",
@@ -61,7 +73,7 @@
    "content": "📣 ĐIỂM TIN BUỔI SÁNG THỨ HAI (02/11/2026)\n\nChào buổi sáng cả nhà J2TEAM! Chúc mọi người một ngày mới làm việc và học tập tràn đầy năng lượng. Dưới đây là những tin tức công nghệ và an ninh mạng nổi bật nhất trên thế giới sáng nay để mọi người cùng cập nhật nhé:\n\n1️⃣ Lỗ hổng điểm tuyệt đối 10.0 CVSS trên LXD và MicroCloud: Cho phép mạo danh client mà không cần private key\n\n2️⃣ Tin tặc chiếm quyền script DebugBear, đánh cắp 2,7 triệu USD của người dùng Polymarket\n\n3️⃣ FBI cáo buộc nhóm hacker Triều Tiên đứng sau vụ hack kỷ lục 6,43 tỷ USD nhắm vào Binance\n\n4️⃣ NASA tìm kiếm sự hỗ trợ từ các công ty vũ trụ tư nhân để 'giải cứu' kính viễn vọng Hubble\n\n5️⃣ Hãng camera an ninh Flock Safety bị tố liên tục phớt lờ yêu cầu chấm dứt hợp đồng từ các thành phố\n\n6️⃣ Thiết bị màn hình thông minh HomeView của Apple sắp được tích hợp tính năng camera an ninh\n\n7️⃣ OpenAI lên kế hoạch đổi tên các trung tâm dữ liệu thành 'Khu phức hợp điện toán AI'\n\n8️⃣ AI giúp các CEO công nghệ thảnh thơi hơn, nhưng liệu có công bằng với phần còn lại của nhân loại?\n\n9️⃣ Làn sóng xe tự hành (AV) tái bùng nổ mạnh mẽ hơn bao giờ hết nhờ sự tiếp sức của AI\n\n🔟 FBI xác nhận nhóm hacker được chính quyền Triều Tiên bảo trợ đứng sau vụ trộm 6,3 tỷ USD trên Binance\n\n1️⃣1️⃣ Alpine Linux dựng lại toàn bộ máy chủ GitLab sau khi bị tấn công khai thác lỗ hổng RCE\n\n1️⃣2️⃣ OpenAI tăng gấp đôi hạn mức gói Pro và đưa các tính năng Work vào ChatGPT tiêu chuẩn\n\n#j2team_news #diemtinsang #NewsUpdate",
    "url": "https://facebook.com/groups/j2team.community/permalink/3231979507134147/",
    "published_at": "2026-11-02T03:03:48+00:00",
-   "reactions": 6,
+   "reactions": 10,
    "comments_count": 2,
    "top_comments": []
   },
@@ -73,7 +85,7 @@
    "content": "Docker đang có chương trình tặng $250 credit cloud compute miễn phí chuyên để chạy AI agents. Hạn chót đăng ký vừa được gia hạn đến ngày 31/01/2027.\nDocker đang có chương trình tặng $250 CREDIT cloud compute miễn phí chuyên để chạy AI agents. Hạn chót đăng ký vừa được gia hạn đến ngày 31/01/2027.\n\nCHI TIẾT ƯU ĐÃI:\n\n• Nhận $250 credit để sử dụng môi trường sandbox compute.\n\n• Các agent sẽ được chạy trên cloud machine độc lập, duy trì hoạt động ngay cả khi bạn đã gập/tắt laptop.\n\nCÁCH KÍCH HOẠT:\n\n * Truy cập: Docker SBX Promo và click \"Claim my $250 credit\".\n\n * Tạo tài khoản DOCKER AGENTIC PLATFORM mới và thêm thẻ thanh toán (add card).\n\n * Kiểm tra credit đã được cộng vào tài khoản trước khi khởi động sandbox.\n\nLƯU Ý QUAN TRỌNG:\n\n• Khuyến mãi chỉ áp dụng cho tài khoản mới tạo.\n\n• Credit sẽ hết hạn sau 6 tháng.\n\n• Bất kỳ chi phí nào dùng lố qua mức $250 sẽ bị trừ thẳng vào thẻ bạn đã add.\n\nAnh em đang build và test autonomous agents tranh thủ đăng ký để có môi trường chạy thử miễn phí nhé.\n\n#j2team_share",
    "url": "https://facebook.com/groups/j2team.community/permalink/3231113087220789/",
    "published_at": "2026-11-01T09:48:15+00:00",
-   "reactions": 323,
+   "reactions": 326,
    "comments_count": 7,
    "top_comments": [
     {
@@ -123,7 +135,7 @@
    "content": "Mình có làm con game \" P.A.L.S: Lost at Sea\" co-op 2 đến 4 người.\nChào mọi người, nửa tháng trước mình có giới thiệu game mình làm, con game \" P.A.L.S: Lost at Sea\" co-op 2 đến 4 người. Hôm nay mình đã mở playtest demo cho ae có thể chơi thử. Bản thử này tầm 2 tiếng chơi với 2 vùng biển, bản full sẽ có 6 vùng biển. Mọi người có thể cùng bạn bè chơi thử. Vui vẻ hỗn loạn, nếu thấy trò chơi thú vị có thể chia sẻ giúp mình. Nếu gặp lỗi trong quá trình chơi có thể báo mình để mình fix luôn. cảm ơn anh em rất nhiều\n\nhttps://store.steampowered.com/app/5396330/PALS_Lost_at_Sea/\n\n#j2team_share",
    "url": "https://facebook.com/groups/j2team.community/permalink/3230793247252773/",
    "published_at": "2026-11-01T03:35:02+00:00",
-   "reactions": 97,
+   "reactions": 99,
    "comments_count": 7,
    "top_comments": []
   },
