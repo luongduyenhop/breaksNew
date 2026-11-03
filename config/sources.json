@@ -351,6 +351,10 @@
     {
       "id": "systemdesignvietnam",
       "name": "System Design Vietnam"
+    },
+    {
+      "id": "vgu.tech.alumni",
+      "name": "VGU Tech Alumni"
     }
   ],
   "facebook_data_file": "data/facebook_posts.json"
