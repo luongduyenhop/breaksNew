@@ -1,177 +1,348 @@
 {
- "generated_at": "2026-11-02T03:44:56.402711+00:00",
+ "generated_at": "2026-11-03T22:53:30.794377+00:00",
  "items": [
   {
-   "id": "2577119272713377",
+   "id": "2577949209297050",
    "group_id": "vnjug",
    "group_name": "Vietnam Java User Group",
-   "title": "Bài viết lần trước về feature mới ra gần đây của Claude có vẻ thu hút được rất nhiều sự chú ý cho những ae làm việc với workflow, ",
-   "content": "Bài viết lần trước về feature mới ra gần đây của Claude có vẻ thu hút được rất nhiều sự chú ý cho những ae làm việc với workflow, complicated tasks. Lần này mình cũng muốn chia sẻ thêm 1 feature nữa cho ae hay làm việc với long-running task. Đối với mình đây là 2 features hay nhất đợt release ngày 15 tháng 10 qua.",
-   "url": "https://facebook.com/groups/vnjug/permalink/2577119272713377/",
-   "published_at": "2026-11-01T13:33:51+00:00",
-   "reactions": 12,
+   "title": "[Góc trà đá] Xu hướng AI Agent đã và đang được phát triển mà có lẽ anh em cần biết!",
+   "content": "**[Góc trà đá] Xu hướng AI Agent đã và đang được phát triển mà có lẽ anh em cần biết!**\n\nNói luôn, nó là **Agentic Commerce**: người ta bắt đầu nghĩ đến chuyện tính tiền mỗi lần một agent truy cập 1 trang web để lấy dữ liệu và cách để agent tự động thanh toán cho website đó, tự sử dụng ví của người dùng mà không cần người dùng can thiệp.\n## \n1. Bối cảnh\n* **Sự thay đổi lưu lượng web:**\n   * Hơn **51%** lưu lượng truy cập web hiện nay đến từ các bot tự động (vượt qua con người lần đầu tiên).\n   * Tại một số doanh nghiệp, có tới **95%** lưu lượng truy cập là do các bot AI cào dữ liệu (scraping).\n* **Quá trình phát triển của AI Agent:**\n   * 2023 (Assistants): Trả lời câu hỏi, tóm tắt văn bản.\n   * 2024 (Copilots): Soạn thảo code, gợi ý hành động.\n   * 2025 (Agents): Lập kế hoạch, sử dụng công cụ, thực hiện tác vụ nhiều bước.\n   * Hiện tại & Tương lai (Agents that Transact): Các agent tự vận hành độc lập, có khả năng tự động thực hiện giao dịch thanh toán và thanh toán bù trừ giá trị.\n   * Dự báo đến năm 2027: Hơn 1 tỷ tác vụ agent được thực hiện mỗi ngày; 60% quy trình làm việc trong doanh nghiệp sẽ do agent đảm nhiệm.\n## \n2. Thách thức hiện tại (nhưng mà người ta đã và đang giải quyết rồi)\n* **Nút thắt hiện tại:** Khi các AI Agent gặp tường phí (paywall), API trả phí hoặc tài nguyên bị giới hạn hạn ngạch (rate-limit), chúng sẽ bị dừng lại và phải chờ con người can thiệp (nhập thẻ tín dụng, API key), làm mất đi tính tự trị.\n* **Thế tiến thoái lưỡng nan của người bán (Binary Decision Trap):**\n   * Chặn tất cả bot: Bị mất cơ hội hiển thị trong các công cụ tìm kiếm AI, mất quan hệ đối tác/cấp phép bản quyền và mất nguồn truy cập từ AI.\n   * Mở tự do cho bot: Chi phí hạ tầng tăng vọt mà không có doanh thu, nội dung bị cào miễn phí, mô hình thuê bao và doanh thu quảng cáo truyền thống bị xói mòn.\n* **Hạn chế của cổng thanh toán truyền thống:**\n   * Được thiết kế cho con người với mức phí tối thiểu khoảng **$0.25 + 2.5%** cho mỗi giao dịch.\n   * Với các lệnh gọi API có giá chỉ **$0.001**, phí thẻ truyền thống cao hơn **gấp 250 lần** giá trị hàng hóa/dịch vụ cần mua.\n## \n3. Giao thức thanh toán machine-to-machine: HTTP 402 & x402\n* **HTTP Code - 402:** Được định nghĩa từ năm 1997 với ý nghĩa \"Payment Required\" (Yêu cầu thanh toán) nhưng chưa từng được chuẩn hóa triển khai rộng rãi cho đến nay.\n* **Giao thức x402:**\n   * Do Coinbase khởi xướng (tháng 5/2025) và sau đó được chuyển giao cho **Linux Foundation** (tháng 4/2026), nhận được sự hậu thuẫn từ AWS, Google, Visa, Stripe, Cloudflare, Circle, Anthropic,...\n   * **Quy trình hoạt động:**\n      1. Agent gửi yêu cầu (Request).\n      2. Server phản hồi mã 402 Payment Required kèm thông tin thanh toán.\n      3. Agent ký thanh toán vi mô (micropayment) thông qua stablecoin/crypto on-chain.\n      4. Server và đơn vị trung gian (Facilitator) xác thực thanh toán on-chain.\n      5. Server trả về nội dung cho Agent (mã 200 OK) hoàn toàn tự động trong thời gian thực.\n   * **Ưu điểm của x402:** 0 phí giao thức (chỉ trả phí gas mạng siêu nhỏ), giao dịch tức thì (tốc độ internet), không cần tạo tài khoản hay thông tin cá nhân, hoàn toàn phi tập trung và mở.\n\n## 4. AWS đã hỗ trợ giao thức trên với: Amazon Bedrock AgentCore Payments (cho bên mua, bên đi cào thông tin từ các websites)\n* **Giới thiệu dịch vụ:** Ra mắt AgentCore Payments với sự hợp tác của Coinbase và Stripe.\n* **Các tính năng cốt lõi:**\n   * **Hỗ trợ ví (Wallet Support):** Tích hợp ví từ Coinbase, Stripe; khóa bảo mật được lưu trữ trong AgentCore token vault (bảo vệ bởi AWS KMS), agent tuyệt đối **không được tiếp cận private key**.\n   * **Hạn mức thanh toán (Payment Limits/Budgets):** Thiết lập ngân sách phiên (per-session budget), giới hạn chi tiêu tối đa, thời gian hết hạn cố định (ví dụ: tối đa $5 trong 30 ngày) để ngăn chặn agent chi tiêu ngoài tầm kiểm soát.\n   * **Khả năng quan sát (Observability):** Ghi log toàn diện, theo dõi số liệu vết giao dịch end-to-end.\n   * **Khám phá công cụ (Discovery):** Tích hợp với Model Context Protocol (MCP) và chợ Coinbase Bazaar để khám phá hơn 10.000+ API hỗ trợ x402.\n   * **Tách biệt kiến trúc (Decoupling):** Tách hạ tầng thanh toán khỏi logic của agent. Mã nguồn của agent không cần thay đổi, có thể cắm vào bất kỳ framework nào (SpringAI, LangChain, CrewAI, AutoGen,...).\n\n## 5. AWS cũng đồng thời hỗ trợ tính tiền trên lượt truy cập của Agents với: AWS WAF AI Traffic Monetization (cho bên bán, bên sở hữu websiteS)\n* **Tình trạng:** Đã khả dụng rộng rãi (Generally Available).\n* **Khả năng hiển thị và phân loại bot:**\n   * Nhận diện hơn **650+ loại bot AI** (GPTBot, ClaudeBot, Perplexity, GoogleBot,...).\n   * **Phân loại ý định (Intent):** Cào dữ liệu (Crawling), lập chỉ mục (Indexing), huấn luyện mô hình (Training), tìm kiếm RAG (Search/RAG).\n   * **Xác minh danh tính:** Sử dụng chữ ký mã hóa (WBA) để phân biệt bot đã xác minh (Verified) và chưa xác minh (Unverified).\n* **Kiếm tiền trực tiếp tại Edge (CloudFront / AWS WAF):**\n   * Không cần sửa code server gốc, không cần cài SDK.\n   * Người xuất bản (Publisher) giữ **100% doanh thu** (AWS không thu phí giao dịch thanh toán).\n   * **Định giá linh hoạt theo nhiều chiều:**\n      * Theo URL: /blog ($0.001), /research ($0.05), /api ($0.10).\n      * Theo danh tính bot: Bot chưa xác minh có thể tính giá gấp 10 lần bot đã xác minh.\n      * Theo mục đích sử dụng: Huấn luyện mô hình (giá cơ sở), RAG (gấp 5 lần), tìm kiếm (gấp 2 lần). Con người truy cập có thể đặt miễn phí.\n   * Cung cấp **Dashboard trực quan** theo dõi doanh thu theo từng bot, từng đường dẫn và mẫu truy cập theo thời gian thực.\n\n## 6. Số liệu thực tế và Ứng dụng\n* **Quy mô đạt được sau 12 tháng triển khai thực tế trên mạng on-chain:**\n   * Doanh số giao dịch: **> 50 triệu USD**.\n   * Số lượng giao dịch: **> 170 triệu lượt**.\n   * Số lượng agent hoạt động: **> 69.000**.\n   * Số điểm cuối (Endpoints) hỗ trợ: **> 10.000+**.\n   * Thời gian thanh toán trung vị (Median Settlement): **~200 ms** (trên mạng Base).\n   * Chi phí mỗi giao dịch: **< 0,001 USD**.",
+   "url": "https://facebook.com/groups/vnjug/permalink/2577949209297050/",
+   "published_at": "2026-11-02T08:57:38+00:00",
+   "reactions": 14,
    "comments_count": 0,
    "top_comments": []
   },
   {
-   "id": "2576815729410398",
+   "id": "2579097002515604",
    "group_id": "vnjug",
    "group_name": "Vietnam Java User Group",
-   "title": "",
-   "content": "",
-   "url": "https://facebook.com/groups/vnjug/permalink/2576815729410398/",
-   "published_at": "2026-11-01T07:10:10+00:00",
-   "reactions": 3,
-   "comments_count": 0,
-   "top_comments": []
-  },
-  {
-   "id": "2576853536073284",
-   "group_id": "vnjug",
-   "group_name": "Vietnam Java User Group",
-   "title": "[Spring AI 2.1] Vì sao tool calling cần giữ nguyên reasoning từ response đến database?",
-   "content": "**[Spring AI 2.1] Vì sao tool calling cần giữ nguyên reasoning từ response đến database?**\n\n**TLDR; Vì sao Spring AI cần thay đổi?**\n\nCác API reasoning và agent hiện nay đòi hỏi cấu trúc tin nhắn phong phú hơn nhiều so với mô hình truyền thống chỉ gồm một chuỗi văn bản kèm các danh sách tool/media riêng lẻ. Thay đổi trên Spring AI 2.1 xuất phát từ ba động lực chính:\n* **Anthropic Preserving thinking blocks (mới ra mắt đầu tháng 10 này nhằm ngăn chặn distillation):** Trong một tool-use turn, Claude yêu cầu **bắt buộc** phải gửi trả lại nguyên vẹn các thinking block và chữ ký đi kèm theo đúng thứ tự xuất hiện; việc gửi thiếu hoặc chỉnh sửa khối suy luận có thể dẫn đến lỗi HTTP 400.\n* **Google GenAI (Vấn đề đã có từ lâu với rất nhiều Issues được tạo trên Github):** Chữ ký thought_signature bắt buộc phải đi cùng chính xác từng part đã nhận; trên Gemini 3+, việc thiếu chữ ký ở function call có thể khiến API trả về lỗi HTTP 400 \n* **OpenAI Responses API (trước đó chỉ hỗ trợ ChatCompletion API, nên các model mới như Astra không được hỗ trợ):** Giao thức mới trả về một danh sách các output item có thứ tự tuần tự (reasoning, function call, message, server tools), trong đó các reasoning item mang id riêng và chuỗi suy luận mã hóa cần được client gửi lại nguyên vẹn ở request tiếp theo.\n\nĐể xử lý đồng bộ, Spring AI 2.1 chuyển sang dùng MessagePart nhằm bảo toàn thứ tự và payload trên từng part, kết hợp cùng Spring AI Session để lưu trữ đầy đủ các part xuyên suốt qua nhiều lượt gọi và qua cả các lần restart ứng dụng.\n\n--> OK vào bài, ae nào không đang làm việc với Spring AI thì có thể ngừng ở đây là được rồi, bài rất dài và chỉ nói về các Classes trong Spring AI <--\n\nChào anh em VNJUG,\n\nTrong các ứng dụng backend xây dựng agentic workflow hiện nay, mô hình thường không chỉ trả lời một lần là xong. Ở các tác vụ phức tạp, mô hình sẽ thực hiện suy luận, sinh lệnh gọi công cụ (tool call), phía backend chạy logic nghiệp vụ rồi gửi trả kết quả (tool_result) để mô hình hoàn thành câu trả lời.\n\nThế nhưng, khi chuyển sang các dòng reasoning model, một vấn đề kỹ thuật phát sinh ngay tại vòng lặp này: nếu request tiếp theo gửi trả kết quả tool mà bị thiếu chuỗi suy luận (reasoning) hoặc chữ ký đi kèm (signature) từ response trước đó, kết nối có thể gặp trục trặc ngay lập tức. Tùy từng nhà cung cấp và model, hệ thống có thể bị từ chối với mã lỗi HTTP 400 hoặc bị gián đoạn tính liên tục của mạch suy luận (reasoning continuity), dẫn đến chất lượng phản hồi suy giảm.\n\nThao tác nhận các phần nội dung của response trước (gồm thinking, chữ ký, nội dung mã hóa, tool call) rồi gửi trả lại đầy đủ, nguyên vẹn ở request kế tiếp được gọi là **reasoning replay**. Để giải quyết bài toán này xuyên suốt từ tầng giao tiếp mạng đến tầng lưu trữ cơ sở dữ liệu, nhóm phát triển Spring AI đã thực hiện một bước tái cấu trúc quan trọng.\n\nBài viết phân tích kỹ thuật ngày 28/10/2026 của tác giả Dimitar Proynov trên Spring Blog đã giải thích chi tiết các thay đổi này, hiện đã có mặt trong bản phát hành **Spring AI 2.1.0-RC1** (phát hành ngày 23/10/2026, thuộc lộ trình hướng tới bản 2.1). Trọng tâm của giải pháp bao gồm cấu trúc tin nhắn có thứ tự **MessagePart** và giải pháp lưu trữ phiên làm việc **Spring AI Session**.\n\n**Bản chất vấn đề: Vì sao kiểu dữ liệu chuỗi đơn thuần không đáp ứng được reasoning replay?**\n\nĐể thấy rõ nguyên nhân, hãy nhìn vào phản hồi thực tế của Claude khi bật tính năng thinking trong một tác vụ tra cứu thời tiết tại Paris. Phản hồi trả về từ mô hình bao gồm ba khối nội dung xuất hiện tuần tự:\n\n* Khối thinking: Chứa chuỗi suy luận \"Người dùng muốn biết thời tiết tại Paris. Cần gọi tool get_weather...\" kèm chữ ký signature: \"EqQBCgIYAhIM...\".\n* Khối text: Lời phản hồi gửi người dùng \"Để tôi kiểm tra thời tiết giúp bạn.\"\n* Khối tool_use: Lệnh gọi hàm get_weather với tham số {\"location\": \"Paris\"}.\n\nTrong tool-use turn này, Anthropic yêu cầu request kế tiếp khi gửi kèm kết quả tool phải truyền lại đầy đủ phản hồi của Assistant y hệt như lúc nhận về: đúng các khối đó, đúng thứ tự tuần tự và chữ ký nguyên vẹn.\n\nTrước phiên bản 2.1, cấu trúc của Spring AI không thể đáp ứng trọn vẹn yêu cầu này vì bốn giới hạn kiến trúc:\n\n* **Phân tách trường dữ liệu làm mất thứ tự:** Lớp AssistantMessage trước đây tách riêng chuỗi văn bản, danh sách tool calls (List<ToolCall>) và media (List<Media>) thành các field độc lập. Khi cần dựng lại request gửi sang provider, framework buộc phải ghép các trường theo một trật tự giả định (thường đẩy toàn bộ text lên trước rồi mới đến tool calls), làm đảo lộn thứ tự ban đầu của mô hình.\n* **Thiếu cơ chế lưu trữ dữ liệu opaque:** Chữ ký (signature) hay reasoning đã mã hóa (encrypted_content) là các **dữ liệu opaque mà ứng dụng chỉ cần lưu và gửi lại nguyên vẹn**, không cần client phải hiểu hay can thiệp vào cấu trúc bên trong. Trước bản 2.1, các giá trị này bị đặt tạm vào map metadata của provider hoặc trong các subclass package-private, khiến dữ liệu dễ thất lạc khi đi qua các tầng xử lý.\n* **Cơ chế streaming làm rơi dữ liệu:** Khi sử dụng streaming, bộ tổng hợp MessageAggregator trước đây gộp metadata của từng chunk theo từng key riêng lẻ. Kết quả là thinking block thường chỉ giữ lại được đúng fragment cuối cùng thay vì tích lũy toàn vẹn toàn bộ chuỗi suy luận và chữ ký.\n* **Tầng JDBC chỉ lưu text thuần:** Triển khai JdbcChatMemoryRepository trước đây chỉ lưu trường văn bản và message_type vào cơ sở dữ liệu. Toàn bộ tool calls, tool results và chuỗi suy luận đều bị loại bỏ khi lưu trữ. Sau khi ứng dụng restart hoặc đọc lại từ DB, các dữ liệu này hoàn toàn không còn trong kho lưu trữ.\n\n**Mô hình dữ liệu mới: AbstractMessage, sealed interface MessagePart và OpaquePayload**\n\nĐể chuẩn hóa cách xử lý dữ liệu, Spring AI 2.1 thiết kế lại toàn bộ phân cấp lớp tin nhắn. Trong kiến trúc mới:\n\n* Content là interface gốc, kế thừa bởi Message.\n* AbstractMessage là lớp cơ sở dùng chung cho cả 4 loại tin nhắn: AssistantMessage, UserMessage, SystemMessage, và ToolResponseMessage.\n* Enum MessageType định danh 4 l",
-   "url": "https://facebook.com/groups/vnjug/permalink/2576853536073284/",
-   "published_at": "2026-11-01T08:00:20+00:00",
-   "reactions": 52,
-   "comments_count": 3,
-   "top_comments": [
-    {
-     "author": "Facebook user",
-     "text": "Thêm context cho các anh em về Stateless trong AI. \n\nKhi nhắc đến AI API thì nhiều người thường hay nghĩ đến Stateless có nghĩa là AI không có trí nhớ, bạn gửi câu hỏi 1 bạn nhận về câu trả lời 1 sau đó bạn gửi tiếp câu hỏi 2, thì lúc này AI xem câu hỏi 2 ý như câu hỏi mới, nó hoàn toàn không có thông tin về bộ câu hỏi và câu trả lời 1. Đó là stateless, đó là lý do tại sao bạn phải thiết kế để hệ thống gửi kèm cả bộ câu hỏi và câu trả lời 1 khi hỏi thêm câu hỏi 2.\n\nHầu như các AI Provider đều cung cấp AI dạng đó hay gọi theo chuẩn của OpenAI là ChatCompletion API, nhưng cũng có ngoại lệ và đó cũng là từ OpenAI gọi là Responses API, api này có thể giữ state phía server và bạn khi gửi câu hỏi 2 thì không cần đính kèm câu hỏi và câu trả lời 1 nữa. Và với những model mới như Astra 5 hay Sol 6.1 thì OpenAI chỉ hỗ trợ gọi thông qua Responses API này, đó là lý do Spring AI cần phải được cập nhật hỗ trợ Responses API nếu muốn tiếp tục hỗ trợ frontier models từ nhà OpenAI.",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "Spring AI hiện tại vẫn đang là 2.0 GA, nhưng việc lên 2.1 gần như là bắt buộc với những thiếu sót hiện tại. Hiện tại Spring AI 2.1 vẫn chưa GA, nhưng bạn có thể sử dụng thử Spring AI 2.1-RC1 mới được released vài ngày trước.",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "Spring AI 2.1 Message Parts: Reasoning That Survives the Round Trip https://spring.io/blog/2026/10/28/spring-ai-message-parts-reasoning-replay",
-     "votes": 0
-    }
-   ]
-  },
-  {
-   "id": "3231924520472979",
-   "group_id": "j2team.community",
-   "group_name": "J2TEAM Community",
-   "title": "Mình vừa làm một mod cho Claude Desktop để có thể tạo custom theme theo dạng Text-mode Pixel Art (Tile-based Pixel Art)",
-   "content": "Mình vừa làm một mod cho Claude Desktop để có thể tạo custom theme theo dạng Text-mode Pixel Art (Tile-based Pixel Art)\n\nMượn ý tưởng từ một anh designer trên X.\nLàm vui thôi chứ chắc vài bữa Claude Team cho ra tính năng native luôn 😅\n\nLink repo cho ai muốn vọc sớm, hiện tại chỉ support windows\nhttps://github.com/0toshigami/claude-desktop-themes\n\n#j2team_share",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3231924520472979/",
-   "published_at": "2026-11-02T01:50:58+00:00",
+   "title": "Vừa mới đầu tháng 10 trước, Anthropic ra mắt **Preserving thinking blocks **yêu cầu các agents **bắt buộc** phải gửi trả lại nguyê",
+   "content": "Vừa mới đầu tháng 10 trước, Anthropic ra mắt **Preserving thinking blocks **yêu cầu các agents **bắt buộc** phải gửi trả lại nguyên vẹn các thinking block và chữ ký đi kèm theo đúng thứ tự xuất hiện khi gửi request mới đến **Messages API**; việc gửi thiếu hoặc chỉnh sửa khối suy luận có thể dẫn đến lỗi HTTP 400. \n\nThì hôm nay (3/11) Anthropic lại vừa bổ sung **Message Threads** vào **Messages API. **Nói nôm na là idea khá giống với **Responses API** từ **OpenAI, **phía model sẽ giữ state trong khoảng 5 phút (**Responses API**  là persistent) nên agents không cần gửi cả 1 cuộc hội thoại nữa chỉ cần gửi đúng message tiếp theo của user. Điều này tiết kiệm được dung lượng và thời gian gửi đi, dẫn đến tổng round trip time của request được giảm đáng kể! (Theo 1 khảo sát của Anthropic là giảm 35% trên Claude Code)",
+   "url": "https://facebook.com/groups/vnjug/permalink/2579097002515604/",
+   "published_at": "2026-11-03T11:14:46+00:00",
    "reactions": 1,
    "comments_count": 0,
    "top_comments": []
   },
   {
-   "id": "3231979507134147",
+   "id": "2570628106695827",
+   "group_id": "vnjug",
+   "group_name": "Vietnam Java User Group",
+   "title": "[Java Concurrency] Structured Concurrency trong JDK 28: Quản lý lỗi và vòng đời các tác vụ song song ra sao?",
+   "content": "**[Java Concurrency] Structured Concurrency trong JDK 28: Quản lý lỗi và vòng đời các tác vụ song song ra sao?**\n\nTrong phát triển backend, một bài toán rất phổ biến là xử lý yêu cầu cần gọi hai tác vụ song song, chẳng hạn findUser(id) và fetchOrder(id), sau đó tổng hợp kết quả để phản hồi. Khi triển khai bằng ExecutorService và Future truyền thống, các tác vụ con này chạy độc lập với vòng đời của request. Nếu findUser gặp sự cố và ném ngoại lệ, fetchOrder vẫn có thể âm thầm chạy tiếp trên thread pool mà không nhận được tín hiệu dừng; luồng chính khó kiểm soát việc hủy bỏ lan truyền và các thread con có nguy cơ sống lâu hơn phương thức gọi chúng. Structured Concurrency giải quyết vấn đề này bằng cách gom các tác vụ con vào cùng một scope để quản lý vòng đời và lỗi của cả nhóm.\n\nAPI Structured Concurrency (java.util.concurrent.StructuredTaskScope) đã chính thức hoàn tất tích hợp (*Integrated*) vào JDK 28 thông qua JEP 543, đưa tính năng này về trạng thái hoàn thiện (*Final*) sau chuỗi nhiều bản preview liên tiếp. JDK 28 dự kiến sẽ đạt trạng thái phát hành rộng rãi (General Availability - GA) vào tháng 3/2027. Ở thời điểm hiện tại, chúng ta đã có thể kiểm chứng trực tiếp API chính thức này trên các bản build JDK 28 Early-Access (EA) mới nhất đã tích hợp JEP 543.\n\n**Cơ chế qua findUser/fetchOrder**\n\nLuồng điều khiển của StructuredTaskScope được thể hiện qua 4 bước cơ bản trong khối try-with-resources:\n* **StructuredTaskScope.open()**: Mở phạm vi thực thi (*scope*). Khi gọi phương thức không tham số, scope áp dụng chính sách mặc định của Joiner.awaitAllSuccessfulOrThrow(), yêu cầu toàn bộ các nhánh con đều phải thành công.\n* **scope.fork(...)**: Khởi chạy song song findUser và fetchOrder. Mỗi lần gọi fork() mặc định sẽ kích hoạt một Virtual Thread mới và trả về một đối tượng đại diện Subtask. Cần lưu ý rằng chỉ duy nhất luồng mở scope (*owner thread*) mới có quyền gọi fork() và join().\n* **scope.join()**: Luồng mở scope tạm dừng để đợi kết quả từ các tác vụ con theo điều kiện của Joiner. Chỉ sau khi phương thức join() trả về thành công, kết quả của từng nhánh mới được phép đọc an toàn thông qua userSubtask.get() và orderSubtask.get().\n* **scope.close()**: Tự động kích hoạt khi thoát khối try. Phương thức này gửi tín hiệu hủy đến các subtask chưa xong và chờ chúng kết thúc. Khi close() trả về, các thread của subtask đã kết thúc, bảo đảm không còn tác vụ nào sống vượt ra ngoài phạm vi của scope.\n\n**Joiner, cancellation và timeout**\n* **Điều kiện hoàn tất do Joiner quyết định**: Chính sách mặc định đòi hỏi cả hai tác vụ con đều phải thành công; nếu một tác vụ thất bại, scope kích hoạt hủy nhánh còn lại và join() ném ExecutionException. Nếu bài toán chỉ cần một nhánh hoàn tất sớm nhất, lập trình viên có thể cấu hình Joiner.anySuccessfulOrThrow(), chính sách này chấp nhận một tác vụ thành công là thỏa mãn và gửi tín hiệu hủy các nhánh còn lại.\n* **Hủy bỏ mang tính hợp tác (*****cooperative cancellation*****)**: Khi scope phát tín hiệu hủy, hệ thống không ép dừng thread tức thời mà gửi tín hiệu ngắt luồng (Thread.interrupt()). Vì vậy, mã xử lý bên trong findUser và fetchOrder phải hợp tác bằng cách phản hồi với trạng thái ngắt (như xử lý InterruptedException hoặc định kỳ kiểm tra Thread.interrupted()). Theo đặc tả JEP 543 tại mục Cancellation, nếu một tác vụ con không đáp ứng tín hiệu ngắt, nó có thể trì hoãn việc kết thúc của phương thức close() vô hạn.\n* **Timeout là mốc thời hạn hủy (*****cancellation deadline*****)**: Với scope mặc định được cấu hình giới hạn thời gian qua withTimeout(Duration.ofSeconds(2)), nếu hết 2 giây trước hoặc trong khi đang gọi join(), scope sẽ bị hủy và join() ném ra ExecutionException có nguyên nhân (*cause*) là ngoại lệ CancelledByTimeoutException. Do phương thức close() vẫn phải tiếp tục đợi các thread con dọn dẹp và dừng hẳn sau tín hiệu ngắt, API không cam kết toàn bộ phương thức sẽ trả về chính xác trong 2 giây.\n* **Xử lý khi nhiều nhánh cùng thất bại**: Đối với các built-in throwing joiner được cung cấp sẵn, nếu cả findUser và fetchOrder đồng thời gặp lỗi, API không đưa ra bảo đảm sẽ ưu tiên chọn ngoại lệ của tác vụ nào để ném ra.\n\n**Ngữ cảnh và observability**\n* **Kế thừa ngữ cảnh ScopedValue**: Các tác vụ con được tạo qua fork() tự động kế thừa các liên kết ScopedValue từ luồng cha mở scope.\n* **Hiển thị quan hệ cha-con trong thread dump**: Quan hệ phân cấp của StructuredTaskScope được thể hiện trực tiếp trong thread dump định dạng JSON, giúp các công cụ phân tích thấy rõ cây cấu trúc giữa luồng cha và các Virtual Thread con đang chạy.\n* **Tác động tới việc bảo trì thư viện**: Việc API đạt trạng thái Final cho phép các nhà bảo trì thư viện và framework (*library/framework maintainers*) tự tin áp dụng Structured Concurrency vào kiến trúc nội bộ mà không buộc người dùng cuối của họ phải bật cờ preview chỉ vì API này.\n\n**Nâng cấp từ JDK 27**\n\nAPI của Structured Concurrency được giữ nguyên hoàn toàn. Khi biên dịch lại dự án bằng bản build JDK 28 EA đã chứa thay đổi của JEP 543, bạn gỡ tham số --enable-preview ở các bước compile, test và run chỉ khi dự án không còn sử dụng tính năng preview nào khác của JDK 28.\n\n**Nâng cấp từ JDK 26**\n\nNếu chuyển từ JDK 26 lên JDK 28, mã nguồn cần thích ứng với các thay đổi lớn đã diễn ra từ JEP 533 trên JDK 27:\n* Bổ sung type parameter thứ ba R_X extends Throwable cho StructuredTaskScope<T, R, R_X> và Joiner<T, R, R_X>, giúp join() khai báo tường minh kiểu checked exception có thể ném ra.\n* Thay thế ngoại lệ thời preview FailedException bằng ExecutionException đối với các built-in throwing joiner, hoặc trả trực tiếp checked exception R_X với custom Joiner.\n* Loại bỏ StructuredTaskScope.TimeoutException, thay bằng việc ném ExecutionException chứa cause là CancelledByTimeoutException.\n* Loại bỏ phương thức Joiner.awaitAll() và chuyển callback onTimeout() thành phương thức trừu tượng timeout().\n\nStructured Concurrency phù hợp với bài toán các tác vụ con cùng thuộc một tác vụ nghiệp vụ và có chung ranh giới vòng đời. Khi thử nghiệm đ",
+   "url": "https://facebook.com/groups/vnjug/permalink/2570628106695827/",
+   "published_at": "2026-10-26T12:47:40+00:00",
+   "reactions": 14,
+   "comments_count": 1,
+   "top_comments": []
+  },
+  {
+   "id": "3234212813577483",
    "group_id": "j2team.community",
    "group_name": "J2TEAM Community",
-   "title": "📣 ĐIỂM TIN BUỔI SÁNG THỨ HAI (02/11/2026)",
-   "content": "📣 ĐIỂM TIN BUỔI SÁNG THỨ HAI (02/11/2026)\n\nChào buổi sáng cả nhà J2TEAM! Chúc mọi người một ngày mới làm việc và học tập tràn đầy năng lượng. Dưới đây là những tin tức công nghệ và an ninh mạng nổi bật nhất trên thế giới sáng nay để mọi người cùng cập nhật nhé:\n\n1️⃣ Lỗ hổng điểm tuyệt đối 10.0 CVSS trên LXD và MicroCloud: Cho phép mạo danh client mà không cần private key\n\n2️⃣ Tin tặc chiếm quyền script DebugBear, đánh cắp 2,7 triệu USD của người dùng Polymarket\n\n3️⃣ FBI cáo buộc nhóm hacker Triều Tiên đứng sau vụ hack kỷ lục 6,43 tỷ USD nhắm vào Binance\n\n4️⃣ NASA tìm kiếm sự hỗ trợ từ các công ty vũ trụ tư nhân để 'giải cứu' kính viễn vọng Hubble\n\n5️⃣ Hãng camera an ninh Flock Safety bị tố liên tục phớt lờ yêu cầu chấm dứt hợp đồng từ các thành phố\n\n6️⃣ Thiết bị màn hình thông minh HomeView của Apple sắp được tích hợp tính năng camera an ninh\n\n7️⃣ OpenAI lên kế hoạch đổi tên các trung tâm dữ liệu thành 'Khu phức hợp điện toán AI'\n\n8️⃣ AI giúp các CEO công nghệ thảnh thơi hơn, nhưng liệu có công bằng với phần còn lại của nhân loại?\n\n9️⃣ Làn sóng xe tự hành (AV) tái bùng nổ mạnh mẽ hơn bao giờ hết nhờ sự tiếp sức của AI\n\n🔟 FBI xác nhận nhóm hacker được chính quyền Triều Tiên bảo trợ đứng sau vụ trộm 6,3 tỷ USD trên Binance\n\n1️⃣1️⃣ Alpine Linux dựng lại toàn bộ máy chủ GitLab sau khi bị tấn công khai thác lỗ hổng RCE\n\n1️⃣2️⃣ OpenAI tăng gấp đôi hạn mức gói Pro và đưa các tính năng Work vào ChatGPT tiêu chuẩn\n\n#j2team_news #diemtinsang #NewsUpdate",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3231979507134147/",
-   "published_at": "2026-11-02T03:03:48+00:00",
-   "reactions": 10,
+   "title": "🔴 Binance tiết lộ nguyên nhân chi tiết việc nhân viên bị hack, và đó là chiêu thức không hề mới: giả mạo tuyển dụng, dụ ứng viên c",
+   "content": "# 🔴 Binance tiết lộ nguyên nhân chi tiết việc nhân viên bị hack, và đó là chiêu thức không hề mới: giả mạo tuyển dụng, dụ ứng viên chạy mã nguồn chứa mã độc trên máy để 'làm bài kiểm tra'.\n\n#j2team_news #j2team_security",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3234212813577483/",
+   "published_at": "2026-11-03T17:17:48+00:00",
+   "reactions": 232,
+   "comments_count": 23,
+   "top_comments": []
+  },
+  {
+   "id": "3233686946963403",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "Một ông thần nào đấy đã port nguyên... SteamOS lên Mac, thậm chí là nó hỗ trợ cả SteamOS Gaming Mode lẫn KDE Plasma Desktop Mode, ",
+   "content": "Một ông thần nào đấy đã port nguyên... SteamOS lên Mac, thậm chí là nó hỗ trợ cả SteamOS Gaming Mode lẫn KDE Plasma Desktop Mode, hỗ trợ tay cầm và tăng tốc GPU. Game Windows hoạt động thông qua Proton cùng các lớp chuyển đổi lệnh và đồ họa.\n\nTuy nhiên, dự án vẫn đang phát triển: một số game bị lỗi hình ảnh, giật khi biên dịch shader hoặc chưa khởi chạy được. Tuy nhiên thử nghiệm lại cho kết quả ấn tượng: Left for Dead 200FPS, The Witcher 3 bản gốc hơn 70 FPS, GTA IV: hơn 100 FPS trên Macbook Pro M4 Max.\n\nĐược biết thì phiên bản này tuỳ biến từ hệ điều hành SteamOS của chiếc Steam Frame, vốn đã tối ưu cho ARM từ đầu.\n\n#j2team_share",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3233686946963403/",
+   "published_at": "2026-11-03T09:35:01+00:00",
+   "reactions": 28,
+   "comments_count": 0,
+   "top_comments": []
+  },
+  {
+   "id": "3234026643596100",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "CẢNH BÁO: Người lớn tuổi đang bị làm phiền bởi các cuộc tấn công gửi OTP hàng loạt.",
+   "content": "**CẢNH BÁO: Người lớn tuổi đang bị làm phiền bởi các cuộc tấn công gửi OTP hàng loạt.**\n\nChào anh em.\n\nMình viết bài này với mong muốn chia sẻ một hiện tượng đáng lo ngại, đồng thời hy vọng anh em lan tỏa thông tin đến những người có khả năng cải thiện hệ thống xác thực trên website và ứng dụng.\n\nThời gian gần đây, mình nhận thấy nhiều người lớn tuổi, đặc biệt là những người trên 60 tuổi và không am hiểu về công nghệ, liên tục bị làm phiền bởi các hình thức tấn công liên quan đến OTP.\n\nCụ thể, mình ghi nhận hai hình thức như sau:\n\n1- **Dội bom cuộc gọi VoIP liên tục**: Các cuộc gọi tự động được thực hiện dồn dập đến số điện thoại của người lớn tuổi, trong đó có trường hợp cuộc gọi đọc mã OTP.\n\n2**- Yêu cầu gửi OTP hàng loạt: **Kẻ xấu sử dụng số điện thoại của các nạn nhân để đăng ký hoặc yêu cầu xác thực trên nhiều website, ứng dụng khác nhau. Hậu quả là mã OTP liên tục được gửi về điện thoại của nạn nhân thông qua SMS và Zalo, dù họ không hề thực hiện bất kỳ thao tác đăng ký nào.\n\n**Hiện tại, mình chưa xác định được chính xác mục đích cuối cùng của những hành vi này.**\n\nTuy nhiên, việc liên tục nhận OTP và các cuộc gọi tự động chắc chắn gây phiền toái, hoang mang, đặc biệt đối với người lớn tuổi – nhóm đối tượng thường ít có khả năng nhận biết và xử lý các tình huống liên quan đến an toàn thông tin.\n\nMình mong muốn gửi một lời kêu gọi đến anh em đang phát triển, vận hành website và ứng dụng có chức năng gửi OTP qua SMS hoặc Zalo.\n\nHãy xem xét tăng cường các bước xác thực và kiểm soát trước khi gửi OTP, chẳng hạn như giới hạn số lần gửi, kiểm tra tần suất yêu cầu, phát hiện hành vi bất thường và áp dụng các biện pháp chống gửi OTP tự động.\n\nViệc này không chỉ giúp bảo vệ người dùng, hạn chế tình trạng bị làm phiền mà còn giúp các đơn vị tiết kiệm chi phí gửi OTP, đồng thời tránh để hệ thống của mình vô tình trở thành công cụ phục vụ các hành vi quấy rối, tấn công người khác.\n\nBảo mật không chỉ là bảo vệ hệ thống của chúng ta, mà còn là bảo vệ người dùng khỏi việc bị lợi dụng chính hệ thống đó.\n\nMong anh em quan tâm và cùng chung tay lan tỏa để bảo vệ người thân và cộng đồng!\n#j2team #j2team_share",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3234026643596100/",
+   "published_at": "2026-11-03T14:32:40+00:00",
+   "reactions": 153,
+   "comments_count": 52,
+   "top_comments": [
+    {
+     "author": "Facebook user",
+     "text": "Có công an bên Cam gọi mình hỏi nó ăn cam không thế là nó cũng spam OTP gần 1 tiếng. Làm mình phải tắt điện thoại mệt thật.",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "bài viết này chỉ giúp lan truyền con bot spam OTP ra thêm thôi chứ ko giảm đc gì đâu bác ạ :v toàn cty các kiểu hệ thống nó dễ cho người dùng r giờ làm gắt là gắt thế nào đc",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "@[61557533255710:2048:Phinh Lương]",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Cái này bị spam ấy",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "10k 1 ngày lộ số cái spam mấy trăm tin đến ngàn tin",
+     "votes": 0
+    }
+   ]
+  },
+  {
+   "id": "3233427370322694",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "Hello anh em,",
+   "content": "Hello anh em, \n\nTrong lúc làm và lướt mình có làm 1 con extension/web/app để remove token khi share hoặc mở link share social(chủ yếu là tiktok)\nThấy dùng cũng tiện nên share lên đây cho anh em nào có nhu cầu thì dùng\n\nTính năng chủ yếu là:\n* Làm sạch link\n* Thêm quick button ở các bài/video/reels để copy nhanh\n* Clean link khi bấm vào 1 link share nào đó - chủ yếu là tiktok nó thông báo ai đã xem clip nên mình ko thích = ))\n* App thì hỗ trợ cho việc share nhanh hơn thôi\n\nAnh em dùng qua thì feedback mình biết với nha 😂\n\nCảm ơn admin duyệt bài!!\n\n#j2team_share, #j2team, #j2team_app",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3233427370322694/",
+   "published_at": "2026-11-03T04:56:05+00:00",
+   "reactions": 50,
+   "comments_count": 12,
+   "top_comments": []
+  },
+  {
+   "id": "3233608256971272",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "Khi một sinh vật đơn bào chết đi",
+   "content": "Khi một sinh vật đơn bào chết đi \n#j2team_share",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3233608256971272/",
+   "published_at": "2026-11-03T08:22:33+00:00",
+   "reactions": 1262,
+   "comments_count": 46,
+   "top_comments": []
+  },
+  {
+   "id": "3233508523647912",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "j2team_relax",
+   "content": "#j2team_relax\n\nCàng ngày càng nhiều game đẩy được lên bản web nhỉ :)) Nay mới biết con VLTK này cũng port lên web rồi mọi người ạ :))",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3233508523647912/",
+   "published_at": "2026-11-03T06:30:39+00:00",
+   "reactions": 165,
+   "comments_count": 51,
+   "top_comments": []
+  },
+  {
+   "id": "3233433233655441",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "Steve Jobs nói về MacBook màn hình cảm ứng vào năm 2010.",
+   "content": "# Steve Jobs nói về MacBook màn hình cảm ứng vào năm 2010.\n\n#j2team_news",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3233433233655441/",
+   "published_at": "2026-11-03T05:03:52+00:00",
+   "reactions": 374,
+   "comments_count": 37,
+   "top_comments": []
+  },
+  {
+   "id": "3233307147001383",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "Nhóm đang có hơn 36k yêu cầu tham gia nhóm (tích lũy sau nhiều năm), nhưng bật combo bộ lọc gồm trả lời hết câu hỏi + đồng ý nội q",
+   "content": "Nhóm đang có hơn 36k yêu cầu tham gia nhóm (tích lũy sau nhiều năm), nhưng bật combo bộ lọc gồm trả lời hết câu hỏi + đồng ý nội quy nhóm + tài khoản tạo từ một năm trở lên thì chỉ còn vài người đủ điều kiện 😂\n\nCó nên giảm bớt tiêu chuẩn không mọi người...\n\n#j2team_relax",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3233307147001383/",
+   "published_at": "2026-11-03T03:18:17+00:00",
+   "reactions": 179,
+   "comments_count": 22,
+   "top_comments": []
+  },
+  {
+   "id": "3232598293738935",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "🚀 iSideload 1.2.5 (Update) — Cài app linh hoạt, làm mới thuận tiện hơn!",
+   "content": "🚀 iSideload 1.2.5 (Update) — Cài app linh hoạt, làm mới thuận tiện hơn!\nMình vừa cập nhật iSideload với 3 tính năng nổi bật:\n\n📲 1. Cài được cho iPhone khác\n\nMột iPhone đã có iSideload có thể làm máy hỗ trợ để cài iSideload cho máy mới. Hai máy cùng Wi-Fi, chọn tên ghép nối và nhập mã để bắt đầu — máy nhận không cần RC Pair hay máy tính ở bước này.\n\n👉 Máy nhận cần iOS/iPadOS 27 trở lên và bật Chế độ nhà phát triển.\n\n🔐 2. Hỗ trợ nhiều loại tài khoản và chứng chỉ ký\n\nCó thể dùng Apple ID miễn phí hoặc chứng chỉ riêng .p12 kết hợp .mobileprovision. Hỗ trợ profile phát triển, Ad Hoc và Enterprise hợp lệ, phù hợp với thiết bị. Chủ động chọn tài khoản hoặc chứng chỉ khi cài app.\n\n🔄 3. Tự động làm mới, tự mở LocalDevVPN khi cần\n\nThiết lập Phím tắt để ký lại hằng ngày. iSideload tự mở LocalDevVPN khi cần kết nối, làm mới các app khác trước và chính iSideload sau cùng.\n\n✅ Hiển thị ngày hết hạn ngay trong app.\n\n✅ Có nút làm mới chính iSideload, không cần giữ IPA gốc.\n\n📌 Để tự gia hạn bằng Apple ID, cần cài LocalDevVPN, ghép nối trên chính máy đó và thiết lập Phím tắt. iOS có thể yêu cầu mở khóa; tác vụ chạy nền vẫn do iOS quản lý.\n\nVào trang mình cho mình 1 like ủng hộ để cài miễn phí nhé\n\n#j2team_share ,#j2team , j2team_app",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3232598293738935/",
+   "published_at": "2026-11-02T14:29:50+00:00",
+   "reactions": 175,
+   "comments_count": 29,
+   "top_comments": [
+    {
+     "author": "Facebook user",
+     "text": "Không cài được với ios dưới 17 sop ơi",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Thôi mua cc mà dùng, cc rẻ mà",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Rep ib em với nha bác",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Đã like repo của bác",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Có add được 2 tài khoản trên 1 máy không bro ơi. Để cài nhiều app ra màn hình :D",
+     "votes": 0
+    }
+   ]
+  },
+  {
+   "id": "3233248170340614",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "Google boss chia sẻ trên LinkedIn nên mình repost bên này luôn.",
+   "content": "Google boss chia sẻ trên LinkedIn nên mình repost bên này luôn.\n\nDataCamp đang mở **Free Access Week (từ 02/11 đến 08/11)**: mở khóa toàn bộ khóa học, career track và **cấp chứng chỉ hoàn toàn miễn phí**, không cần nhập thẻ tín dụng hay thanh toán.\n\nMột tuần thì không ai cày hết được kho tài liệu này, nhưng mình dạo qua các khóa Intermediate & Advance thì thấy toàn là mấy cái bên mình đang dùng cho production hoặc tuyển chọn ML Engineer, nên có thể nói là \"thực chiến.\" Vài gợi ý chọn lọc cho các bạn junior.\n* **Mới tìm hiểu AI (không cần code):**[AI Fundamentals Track](https://lnkd.in/dZusWBuN)– khoảng 9 tiếng, học xong kịp thi lấy chứng chỉ trước cuối tuần.\n* **Muốn build ứng dụng AI thực tế (LangChain, MCP, LLMs):**[Associate AI Engineer for Developers](https://lnkd.in/dg5HZZ-j)– full-stack lộ trình AI Engineer, thực hành trên model thật.\n* **Muốn train và tinh chỉnh model:**[Associate AI Engineer for Data Scientists](https://lnkd.in/dRfHRgSy)– chuyên sâu về xây dựng, huấn luyện và fine-tuning mô hình.\n* **Định hướng làm Data Analyst:**[Associate Data Analyst in SQL](https://lnkd.in/dkB8qbyr)– AI viết SQL rất nhanh, nhưng lúc lỗi thì vẫn cần người hiểu bản chất để debug.\n* **Học lập trình từ con số 0:**[Python Fundamentals](https://lnkd.in/dsNExnBN)hoặc[SQL Fundamentals](https://lnkd.in/d5weCxnP).\n\nĐiểm cộng của nền tảng này là nhảy vào gõ code ngay từ bài đầu tiên, nội dung bám sát nhu cầu tuyển dụng thực tế. Đừng tham học dàn trải, chọn đúng một kỹ năng đang thiếu nhất rồi làm tới nơi tới chốn.\n\nLink truy cập chương trình: https://www.datacamp.com/campaign/free-access-week-november-2026 (kết thúc ngày 08/11)",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3233248170340614/",
+   "published_at": "2026-11-03T02:17:19+00:00",
+   "reactions": 72,
+   "comments_count": 1,
+   "top_comments": [
+    {
+     "author": "Facebook user",
+     "text": "mấy cái Associate... không được free :v",
+     "votes": 0
+    }
+   ]
+  },
+  {
+   "id": "3233179857014112",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "📣 ĐIỂM TIN BUỔI SÁNG THỨ BA (03/11/2026)",
+   "content": "📣 ĐIỂM TIN BUỔI SÁNG THỨ BA (03/11/2026)\n\nChào buổi sáng cả nhà J2TEAM! Chúc mọi người một ngày mới làm việc và học tập tràn đầy năng lượng. Dưới đây là những tin tức công nghệ và an ninh mạng nổi bật nhất trên thế giới sáng nay để mọi người cùng cập nhật nhé:\n\n1️⃣ Phát hiện lỗ hổng RCE nghiêm trọng trong Langflow, hacker không cần xác thực vẫn chiếm quyền máy chủ\n\n2️⃣ Google triệt phá mạng botnet 1,3 triệu Android TV Box, vạch trần hãng sản xuất cài sẵn backdoor\n\n3️⃣ Nhóm hacker DarkBlinders thâm nhập mục tiêu tại Israel và hệ thống đám mây chính quyền người Kurd\n\n4️⃣ Apple thừa nhận 'chưa thể dự đoán' thời điểm nguồn cung iPhone Duo đáp ứng đủ nhu cầu\n\n5️⃣ Apple lập kỷ lục doanh thu iPhone 57,58 tỷ USD dù không ra mắt phiên bản tiêu chuẩn\n\n6️⃣ Meta sẽ chính thức ngừng cập nhật hệ điều hành cho kính VR Quest 2 và Quest Pro từ năm 2027\n\n7️⃣ CEO Y Combinator 'nghiện' AI Agent đến mức chi tới 200.000 USD mỗi năm mua token API\n\n8️⃣ Ứng dụng hẹn hò Hinge thử nghiệm gói cước giá rẻ giữa làn sóng người dùng 'ngán ngẩm' trả phí\n\n9️⃣ Chuỗi cung ứng iPhone Duo căng thẳng, Apple cảnh báo thời gian chờ giao máy kéo dài sang năm 2027\n\n🔟 Hacker sử dụng framework AI tự hành ARTEX để tấn công tự động vào hơn 200 tổ chức toàn cầu\n\n1️⃣1️⃣ Nền tảng Fintech Sageworks phải tạm đóng hệ thống do nghi bị tấn công mạng\n\n1️⃣2️⃣ Chi tiết mã độc XCPE trên 1,3 triệu Android TV Box giá rẻ bị Google cấm cửa vĩnh viễn\n\n#j2team_news #diemtinsang #news",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3233179857014112/",
+   "published_at": "2026-11-03T01:06:08+00:00",
+   "reactions": 144,
+   "comments_count": 0,
+   "top_comments": []
+  },
+  {
+   "id": "2681314438992613",
+   "group_id": "machinelearningcoban",
+   "group_name": "Forum Machine Learning cơ bản",
+   "title": "Typesafe Jev AI - Fast and Low cost decision models",
+   "content": "Typesafe Jev AI - Fast and Low cost decision models\nGần đây Typesafe AI đưa ra Jev models - System one model chạy nhanh và giá thành rẻ 0.042$/1M input tokens, output tokens hoàn toàn miễn phí.\n\nJev không thay thế hoàn toàn cho LLM trong hệ thống AI Agents mà có thể thay thế ở các vị trí đưa ra quyết định, điều này giúp giảm cost cũng như tối ưu được latency.\n\nMình có xuất bản một course ngắn bằng tiếng Anh về Typesafe Jev AI, từ vấn đề đang gặp của LLM khi đưa ra quyết định đến các primitives chính của nó. Ngoài ra sẽ có một số bài labs. Các bác có thể nghe VietLish 😁\n\nMình có một số free coupons gửi tặng mn nếu ai đang tìm hiểu về Jev.\n\nLink em để bên dưới comments nhé. Cảm ơn admin và cả nhà ạ.",
+   "url": "https://facebook.com/groups/machinelearningcoban/permalink/2681314438992613/",
+   "published_at": "2026-11-03T12:07:19+00:00",
+   "reactions": 9,
    "comments_count": 2,
    "top_comments": []
   },
   {
-   "id": "3231113087220789",
-   "group_id": "j2team.community",
-   "group_name": "J2TEAM Community",
-   "title": "Docker đang có chương trình tặng $250 credit cloud compute miễn phí chuyên để chạy AI agents. Hạn chót đăng ký vừa được gia hạn đế",
-   "content": "Docker đang có chương trình tặng $250 credit cloud compute miễn phí chuyên để chạy AI agents. Hạn chót đăng ký vừa được gia hạn đến ngày 31/01/2027.\nDocker đang có chương trình tặng $250 CREDIT cloud compute miễn phí chuyên để chạy AI agents. Hạn chót đăng ký vừa được gia hạn đến ngày 31/01/2027.\n\nCHI TIẾT ƯU ĐÃI:\n\n• Nhận $250 credit để sử dụng môi trường sandbox compute.\n\n• Các agent sẽ được chạy trên cloud machine độc lập, duy trì hoạt động ngay cả khi bạn đã gập/tắt laptop.\n\nCÁCH KÍCH HOẠT:\n\n * Truy cập: Docker SBX Promo và click \"Claim my $250 credit\".\n\n * Tạo tài khoản DOCKER AGENTIC PLATFORM mới và thêm thẻ thanh toán (add card).\n\n * Kiểm tra credit đã được cộng vào tài khoản trước khi khởi động sandbox.\n\nLƯU Ý QUAN TRỌNG:\n\n• Khuyến mãi chỉ áp dụng cho tài khoản mới tạo.\n\n• Credit sẽ hết hạn sau 6 tháng.\n\n• Bất kỳ chi phí nào dùng lố qua mức $250 sẽ bị trừ thẳng vào thẻ bạn đã add.\n\nAnh em đang build và test autonomous agents tranh thủ đăng ký để có môi trường chạy thử miễn phí nhé.\n\n#j2team_share",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3231113087220789/",
-   "published_at": "2026-11-01T09:48:15+00:00",
-   "reactions": 326,
-   "comments_count": 7,
-   "top_comments": [
-    {
-     "author": "Facebook user",
-     "text": "Lụm",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "Sao ko thử rancher ta. Rancher free",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "lụm",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "Mình non tech, local vibe code thì không cần phải không?",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "@[100035760873326:2048:Duy Nhất] lụm",
-     "votes": 0
-    }
-   ]
-  },
-  {
-   "id": "3231347767197321",
-   "group_id": "j2team.community",
-   "group_name": "J2TEAM Community",
-   "title": "j2team_share",
-   "content": "#j2team_share\n# **YouTube đang học hỏi cách livestream của TikTok? **\n\nNếu các bác thường xuyên lướt TikTok LIVE, chắc không còn xa lạ với những màn PK, ghép đôi Creator hay các sự kiện tặng quà cho idol live.\n\nThấy nhà hàng xóm livestream vui quá, YouTube cũng bắt đầu nhập cuộc rồi đây.\n\nTại sự kiện Made on YouTube mới nhất, nền tảng đã giới thiệu 4 cập nhật khá thú vị. Mình thấy không chỉ giúp livestream vui hơn, mà còn mở ra nhiều cơ hội tăng doanh thu cho Creator nữa:\n\n 🔴Watch With – Reaction ngay trên livestream\n\nTrước đây, muốn reaction video, các bác thường phải tự chuẩn bị nội dung, thiết lập màn hình rồi loay hoay đủ thứ. Giờ đây, YouTube đang phát triển tính năng cho phép Creator reaction trực tiếp với video dài hoặc livestream đủ điều kiện ngay trên nền tảng.\n\nCreator reaction vẫn có thể kiếm tiền từ quảng cáo livestream và fan funding, còn chủ video gốc cũng được ghi nhận nguồn và lượt xem bổ sung. Một video, nhiều bên cùng có lợi.\n\n 🔴Go Live Together – Không có bạn livestream? Để YouTube mai mối hộ nhe :)))\n\nNếu TikTok có ghép LIVE, Instagram có mời khách livestream, thì YouTube cũng chuẩn bị ra mắt tính năng tìm Creator có nội dung tương đồng để kết nối. Các bác có thể chủ động tìm người đang livestream hoặc để YouTube ghép đôi.\n\nBiết đâu sau một buổi live lại tìm được cộng sự hợp gu, thêm vài nghìn fan mới thì sao? \n\n 🔴Live Showdown – PK phiên bản YouTube\n\nCác bác từng xem PK trên TikTok chắc hiểu cảm giác hai bên fan thi nhau cổ vũ cho idol rồi nhỉ? YouTube sắp có Live Showdown với trải nghiệm tương tự.\n\nHai Creator có thể thi đấu trực tiếp, khán giả tham gia bằng chat, quà tặng và Super Chat để đóng góp vào điểm số.\n\nVới Creator, đây cũng là cơ hội tăng tương tác và doanh thu từ cộng đồng người hâm mộ.\n\n 🔴Live Auto Dubbing – Livestream tiếng Việt, khán giả quốc tế vẫn hiểu!\n\nĐây mới là tính năng mình mong chờ nhất, các bác ạ. Trước đây, muốn livestream cho khán giả nước ngoài, Creator Việt thường phải biết ngoại ngữ hoặc có phiên dịch. Giờ YouTube đang thử nghiệm công nghệ dịch giọng nói theo thời gian thực. Tưởng tượng các bác đang livestream bằng tiếng Việt, nhưng khán giả quốc tế có thể nghe bằng ngôn ngữ của họ.\n\nKhông còn bị giới hạn bởi ngôn ngữ cũng đồng nghĩa với việc có thêm cơ hội tiếp cận fan quốc tế, phát triển hội viên, nhận ủng hộ và hợp tác thương hiệu.\n\nLưu ý nhỏ: Các tính năng này sẽ được triển khai theo từng giai đoạn, một số dự kiến bắt đầu từ năm 2027, nên chưa phải kênh nào cũng dùng được ngay đâu nhé!\n\nSuy cho cùng, livestream đông người xem là một chuyện, nhưng khiến người xem muốn quay lại, tương tác và sẵn sàng ủng hộ Creator mới là bài toán dài hạn.\n\nTrong 4 tính năng này, các bác hóng cái nào nhất? Riêng mình đang rất mong Live Auto Dubbing để xem Creator Việt có thể tiến xa đến đâu trên thị trường quốc tế",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3231347767197321/",
-   "published_at": "2026-11-01T13:56:03+00:00",
-   "reactions": 31,
-   "comments_count": 0,
-   "top_comments": []
-  },
-  {
-   "id": "3230793247252773",
-   "group_id": "j2team.community",
-   "group_name": "J2TEAM Community",
-   "title": "Mình có làm con game \" P.A.L.S: Lost at Sea\" co-op 2 đến 4 người.",
-   "content": "Mình có làm con game \" P.A.L.S: Lost at Sea\" co-op 2 đến 4 người.\nChào mọi người, nửa tháng trước mình có giới thiệu game mình làm, con game \" P.A.L.S: Lost at Sea\" co-op 2 đến 4 người. Hôm nay mình đã mở playtest demo cho ae có thể chơi thử. Bản thử này tầm 2 tiếng chơi với 2 vùng biển, bản full sẽ có 6 vùng biển. Mọi người có thể cùng bạn bè chơi thử. Vui vẻ hỗn loạn, nếu thấy trò chơi thú vị có thể chia sẻ giúp mình. Nếu gặp lỗi trong quá trình chơi có thể báo mình để mình fix luôn. cảm ơn anh em rất nhiều\n\nhttps://store.steampowered.com/app/5396330/PALS_Lost_at_Sea/\n\n#j2team_share",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3230793247252773/",
-   "published_at": "2026-11-01T03:35:02+00:00",
-   "reactions": 99,
-   "comments_count": 7,
-   "top_comments": []
-  },
-  {
-   "id": "2679355025855221",
+   "id": "2681152872342103",
    "group_id": "machinelearningcoban",
    "group_name": "Forum Machine Learning cơ bản",
-   "title": "Trong nhóm có ai đang làm về đề tài Physical AI (VLA). Có thể cho em tham gia không ạ. Em làm ở chủ yếu ở cấp độ engineering. Mục ",
-   "content": "Trong nhóm có ai đang làm về đề tài Physical AI (VLA). Có thể cho em tham gia không ạ. Em làm ở chủ yếu ở cấp độ engineering. Mục đích là phục vụ cho đồ án tốt nghiệp sắp tới ạ.",
-   "url": "https://facebook.com/groups/machinelearningcoban/permalink/2679355025855221/",
-   "published_at": "2026-11-01T16:30:18+00:00",
-   "reactions": 17,
-   "comments_count": 6,
+   "title": "Chào mọi người ạ, gần đây mình có gặp một bài toán mới liên quan đến việc tách câu với độ chính xác tuyệt đối.",
+   "content": "Chào mọi người ạ, gần đây mình có gặp một bài toán mới liên quan đến việc tách câu với độ chính xác tuyệt đối.\n\nMình đã thử qua các giải pháp thông dụng như regex, pysd hay dùng model Sat nhưng có vẻ kết quả vẫn không khả quan lắm, dữ liệu càng lớn sẽ càng phát hiện ra nhiều lỗi nặng.\n\nHiện tại em đang cần ưu tiên khá cao cả về chất lượng tách câu lẫn tốc độ chạy.\n\nMọi người có đề xuất hay luồng giải pháp nào đã từng ứng dụng qua gợi ý giúp em với ạ. Em xin cảm ơn.",
+   "url": "https://facebook.com/groups/machinelearningcoban/permalink/2681152872342103/",
+   "published_at": "2026-11-03T08:57:32+00:00",
+   "reactions": 3,
+   "comments_count": 2,
    "top_comments": []
   },
   {
-   "id": "2678847742572616",
+   "id": "2680897119034345",
    "group_id": "machinelearningcoban",
    "group_name": "Forum Machine Learning cơ bản",
-   "title": "🎓 Irodori-Sen-TTS là mô hình đọc tiếng Việt do người làm kênh tự huấn luyện từ nền Irodori-TTS-500M-v3 của tác giả Aratako; video ",
-   "content": "🎓 Irodori-Sen-TTS là mô hình đọc tiếng Việt do người làm kênh tự huấn luyện từ nền Irodori-TTS-500M-v3 của tác giả Aratako; video ghi lại quá trình học tinh chỉnh (fine-tuning).\n🎓 Irodori-Sen-TTS là mô hình đọc tiếng Việt do người làm kênh tự huấn luyện từ nền Irodori-TTS-500M-v3 của tác giả Aratako; video ghi lại quá trình học tinh chỉnh (fine-tuning).\n\n🪛 Tinh chỉnh bằng LoRA trên Kaggle, hai GPU T4 miễn phí, khoảng 100 giờ qua nhiều phiên. Dữ liệu tiếng Việt khoảng 200 giờ do máy tạo (OmniVoice và Gemma4-e2b), không phải giọng người thật, cộng bộ dữ liệu tiếng Nhật do tác giả Aratako cho phép dùng.\n\n🫶 Xin cảm ơn Aratako vì đã chia sẻ mô hình nền mã nguồn mở và bộ dữ liệu tiếng Nhật.\n\n🎧 Video có sáu đoạn giọng mẫu do chính mô hình tạo, lấy từ các mẫu trong repo.\n\n😮‍💨 Hạn chế: emoji tiếng Việt chưa ổn định, câu dài và trộn Việt–Nhật còn yếu. Nên đổi chữ hoa về chữ thường trước khi đọc.\n\n🔒 Công khai trên Hugging Face, giấy phép MIT. Theo điều khoản mô hình nền: không nhân bản hay mạo danh giọng người khi chưa được đồng ý, không tạo thông tin sai lệch. Dùng thử, không phải sản phẩm của Aratako. Địa chỉ ở cuối video.\n\n#TextToSpeech #FineTuning #OpenSource #KySuAI",
-   "url": "https://facebook.com/groups/machinelearningcoban/permalink/2678847742572616/",
-   "published_at": "2026-11-01T06:36:20+00:00",
+   "title": "MACHINE LEARNING IN TRADING: FREE EBOOK + PYTHON CODE",
+   "content": "**MACHINE LEARNING IN TRADING: FREE EBOOK + PYTHON CODE **",
+   "url": "https://facebook.com/groups/machinelearningcoban/permalink/2680897119034345/",
+   "published_at": "2026-11-03T03:07:41+00:00",
    "reactions": 1,
    "comments_count": 0,
    "top_comments": []
   },
   {
-   "id": "1844323313583484",
+   "id": "2680897189034338",
+   "group_id": "machinelearningcoban",
+   "group_name": "Forum Machine Learning cơ bản",
+   "title": "Chọn được một font Latinh rất ưng, gõ thử tiếng Việt thì nhận về: \"Nh□ng đ□□ng ph□ H□ N□i\" 😅",
+   "content": "Chọn được một font Latinh rất ưng, gõ thử tiếng Việt thì nhận về: \"Nh□ng đ□□ng ph□ H□ N□i\" 😅\n\nFontGen: một mô hình sinh các Ký tự tiếng Việt còn thiếu, theo đúng nét của font gốc. Với Poppins, mô hình vẽ thêm 165 ký tự trong 28 giây, chỉ chạy trên CPU.",
+   "url": "https://facebook.com/groups/machinelearningcoban/permalink/2680897189034338/",
+   "published_at": "2026-11-03T03:07:43+00:00",
+   "reactions": 0,
+   "comments_count": 0,
+   "top_comments": []
+  },
+  {
+   "id": "1846301656718983",
    "group_id": "systemdesignvietnam",
    "group_name": "System Design Vietnam",
-   "title": "🚀 **[HỒ CHÍ MINH] - TUYỂN DỤNG LEAD SOFTWARE ARCHITECT (CAD SOLUTIONS) | LƯƠNG UP TO $4,000 USD** - Mã Job: Rec6875",
-   "content": "🚀 **[HỒ CHÍ MINH] - TUYỂN DỤNG LEAD SOFTWARE ARCHITECT (CAD SOLUTIONS) | LƯƠNG UP TO $4,000 USD** - Mã Job: Rec6875\n\n✨ **QUYỀN LỢI HẤP DẪN**\n\n💰 Mức **lương lên đến 4,000 USD**/tháng.\n\n🚀 **Cơ hội sở hữu dự án: Thiết kế hệ thống từ đầu, toàn quyền lựa chọn công nghệ và dẫn dắt đội ngũ kỹ thuật.**\n\n🎯** Thưởng cuối năm:** Đảm bảo tháng lương thứ 13 + thưởng KPI theo hiệu suất và tăng trưởng kinh doanh.\n\n🏢 **Phúc lợi toàn diện:** Đóng BHXH đầy đủ trên mức lương thực nhận, gói bảo hiểm sức khỏe cao cấp.\n\n⏰ **Cân bằng cuộc sống**: Làm việc từ thứ Hai đến thứ Sáu, nghỉ thứ Bảy và Chủ Nhật.\n\n📈 **Sự nghiệp bền vững:** Vị trí nòng cốt, lộ trình thăng tiến lâu dài tại tập đoàn sản xuất quy mô lớn.\n\n💼 **YÊU CẦU ỨNG VIÊN**\n\n📌 Tối thiểu **10 năm kinh nghiệm IT, trong đó có 5 năm phát triển phần mềm trong ngành xây dựng** (Ưu tiên kinh nghiệm làm phần mềm về thép/kết cấu).\n\n📌** Kỹ năng tiếng Anh kỹ thuật xuất sắc** để cộng tác trực tiếp với đội ngũ kỹ sư tại Úc và Mỹ.\n\n📌 **Kinh nghiệm thực tế với các công cụ AI hỗ trợ lập trình** (Claude Code, GitHub Copilot, Cursor...).\n\n📌 Tư duy kiến trúc hệ thống vững chắc: Design patterns, data modelling, algorithms và khả năng xử lý các hệ thống phức tạp.\n\n📌 Kinh nghiệm ra quyết định kiến trúc liên quan đến hiệu năng, khả năng mở rộng, tính bảo trì và độ tin cậy.\n\n📌** Ưu tiên ứng viên có kinh nghiệm xây dựng phần mềm CAD, BIM**, mô hình hóa hình học hoặc rendering (OpenGL, DirectX, Vulkan...).\n\n📌 Ưu tiên ứng viên thành thạo các ngôn ngữ:** C++, C#, Python, Rust.**\n\n📞 Liên hệ Zalo: Ms. Hằng - 0987270372",
-   "url": "https://facebook.com/groups/systemdesignvietnam/permalink/1844323313583484/",
-   "published_at": "2026-11-01T14:39:55+00:00",
+   "title": "🔥 TÌM KIẾM **SOLUTIONS ARCHITECT** - LÀM VIỆC TRỰC TIẾP CÙNG ĐỐI TÁC HONG KONG (**HYBRID - BÌNH THẠNH - HCM**) - Mã Job: 16120",
+   "content": "🔥 TÌM KIẾM **SOLUTIONS ARCHITECT** - LÀM VIỆC TRỰC TIẾP CÙNG ĐỐI TÁC HONG KONG (**HYBRID - BÌNH THẠNH - HCM**) - Mã Job: 16120\n\nCơ hội dành cho các chuyên gia kiến trúc hệ thống (Solutions Architect) dày dặn kinh nghiệm, mong muốn dẫn dắt các dự án nền tảng dựa trên AI đột phá trong lĩnh vực Bảo hiểm và Y tế. Đây là vị trí then chốt kết hợp giữa tư duy thiết kế hệ thống, khả năng làm việc trực tiếp với khách hàng quốc tế và năng lực lãnh đạo đội ngũ kỹ thuật.\n\n✨ **QUYỀN LỢI HẤP DẪN**\n\n💰 **Thu nhập và thưởng hiệu suất siêu hấp dẫn**.\n\n🏢 Chế độ làm việc **Hybrid linh hoạt (hỗ trợ 1-2 ngày WFH mỗi tuần).**\n\n🚀 Môi trường làm việc đa quốc gia, chuyên nghiệp và sử dụng các công nghệ tiên tiến.\n\n🎯 Đóng BHXH đầy đủ trên mức lương thỏa thuận theo quy định pháp luật Việt Nam.\n\n💼 **YÊU CẦU ỨNG VIÊN**\n\n📌 Tối thiểu** 10 năm kinh nghiệm trong phát triển ứng dụng web và tích hợp hệ thống**.\n\n📌 **Tiếng Anh lưu loát**.\n\n📌** Chuyên gia về Backend: Node.js, TypeScript, NestJS.**\n\n📌 Có k**inh nghiệm thực chiến với Google Cloud Platform** (GCP) và MySQL (hoặc các CSDL quan hệ khác).\n\n📌 Am hiểu sâu sắc về kiến trúc hệ thống Scalable, **Microservices **và thiết kế RESTful API.\n\n📌 **Có kinh nghiệm làm việc trong ngành Bảo hiểm hoặc phát triển các sản phẩm Bảo hiểm.**\n\n📌 Khả năng xây dựng và thuyết trình sơ đồ C4 (C4 diagrams), tài liệu kiến trúc cho cả đối tượng kỹ thuật và phi kỹ thuật.\n\n📌 Kinh nghiệm dẫn dắt đội ngũ (Lead), quản lý tiến độ dự án, phân bổ nhiệm vụ và review code.\n\n📌 Kỹ năng giao tiếp xuất sắc, tự tin đại diện đội ngũ kỹ thuật trong các buổi thảo luận giải pháp với khách hàng cấp quản lý (Ngân hàng, Bảo hiểm, Bệnh viện).\n\n📌 Kinh nghiệm làm việc theo quy trình Agile/SCRUM.\n\n📌 Ưu tiên ứng viên có kinh nghiệm tích hợp AI/LLM (OpenAI, Gemini, Claude...), AWS, Docker, Kubernetes\n\nVị trí này đòi hỏi một \"Hands-on Architect\" thực thụ, có khả năng chuyển đổi các ý tưởng kinh doanh thành giải pháp kỹ thuật thực tế và đảm bảo chất lượng vận hành hệ thống.\n\n📞 Liên hệ Zalo: Ms. Hằng - 0987270372",
+   "url": "https://facebook.com/groups/systemdesignvietnam/permalink/1846301656718983/",
+   "published_at": "2026-11-03T15:10:38+00:00",
    "reactions": 0,
+   "comments_count": 0,
+   "top_comments": []
+  },
+  {
+   "id": "1494131989289977",
+   "group_id": "vgu.tech.alumni",
+   "group_name": "VGU Tech Alumni",
+   "title": "AWSCloudPractitionerExam",
+   "content": "#AWSCloudPractitionerExam\nMọi người thử sức với câu hỏi này thử nhé.\nA company runs a small internal API on an EC2 instance that is always on, but the API receives only a few hundred requests each day. The company wants to stop paying for the time when no requests are being processed. \nWhich solution will help the company lower its cost?",
+   "url": "https://facebook.com/groups/vgu.tech.alumni/permalink/1494131989289977/",
+   "published_at": "2026-11-03T14:50:34+00:00",
+   "reactions": 1,
+   "comments_count": 0,
+   "top_comments": []
+  },
+  {
+   "id": "1494105422625967",
+   "group_id": "vgu.tech.alumni",
+   "group_name": "VGU Tech Alumni",
+   "title": "[ Hacker mũ trắng thực sự xâm nhập vào một hệ thống như thế nào? ]",
+   "content": "# **[ Hacker mũ trắng thực sự xâm nhập vào một hệ thống như thế nào? ]**\n\n**TL;DR:** Quá trình thâm nhập hệ thống thực tế không hề màu mè như phim ảnh. Bài chia sẻ này đúc kết toàn bộ quy trình thực chiến từ một buổi lab CTF: từ trinh sát mạng bằng Nmap, dò quét bề mặt web với ffuf và Burp Suite, bẻ khóa xác thực, khai thác lỗ hổng Arbitrary File Upload để cắm Web Shell, cho đến việc tự động hóa toàn bộ công đoạn recon bằng Bash và Python.\n\n---\n\n***Lưu ý***: đây là một khóa học từ Freecodecamp chứ ko phải là video thực chiến \n\n================================\n\nChào mọi người, khi nhắc đến hacking hay kiểm thử xâm nhập (Penetration Testing), nhiều anh chị em thường hình dung ra những màn hình đen chạy chữ xanh chớp nhoáng hay vài câu lệnh thần thánh bẻ khóa máy chủ trong tích tắc. Nhưng thực tế công việc này lại mang tính hệ thống, kỷ luật và đòi hỏi sự kiên nhẫn rất lớn qua từng bước thu thập dữ liệu.\n\nDưới đây là bức tranh toàn cảnh về cách một Ethical Hacker đi từng bước từ con số không đến khi chiếm được quyền điều khiển máy chủ. \n\n## **1. Nền tảng Linux và tư duy điều khiển dòng lệnh**\n\nMọi công cụ bảo mật mạnh nhất đều vận hành trên môi trường Linux (như Parrot OS hay Kali Linux). Thay vì phụ thuộc vào giao diện đồ họa, người làm bảo mật thao tác hoàn toàn qua Terminal để quản lý tiến trình, quyền hạn và mạng.\n\nCác thao tác cốt lõi gồm:\n* Định danh và leo thang đặc quyền cơ bản: kiểm tra phiên làm việc hiện tại (`whoami`, `hostname`, `uname -r`), quản trị tài khoản và phân quyền sudo (`usermod -aG sudo`, `chmod 755`).\n* Kiểm tra kết nối và cấu hình mạng: xác định interface nội bộ (`ip a`, `ifconfig`), kiểm tra phản hồi gói tin (`ping`), và giám sát các thiết bị đang online trong subnet (`netdiscover`).\n## **2. Giai đoạn Reconnaissance và Network Scanning với Nmap**\n\nMục tiêu đầu tiên khi tiếp cận một IP lạ là vẽ lại bản đồ dịch vụ đang mở:\n* Quét cổng cơ bản và dịch vụ: Sử dụng Nmap để xác định cổng mở. Phổ biến nhất là cổng 22 (SSH) và cổng 80 (HTTP).\n* Quét sâu phiên bản dịch vụ (`nmap -sV`): Giúp nhận diện chính xác phần mềm web server (như Apache 2.4.x) và bản phân phối hệ điều hành (Debian). Thông tin phiên bản chính là chìa khóa để tra cứu mã khai thác đã công bố.\n* Quét script an toàn (`nmap -sC`): Tự động phát hiện các tệp nhạy cảm như `robots.txt`, từ đó làm lộ ra các đường dẫn quản trị bị ẩn (ví dụ: `/extplorer`).\n* Kỹ thuật quét ẩn danh: Trong các bài kiểm thử thực tế cần né tránh IDS/Firewall, việc kết hợp cờ Decoy (`-D RND:10`), SYN Stealth Scan (`-sS`) hoặc định tuyến qua ProxyChains giúp phân tán dấu vết IP thật.\n## **3. Web Enumeration và Fuzzing bề mặt ứng dụng**\n\nKhi phát hiện cổng 80 mở nhưng trang chủ chỉ là trang mặc định, hacker sẽ chuyển trọng tâm sang rà soát tầng ứng dụng:\n* Định danh công nghệ web: Dùng `whatweb` hoặc phân tích HTTP Header qua `curl -I` để nắm bắt kiến trúc máy chủ, ngôn ngữ backend (PHP) và các thư viện JavaScript liên quan.\n* Fuzzing thư mục và file ẩn: Sử dụng các công cụ như `dirsearch` hoặc `ffuf` (kèm danh sách từ khóa SecLists/Dirb) để brute-force tìm kiếm endpoint, tham số ẩn hoặc subdomain. Kỹ thuật loại trừ mã lỗi (như bỏ qua 403, 404, 301) giúp lọc nhiễu và tập trung vào các tài nguyên thực tế còn tồn tại.\n## **4. Khai thác xác thực với Burp Suite và Ffuf**\n\nKhi tìm thấy cổng đăng nhập quản trị nhưng không có thông tin tài khoản:\n* Bắt và phân tích gói tin: Dùng Burp Suite làm proxy chặn giữa trình duyệt và server, ghi lại cấu trúc HTTP POST request (các tham số `username`, `password`, cookie phiên).\n* Brute-force tự động: Đưa raw request vào `ffuf` sử dụng kỹ thuật Cluster Bomb kết hợp wordlist phổ biến (như `rockyou.txt`) để tự động thử nghiệm hàng loạt cặp thông tin đăng nhập mà không cần thao tác tay. Trong trường hợp hệ thống thiếu cơ chế Rate Limiting, việc tìm ra thông tin đăng nhập mặc định chỉ còn là vấn đề thời gian.\n## **5. Khai thác lỗ hổng và cắm Web Shell**\n\nSau khi đăng nhập vào hệ thống quản lý tệp (ví dụ eXtplorer 2.1.15):\n* Tra cứu dữ liệu lỗ hổng: Sử dụng `searchsploit` (Exploit-DB) để kiểm tra các lỗ hổng đã biết liên quan đến phiên bản phần mềm.\n* Tải lên mã độc (Arbitrary File Upload): Tận dụng tính năng cho phép tải tệp hoặc tạo tệp mới của ứng dụng để đẩy một Web Shell bằng PHP (như p0wny-shell) lên thư mục web.\n* Truy cập tệp độc hại qua trình duyệt: Ngay khi gọi đến đường dẫn tệp vừa tải lên, attacker đã có một giao diện console tương tác trực tiếp trên máy chủ mục tiêu, đọc ghi tệp hệ thống và chuẩn bị cho các bước leo thang đặc quyền tiếp theo.\n## **6. Tự động hóa quy trình bằng Bash và Python**\n\nMột hacker chuyên nghiệp không gõ lại từng câu lệnh thủ công. Việc tự xây dựng công cụ riêng là bắt buộc:\n* Viết Bash Script: Tự động hóa chuỗi kiểm tra host còn sống hay không (`ping`) và quét nhanh danh sách cổng mục tiêu để tiết kiệm thời gian ban đầu.\n* Xây dựng Python Recon Tool: Sử dụng thư viện `socket` để phân giải domain sang IP (`gethostbyname`) và thư viện `requests` để tự động đọc HTTP Status Code, trích xuất toàn bộ Response Headers và phân tích cấu trúc phản hồi từ máy chủ.\n\nNhìn chung, bảo mật hệ thống là một chuỗi mắt xích liên hoàn. Một dịch vụ phụ để lộ phiên bản, một trang login không giới hạn số lần thử, hay một hàm upload file thiếu kiểm tra đuôi tệp cũng đủ để kẻ tấn công kiểm soát toàn bộ hạ tầng.\n\nAnh chị em đã từng gặp phải sự cố cấu hình nào tương tự trong các dự án thực tế của mình chưa?\n\n#sharing #ShareThisPost #tutorial #NetworkSecurity #networking #ethical",
+   "url": "https://facebook.com/groups/vgu.tech.alumni/permalink/1494105422625967/",
+   "published_at": "2026-11-03T14:17:17+00:00",
+   "reactions": 53,
+   "comments_count": 2,
+   "top_comments": [
+    {
+     "author": "Facebook user",
+     "text": "Toàn những command nền của Linux, tks admin",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Đây là khóa học giúp mọi người hiểu rõ hơn về Ethical Hacking nha https://www.youtube.com/watch?v=cqfl38Ip1ho",
+     "votes": 0
+    }
+   ]
+  },
+  {
+   "id": "1493878885981954",
+   "group_id": "vgu.tech.alumni",
+   "group_name": "VGU Tech Alumni",
+   "title": "Khi triển khai mô hình BIM Kết cấu từ bản vẽ AutoCAD 2D, việc gọi câu lệnh AI trực tiếp qua MCP trên một bản vẽ CAD lộn xộn layer ",
+   "content": "Khi triển khai mô hình BIM Kết cấu từ bản vẽ AutoCAD 2D, việc gọi câu lệnh AI trực tiếp qua MCP trên một bản vẽ CAD lộn xộn layer vừa tốn nhiều token vừa dễ phát sinh lỗi lệch tim trục. Giải pháp tối ưu là dùng AI để tạo bộ công cụ lai (Hybrid): kết hợp AutoLISP làm sạch bản vẽ CAD và Revit Add-in C# đọc trực tiếp dữ liệu hình học.\n\nQuy trình thực nghiệm thực tế:\n- Bước 1 (AutoLISP STR_CLEAN): Gõ lệnh STR_CLEAN trong AutoCAD để tự động quét 2.085 đối tượng trên Model Space, xóa đối tượng trùng lặp (Overkill) và gom toàn bộ nét dầm, nhãn tiết diện, lưới trục về bộ layer chuẩn STR-BEAM, STR-TEXT, STR-GRID.\n- Bước 2 (Kết nối trực tiếp DWG): Mở công cụ Revit Add-in trên Revit 2025. Add-in giao tiếp trực tiếp với phiên AutoCAD đang mở mà không cần bật MCP Server trung gian.\n- Bước 3 (Nhận diện tiết diện & mốc gốc 1-A): Thuật toán tự động đọc các nhãn dầm (300x600, 400x600, 300x800...), tìm cặp đường biên song song và đồng bộ tọa độ theo giao điểm lưới trục 1-A.\n- Bước 4 (Dựng 27 dầm trong 1 giây): Tự động khởi tạo hoàn chỉnh 27 dầm kết cấu (B1 đến B18) trên cao độ Tầng 3 (8.750mm) chính xác 100%.\n\nBình luận \"ADDINREVIT\" để nhận mã nguồn AutoLISP STR_CAD_CLEANER và tài liệu hướng dẫn xây dựng Revit Add-in dựng dầm tự động!\n\n#LICOBIM #RevitAddin #AutoLISP",
+   "url": "https://facebook.com/groups/vgu.tech.alumni/permalink/1493878885981954/",
+   "published_at": "2026-11-03T09:22:41+00:00",
+   "reactions": 0,
+   "comments_count": 0,
+   "top_comments": []
+  },
+  {
+   "id": "1493922535977589",
+   "group_id": "vgu.tech.alumni",
+   "group_name": "VGU Tech Alumni",
+   "title": "Một trong những lợi thế lớn nhất khi đóng gói quy trình kỹ thuật thành bộ AI Skill chuẩn hóa (SKILL.md) kết hợp giao thức MCP là k",
+   "content": "Một trong những lợi thế lớn nhất khi đóng gói quy trình kỹ thuật thành bộ AI Skill chuẩn hóa (SKILL.md) kết hợp giao thức MCP là khả năng di chuyển linh hoạt giữa các nền tảng AI khác nhau như Claude, Codex, Cursor hay QwenPaw mà không bị gián đoạn công việc.\n\nTrong thử nghiệm thực tế chuyển đổi bộ Skill nghiệm thu mô hình BIM Kết cấu (40 hạng mục) từ Claude sang Codex:\n- Codex đọc trực tiếp cấu trúc thư mục Skill và kết nối ngay lập tức với phiên làm việc Autodesk Revit đang mở thông qua cổng revit-mcp.\n- Hệ thống tự động quét toàn bộ mô hình kết cấu gồm 10.568 phần tử (8 Level, 9 Grid, 208 View, 32 Sheet, 93 Dầm, 21 Cột, 31 Móng và 305 thanh cốt thép Structural Rebar).\n- Chỉ bằng một câu lệnh ngắn gọn, AI tự động đối chiếu 40 tiêu chí kỹ thuật và xuất biên bản nghiệm thu định dạng Word (.docx): tổng hợp 28 mục Đạt, 4 mục Chưa đạt và 8 mục cần kiểm tra bổ sung.\n- Đặc biệt, báo cáo chỉ rõ từng mã định danh cấu kiện (ElementId 410825, 411208, 411265, 412086) còn thiếu ký hiệu Mark để kỹ sư xử lý triệt để.\n\nBình luận \"AICODEX\" để nhận Cẩm Nang Chuyển Đổi AI Skill Đa Nền Tảng (Claude ↔ Codex) & Mẫu Skill Nghiệm Thu BIM Kết Cấu!\n\n#LICOBIM #BIMAI #RevitMCP",
+   "url": "https://facebook.com/groups/vgu.tech.alumni/permalink/1493922535977589/",
+   "published_at": "2026-11-03T10:23:24+00:00",
+   "reactions": 1,
    "comments_count": 0,
    "top_comments": []
   }
