@@ -1,6 +1,18 @@
 {
- "generated_at": "2026-11-06T14:32:54.054710+00:00",
+ "generated_at": "2026-11-06T22:53:21.457010+00:00",
  "items": [
+  {
+   "id": "2582346758857295",
+   "group_id": "vnjug",
+   "group_name": "Vietnam Java User Group",
+   "title": "",
+   "content": "",
+   "url": "https://facebook.com/groups/vnjug/permalink/2582346758857295/",
+   "published_at": "2026-11-06T10:19:36+00:00",
+   "reactions": 1,
+   "comments_count": 0,
+   "top_comments": []
+  },
   {
    "id": "2572720563153248",
    "group_id": "vnjug",
@@ -9,8 +21,8 @@
    "content": "**[Góc Architecture] Canva dùng S3 để giảm tải MySQL khi gateway warm-up cache như thế nào?**\n\nChào anh em VNJUG,\n\nKhi xây dựng kiến trúc xác thực ở quy mô lớn, một bài toán nan giải là làm sao để các API gateway kiểm tra session revocation cho request thông thường trên bộ nhớ cục bộ (*in-memory*) để giữ độ trễ thấp, mà không gây quá tải hoặc tạo điểm nghẽn (*bottleneck*) cho database mỗi lần deploy hàng loạt pod.\n\nThay vì tăng thêm read replica hay dựng một cụm Redis trung gian, Canva chọn giải pháp dùng **Amazon S3 làm tầng phân phối dữ liệu thô (bulk distribution layer)** theo luồng:\n\nMySQL → async worker → S3 → local cache trên gateway\n\n**1. Bài toán: Phân định phạm vi kiểm tra và áp lực warm-up khi deploy**\n\nTại Canva, session cookie được mã hóa và chứa sẵn thông tin định danh (user ID, roles, permissions). Gateway có thể giải mã cookie để xác thực request mà không cần truy vấn mạng. Tuy nhiên, khi một session bị thu hồi, gateway buộc phải đối chiếu với danh sách revocation:\n\n* **Request checks (In-memory):** Từng request thông thường chỉ đối chiếu với tập dữ liệu revocation lưu sẵn trên bộ nhớ của gateway pod.\n* **Token refresh checks (Database query):** Session cookie có chu kỳ làm mới định kỳ (tối đa trong vòng 12 giờ) và bắt buộc phải kiểm tra trực tiếp vào MySQL. Tất cả token được bảo đảm refresh trong cửa sổ này; lúc refresh luôn đối chiếu database, nên các kiểm tra đó không phụ thuộc in-memory cache. Nhờ đó, bộ nhớ của gateway chỉ cần duy trì các bản ghi trong **cửa sổ trượt 12 giờ (12-hour window)**.\n\nVấn đề xuất hiện trong quá trình triển khai: Khi hàng trăm pod gateway khởi động đồng thời, mỗi pod *có thể phải kéo hơn 1 triệu bản ghi* revocation từ MySQL để warm-up cache. Lưu lượng đọc lớn này dồn dập đổ vào database, tạo ra nguy cơ quá tải nghiêm trọng. Việc bổ sung MySQL read replica chỉ là giải pháp tình thế, tốn kém chi phí hạ tầng nhưng không giải quyết được gốc rễ của access pattern dạng bulk download.\n\n**2. Quyết định backend: Tại sao chọn S3 thay vì Redis?**\n\nCanva từng cân nhắc phương án đặt Redis làm bộ đệm để gateway tải dữ liệu khi khởi động và định kỳ thăm dò cập nhật. Tuy nhiên, giải pháp này bị loại bỏ vì:\n\n* Redis thường không được triển khai ở cấu hình đảm bảo độ bền dữ liệu hoàn toàn (*fully durable*).\n* Đòi hỏi đội ngũ phải quản lý thêm một cụm cluster phân tán và đối mặt với độ phức tạp trong việc duy trì tính nhất quán của cache (*cache consistency*).\n* Thực chất chỉ chuyển áp lực đọc dữ liệu lớn từ datastore này sang một datastore khác.\n\nTrong khi đó, S3 cung cấp độ bền cao và được tối ưu tốt cho nhu cầu đọc dữ liệu lớn song song từ nhiều client. Cần lưu ý rằng dữ liệu revocation trong cửa sổ 12 giờ là dữ liệu liên tục biến đổi (các chunk mới vẫn được cập nhật liên tục), nhưng việc chia nhỏ chúng cho phép S3 đóng vai trò như một tầng lưu trữ phân phối snapshot cực kỳ hiệu quả cho gateway.\n\n**3. Cơ chế kỹ thuật: Từ bộ nhớ Java Heap đến kiểm soát tranh chấp ghi**\n\n**a. Cấu trúc nhị phân 16 byte trên Java Heap**\nĐể tránh lãng phí bộ nhớ do overhead của các Java object, Canva nén mỗi bản ghi revocation vào đúng **16 byte**:\n\n* *Principal* (định danh của user hoặc brand).\n* *Login cutoff timestamp* (mốc login timestamp mà revocation áp dụng tới; với loại logout, thường là các session bắt đầu trước mốc này).\n* Các *flags* (cho phép vô hiệu hóa thông tin được cache trong cookie mà không bắt buộc người dùng phải đăng xuất).\n\n*Ví dụ minh họa:* User A có phiên login lúc 09:00, nếu phát sinh một lệnh logout với cutoff 10:00 thì phiên 09:00 thuộc phạm vi bị thu hồi.\n\nCác bản ghi này được gom vào một mảng byte phẳng (flat byte array) và **sắp xếp theo principal**. Gateway thao tác trực tiếp trên mảng byte bằng binary search mà không cần chuyển đổi sang representation khác. Quyết định này giúp Canva **giảm 87.5% dung lượng bộ nhớ (giảm 8 lần)** so với cấu trúc object trước đó.\n\n**b. Phân đoạn thời gian 30 phút (30-minute chunks)**\nCửa sổ 12 giờ được chia thành các chunk 30 phút độc lập trên S3.\n\n* Khi gateway khởi động, nó chỉ tải các chunk thuộc 12 giờ gần nhất dựa theo timestamp trong tên file.\n* Định kỳ, khi *mốc kết thúc (end)* của một chunk cũ hơn 12 giờ, gateway mới giải phóng chunk đó khỏi bộ nhớ.\n\n**c. Async Worker và bảo toàn dữ liệu khi nhiều node ghi**\n\n* **Quy trình ghi:** Worker chạy nền định kỳ đọc các revocation mới từ MySQL theo từng batch cố định, tải chunk 30 phút hiện tại từ S3 về, chèn thêm, sắp xếp lại rồi ghi đè lên S3. Worker tạo chunk mới khi bước sang cửa sổ thời gian tiếp theo.\n* **Chi phí O(N²):** Về mặt lý thuyết, việc xây dựng một chunk N bản ghi thông qua nhiều batch nối tiếp có tổng độ phức tạp tích lũy là O(N²). Tuy nhiên, nhờ gom hàng trăm bản ghi vào mỗi batch, worker của Canva vẫn đạt write throughput **trên 2.000 revocations/giây** đối với workload của họ, bởi điểm nghẽn thực tế nằm ở I/O mạng chứ không phải CPU.\n* **S3 Conditional PUT bảo vệ correctness:** Để chạy nhiều worker dự phòng mà không bị mất dữ liệu (*lost updates*), hệ thống dùng điều kiện tiên quyết của S3: chỉ tạo mới nếu chưa có chunk cùng tên tại thời điểm ghi, và chỉ ghi đè chunk hiện tại nếu nó chưa bị thay đổi kể từ lúc đọc.\n* **Vai trò của ZooKeeper:** Hệ thống dùng ZooKeeper leader election để giảm thiểu xung đột ghi giữa các worker, nhưng *ZooKeeper không đảm bảo tính đúng đắn*. Nếu một worker bị tạm dừng (*node pause*) rồi sau đó tiếp tục xử lý khi một leader mới đã kịp ghi dữ liệu, chính *S3 conditional PUT* mới là chốt chặn kỹ thuật ngăn worker cũ ghi đè dữ liệu sai.\n* **Cập nhật ở gateway:** Gateway dùng *S3 conditional GET* để định kỳ thăm dò và chỉ tải lại khi chunk trên S3 thực sự có thay đổi.\n\n**4. Đánh đổi kỹ thuật và Kết quả**\n\n* **Đánh đổi về độ trễ cập nhật:** Trạng thái revocation hoạt động theo cơ chế *near real-time* (bất đồng bộ). Vì phụ thuộc vào worker gom batch đẩy lên S3 và chu kỳ thăm dò của gateway, dữ liệu không có hiệu lực tức thì mà chấp nhận độ trễ lan truyền nhất định.\n* **Kết quả tại Canva:** Tải đọc trên MySQL khi deploy fleet lớ",
    "url": "https://facebook.com/groups/vnjug/permalink/2572720563153248/",
    "published_at": "2026-10-28T12:48:51+00:00",
-   "reactions": 36,
-   "comments_count": 2,
+   "reactions": 49,
+   "comments_count": 3,
    "top_comments": [
     {
      "author": "Facebook user",
@@ -32,6 +44,18 @@
    "top_comments": []
   },
   {
+   "id": "3234346643564100",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "Mở góii nạp đầu cho ae :))))",
+   "content": "Mở góii nạp đầu cho ae :))))\nĐang cho test gói plus ở Việt Năm. \n\nVà đây là những gì VIP sẽ có :) vẽ thêm chứ chưa plus lắm :( \n\nAi cũng được hay sao nhỉ.\n\n#j2team_news",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3234346643564100/",
+   "published_at": "2026-11-03T19:54:04+00:00",
+   "reactions": 214,
+   "comments_count": 90,
+   "top_comments": []
+  },
+  {
    "id": "3236438940021537",
    "group_id": "j2team.community",
    "group_name": "J2TEAM Community",
@@ -39,8 +63,8 @@
    "content": "Máy tính Casio không phế...tôi phế 🙃\n#j2team_share\n\n#j2team_relax",
    "url": "https://facebook.com/groups/j2team.community/permalink/3236438940021537/",
    "published_at": "2026-11-05T12:21:17+00:00",
-   "reactions": 297,
-   "comments_count": 14,
+   "reactions": 613,
+   "comments_count": 26,
    "top_comments": []
   },
   {
@@ -51,8 +75,8 @@
    "content": "🔥 NGAY LÚC NÀY🔥\nCuộc thi “Hành trình truy vết Tội phạm mạng” chính thức bước vào Vòng chung kết, nơi 12 đội thi xuất sắc cùng tranh tài trong 24 giờ liên tục, chinh phục những thử thách đòi hỏi tư duy sắc bén, kỹ năng chuyên môn và bản lĩnh vững vàng trên không gian mạng. 🚀🚀\n\n#j2team_news",
    "url": "https://facebook.com/groups/j2team.community/permalink/3237661556565942/",
    "published_at": "2026-11-06T11:23:35+00:00",
-   "reactions": 181,
-   "comments_count": 7,
+   "reactions": 345,
+   "comments_count": 16,
    "top_comments": []
   },
   {
@@ -63,8 +87,8 @@
    "content": "Kỷ niệm clb bóng đá người ta chơi lớn cỡ này.\nHình ảnh màn thắp pháo sáng rực trời của các cổ động viên câu lạc bộ bóng đá USM EI Harrach để kỷ niệm 95 năm ngày thành lập câu lạc bộ (1931 - 2026)\n#j2team_news",
    "url": "https://facebook.com/groups/j2team.community/permalink/3237496433249121/",
    "published_at": "2026-11-06T08:25:07+00:00",
-   "reactions": 298,
-   "comments_count": 10,
+   "reactions": 435,
+   "comments_count": 13,
    "top_comments": []
   },
   {
@@ -75,8 +99,8 @@
    "content": "Khoe với một người một chút thủ công thư giãn ~ một vài chiếc móng trong nails box xương rắn thật bên mình vừa thực hiện 🫠\n\n#j2team_relax",
    "url": "https://facebook.com/groups/j2team.community/permalink/3237506633248101/",
    "published_at": "2026-11-06T08:35:21+00:00",
-   "reactions": 99,
-   "comments_count": 0,
+   "reactions": 112,
+   "comments_count": 1,
    "top_comments": []
   },
   {
@@ -87,27 +111,32 @@
    "content": "Sau hơn 2 năm tự mày mò, học hỏi, viết code và trải qua không ít khó khăn, cuối cùng mình cũng đã chính thức phát hành tựa game indie đầu tay Ashen Legacy trên Steam! 🥹\n\nĐây không phải là một sản phẩm \"vibe coding\", mà là thành quả của hơn 2 năm mình tự tay lập trình, xây dựng các hệ thống gameplay, sửa vô số bug và hoàn thiện từng chút một.\n\nTừ một ý tưởng nhỏ ban đầu đến khi có thể đưa game lên Steam là cả một hành trình dài. Có những lúc thực sự rất nản, nhưng cảm giác nhìn thấy sản phẩm của mình chính thức ra mắt khiến mọi công sức bỏ ra đều trở nên xứng đáng.\n\nMình biết game vẫn còn nhiều thiếu sót, nhưng đây thực sự là một cột mốc rất ý nghĩa đối với bản thân.\n\nRất mong nhận được những góp ý, đánh giá từ anh em J2TEAM, đặc biệt là những anh em có kinh nghiệm lập trình và phát triển game, để mình có thể tiếp tục cải thiện sản phẩm!\n\n🎮 Link Steam: https://store.steampowered.com/app/5164260/Ashen_Legacy/\n\nCảm ơn anh em J2TEAM rất nhiều! ❤️\n\n#j2team_share",
    "url": "https://facebook.com/groups/j2team.community/permalink/3236815989983832/",
    "published_at": "2026-11-05T18:52:12+00:00",
-   "reactions": 119,
-   "comments_count": 6,
+   "reactions": 233,
+   "comments_count": 16,
    "top_comments": [
     {
      "author": "Facebook user",
-     "text": "trông đầu tư thật, cái này có đúng 2 năm không hay nhiều hơn thế bro",
+     "text": "làm dạng stickman vớ vẩn lại hay =)))) như huyền thoại gif 2-25 năm trc",
      "votes": 0
     },
     {
      "author": "Facebook user",
-     "text": "Em chúc mừng bác nhé 🎉🎉🎉. Sẵn tiện cho em hỏi bác có phải lập doanh nghiệp để xin giấy phép G4 ko ạ ?",
+     "text": "W",
      "votes": 0
     },
     {
      "author": "Facebook user",
-     "text": "Không  có demo chơi thử à bro",
+     "text": "bác có định convert qua android k ạ",
      "votes": 0
     },
     {
      "author": "Facebook user",
-     "text": "W bro",
+     "text": "Mình có chơi thử demo của bạn và mình có vài cảm nhận như sau:\n1. Có lẽ do là demo nên không có tùy chọn điều chỉnh lại phím bấm, chứ những trò platform hiện nay mình chơi các nút cơ bản NHẢY sẽ là Z, tấn công là X và lướt sẽ là C, nó sẽ trong cùng một hàng phím, khi mình chơi khi nhảy và lướt ấn SPACE và SHIFT cùng lúc khá phiền, trong combat thường nhảy né khá nhiều nên ấn SPACE đối với mình không thuận tiện, và mình cũng thấy có phần không thoải mái khi Double Jump.\n\n2. Item rớt ra khi mở rương. Dù là game 2D nhưng phần item rớt ra trông khá phẳng và chưa được bắt mắt, việc rớt đồ ra khỏi rương nên là một cái gì đó nổi bật và đem lại cảm giác phần thưởng hiện vật có cảm giác thu nhặt cầm nắm xứng đáng, mình cảm thấy những viên ngọc khá phẳng và chưa thấy sự hấp dẫn trong việc nhặt đồ.\n\n3. Phần hitbox của địch khi đánh chưa đủ đầm. Cảm giác khi tấn công giống như mình đang đánh chưa tác động mạnh vào địch, tiếng hitbox cũng có nhưng mình thấy chưa ổn\n\nĐây là một vài cảm nhận của mình sau khi chơi demo game của bạn, chúc bạn thành công với game của mình!",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Nhìn nó castlevania mà nó dead cells, nó blasphemous, nó shovel knight thế :v",
      "votes": 0
     }
    ]
@@ -120,8 +149,8 @@
    "content": "#j2team_share\nHai tuần, bốn người rời Anthropic: có những gương mặt quen của Claude Code, hai người sang OpenAI\n\nChỉ trong khoảng hai tuần, bốn người từng làm ở Anthropic lần lượt báo tin rời đi. Cũng trong thời gian này, Anthropic nộp hồ sơ IPO (S-1) hôm 26/10, xin niêm yết trên sàn Nasdaq.\n\nCat Wu - người gắn bó với Claude Code từ khi nó còn là một công cụ nội bộ nhỏ - vừa báo sẽ sang OpenAI để dẫn dắt quản lý sản phẩm cho mảng Core Products (nhóm sản phẩm cốt lõi). Austin Lau, người giúp xây bộ phận tăng trưởng của Anthropic, cũng vừa sang OpenAI.\n\nTrước đó, Thariq (hơn một năm làm Claude Code) và Anthony Morris (người tạo ra Claude Code bản desktop) cũng đã rời Anthropic. Trong bài chia tay, cả hai chưa nói sẽ đi đâu: Thariq nghỉ ngơi một chút trước khi bắt đầu việc mới, Anthony hẹn sớm chia sẻ bước tiếp theo.\n\nVới ai đang dùng Claude Code mỗi ngày, điều đáng theo dõi bây giờ là sản phẩm sẽ đi tiếp ra sao. Mọi người nghĩ thế nào?\n\nCre: Phong Ho",
    "url": "https://facebook.com/groups/j2team.community/permalink/3237292893269475/",
    "published_at": "2026-11-06T04:36:46+00:00",
-   "reactions": 193,
-   "comments_count": 22,
+   "reactions": 210,
+   "comments_count": 23,
    "top_comments": [
     {
      "author": "Facebook user",
@@ -158,7 +187,7 @@
    "content": "📣 ĐIỂM TIN BUỔI SÁNG THỨ SÁU (06/11/2026)\n\nChào buổi sáng cả nhà J2TEAM! Chúc mọi người một ngày mới làm việc và học tập tràn đầy năng lượng. Dưới đây là những tin tức công nghệ và an ninh mạng nổi bật nhất trên thế giới sáng nay để mọi người cùng cập nhật nhé:\n\n1️⃣ NASA bất ngờ công bố mẫu máy bay thử nghiệm X-70 Fractal với thiết kế module đa nhiệm tương lai\n\n2️⃣ Sony hồi sinh huyền thoại tai nghe Walkman MDR-3 từ năm 1979 với cổng cắm USB-C hiện đại\n\n3️⃣ The New York Times đàm phán chi 330 triệu USD thâu tóm mạng xã hội điện ảnh Letterboxd\n\n4️⃣ Bộ ba Big Tech Meta, Google và TikTok đồng loạt khởi kiện bang California về luật hạn chế mạng xã hội giới trẻ\n\n5️⃣ Airbnb chuẩn bị tung trợ lý du lịch ảo AI giúp lên lịch trình và quản lý toàn bộ chuyến đi\n\n6️⃣ Serve Robotics ra mắt mảng dịch vụ đám mây mới, đặt mục tiêu trở thành 'AWS trong giới Robot'\n\n7️⃣ Phát hiện kỹ thuật vượt rào chế độ Lockdown của ChatGPT, trích xuất dữ liệu chat không cần nạn nhân tương tác\n\n8️⃣ OpenSSH khẩn cấp vá lỗ hổng cho phép mật khẩu dài vượt mặt xác thực SSH trên Alpine Linux\n\n9️⃣ Perplexity ra mắt trợ lý AI Teammates chuyên biệt cho doanh nghiệp, cạnh tranh trực tiếp với OpenAI\n\n🔟 Chiến dịch lừa đảo tinh vi mạo danh sự kiện OpenAI và SpaceX để đánh cắp tài khoản Google, Microsoft\n\n1️⃣1️⃣ Chuẩn kết nối Bluetooth 7 sắp ra mắt: Cải tiến vượt bậc về độ trễ, thiết lập Smart Home và âm thanh Lossless\n\n1️⃣2️⃣ Anthropic tích hợp công cụ tài chính cá nhân vào Claude giúp phân tích chi tiêu an toàn với quyền chỉ đọc\n\n#j2team_news #diemtinsang #news",
    "url": "https://facebook.com/groups/j2team.community/permalink/3237146069950824/",
    "published_at": "2026-11-06T01:44:58+00:00",
-   "reactions": 56,
+   "reactions": 61,
    "comments_count": 0,
    "top_comments": []
   },
@@ -170,8 +199,8 @@
    "content": "Danh sách các cấp độ gói đăng ký trả phí các dịch vụ trên internet. Tầng nào cũng có gói của các nhà cung cấp dịch vụ AI.\nBạn đã tốn tiền đến level nào rồi.\n\n#j2team_community",
    "url": "https://facebook.com/groups/j2team.community/permalink/3237228449942586/",
    "published_at": "2026-11-06T03:17:26+00:00",
-   "reactions": 858,
-   "comments_count": 168,
+   "reactions": 899,
+   "comments_count": 178,
    "top_comments": []
   },
   {
@@ -182,8 +211,8 @@
    "content": "#  MICROSOFT PAINT DÍNH LỖ HỔNG REMOTE CODE EXECUTION (RCE)\nMicrosoft đã công bố CVE-2026-83844, một lỗ hổng bảo mật trong Windows Paint có thể dẫn đến thực thi mã từ xa (Remote Code Execution).\n\nThông tin lỗ hổng:\n\nCVE: CVE-2026-83844\n\nCVSS 3.1: 8.1 (High)\n\nMức độ nghiêm trọng theo Microsoft: Important\n\nLoại lỗ hổng: CWE-125 (Out-of-bounds Read)\n\nTác động: Remote Code Execution (RCE)\n\nLỗ hổng được Microsoft công bố ngày 13/10/2026. Hiện chưa có bằng chứng được xác nhận về việc khai thác rộng rãi trong thực tế. \n\nNgười dùng Windows nên kiểm tra và cập nhật Microsoft Paint lên phiên bản 11.2605.91.0 hoặc mới hơn thông qua Microsoft Store. \n\n#j2team_share",
    "url": "https://facebook.com/groups/j2team.community/permalink/3237192129946218/",
    "published_at": "2026-11-06T02:39:53+00:00",
-   "reactions": 370,
-   "comments_count": 47,
+   "reactions": 413,
+   "comments_count": 49,
    "top_comments": []
   },
   {
@@ -194,131 +223,9 @@
    "content": "Cloudflare ra mắt Zero Wire: Một public feed theo dõi lỗ hổng CVE và khai thác thực tế\n\n#j2team_share\n\nVào ngày 3 tháng 11 năm 2026, Cloudflare đã chính thức ra mắt Zero Wire, một nguồn cấp dữ liệu tình báo lỗ hổng bảo mật công khai được thiết kế để hỗ trợ các đội ngũ an ninh mạng trong việc theo dõi các lỗ hổng CVE nghiêm trọng, hiểu rõ các hoạt động khai thác thực tế và tìm kiếm các bản vá bảo mật kịp thời.\n\nTrang này tích hợp trực tiếp vào phần bảo mật của Cloudflare Radar, mang đến các bản tóm tắt kỹ thuật dễ hiểu, hướng dẫn từ nhà cung cấp và các khuyến nghị hành động cụ thể.",
    "url": "https://facebook.com/groups/j2team.community/permalink/3237138079951623/",
    "published_at": "2026-11-06T01:34:20+00:00",
-   "reactions": 176,
+   "reactions": 197,
    "comments_count": 17,
    "top_comments": []
-  },
-  {
-   "id": "3234447503554014",
-   "group_id": "j2team.community",
-   "group_name": "J2TEAM Community",
-   "title": "j2team_share #j2team_extension",
-   "content": "#j2team_share #j2team_extension\n\n🔥 Một extension có chức năng mà vài năm trước có một vài bác trong này đã làm nhưng bị outdated và không thể maintain thêm vì E2EE. Nay em chia sẻ bản mà em sử dụng riêng bấy lâu nay: **FB Unsend Viewer** - xem lại tin nhắn đã bị gỡ.\n\nTừ khi mes chuyển sang mã hóa đầu cuối (E2EE), mấy extension kiểu này gần như \"chết\" hết vì không còn đọc được nội dung tin nhắn nữa. Bản này em viết lại từ đầu: bắt và lưu nội dung ngay lúc tin nhắn được server gửi về và hiện lên trong trình duyệt, nên đoạn chat có E2EE vẫn hoạt động bình thường.\n\n🧑‍💻 Tính năng:\n* Khôi phục cả văn bản lẫn hình ảnh bị gỡ. Ảnh được lưu sẵn ngay khi bắt được, nên kể cả khi link ảnh của f đã chết vẫn xem được\n* Hiện lại nội dung ngay trong khung chat: bong bóng \"đã gỡ một tin nhắn\" được viền đỏ và hiển thị kèm nội dung gốc\n* Có thông báo nhỏ ở góc trái màn hình ngay khi có người gỡ tin, bật/tắt được để nhận biết ngay\n* Popup lưu lịch sử: tìm kiếm, lọc theo đoạn chat, lọc \"người khác gỡ/bạn gỡ/có ảnh\"\n* Xem được tin nhắn xem 1 lần (chưa hỗ trợ tốt lắm ở thời điểm hiện tại)\n* Xuất/nhập file sao lưu JSON để chuyển sang profile/trình duyệt khác\n* Chạy được cả ở khung chat nhỏ trên f_web lẫn trang f_web_mes toàn màn hình\n* Giao diện sáng/tối tự đổi theo hệ thống\n\n🔒 Về quyền riêng tư: mọi dữ liệu em chỉ lưu trong trình duyệt (chrome.storage.local). Code open source, các bác cứ đọc thoải mái trước khi cài.\n\n❌ Hạn chế (nói trước cho các bác đỡ thắc mắc):\n\n- Chỉ bắt được những tin nhắn trong khi trình duyệt đang mở f và có cài extension. Tin bị gỡ khi trình duyệt không hoạt động thì chịu ạ. Vì nó chỉ hoạt động và lắng nghe dữ liệu khi có tab f đang mở\n\n- Tin bị gỡ trước khi cài extension thì không khôi phục được\n\n- F đổi giao diện/cơ chế thường xuyên nên thỉnh thoảng có thể lỗi. Gặp lỗi các bác **tạo issue trên GitHub** giúp em nha\n\n- Vừa cập nhật/reload extension thì nhớ F5 lại tab F để nó chạy tiếp\n\nCÀI ĐẶT:\n\n1. Tải source: link em để dưới cmt\n\n2. Vào chrome://extensions → bật Developer mode\n\n3. Bấm Load unpacked → chọn thư mục vừa giải nén\n\n4. F5 lại tab F là xong\n\nDùng được trên cá trình duyệt nhân Chronium như Chrome, Edge, Brave, Cốc Cốc.\n\n⭐ Thấy hay thì cho em xin 1 star trên GitHub để có động lực maintain tiếp nha các bác 🥺\n\n⚠️ Extension em làm ra để dùng cá nhân, kiểu xem lại tin nhắn mình lỡ không kịp đọc. Mong các bác dùng có trách nhiệm, tôn trọng quyền riêng tư của người khác. Đừng dùng để chụp lại rồi bêu riếu hay gây phiền phức cho ai nha 🙏\n\n🐞 **GẶP LỖI / MUỐN GÓP Ý?**\nCác bác tạo issue ở link github em để dưới cmt. Nếu được thì mong các bác bổ sung thêm giúp em các thông tin như:\n* Trình duyệt + phiên bản extension (xem ở góc dưới popup)\n* Lỗi ở khung chat nhỏ hay trang Messenger toàn màn hình\n* Ảnh chụp lỗi (nhớ che tên và nội dung tin nhắn riêng tư)\n* Lỗi trong Console nếu có (F12 → Console)\n\nBáo lỗi qua issue giúp em theo dõi và sửa nhanh hơn, comment trong nhóm dễ bị trôi lắm 😅\n\nHi vọng sẽ hữu ích với mọi người! ⭐ Star repo nếu thấy hay nha 🥰",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3234447503554014/",
-   "published_at": "2026-11-03T22:10:49+00:00",
-   "reactions": 716,
-   "comments_count": 93,
-   "top_comments": [
-    {
-     "author": "Facebook user",
-     "text": "Bên firefox chừng nào hỗ trợ vậy anh?",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "Thấy vậy chắc tôi ko dám chửi trên mess luôn quá 😢😭\nBtw tôi sẽ tải cái này 🐧",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "Thế là bắt được ảnh đại bàng mấy anh ấn độ gửi 1 lần xong tự disable đúng k =]]]",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "mng cho mình hỏi mình bị lỗi này k đăng nhập được fb trên máy tính ạ, với cả khi ở trọ thì mỗi lần em log fb trên cả lap hay pc với wifi trọ thì gặp tình trạng k load được tin nhắn cũ dù nhập đúng mã khôi phục, sau đấy 1 2' thì fb mess ở điện thoại bị logout và k ai nhắn tin được mess cho mình nữa, chờ tầm 3 tiếng sau thì mới nhắn lại được ạ.",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "bác ơi bác fix được cái tin nhắn đã sửa rồi thu hồi kh, dùng extension kh hiện tin nhắn trước khi sửa",
-     "votes": 0
-    }
-   ]
-  },
-  {
-   "id": "3236657956666302",
-   "group_id": "j2team.community",
-   "group_name": "J2TEAM Community",
-   "title": "j2team_share",
-   "content": "#j2team_share\n## **[Chia sẻ dự án] Khi Meta khai tử Messenger Desktop, mình quyết định (bắt Gemini) build luôn \"Chat Heads\" cho Windows bằng Rust & Tauri.**\n\nChào anh em J2TEAM Community,\n\nChắc hẳn nhiều anh em ở đây vẫn còn hụt hẫng vụ Meta chính thức ngừng hỗ trợ ứng dụng Messenger Desktop. Giờ mỗi lần cần trao đổi công việc hay nhắn tin bạn bè lại phải mở cả trình duyệt Chrome/Edge nặng nề, hoặc lướt web Facebook đầy rẫy newsfeed gây xao nhãng. Cảm giác cực kỳ cồng kềnh với những ai chỉ có nhu cầu nhắn tin nhanh và tập trung làm việc.\n\nBực mình vì tìm quanh không thấy giải pháp nào thực sự mượt mà và nhẹ máy, mình quyết định tự bắt tay vào làm luôn một project để giải quyết triệt để bài toán này: DesktopBubbleChat.\n\nNhưng thay vì dựng lại một cửa sổ app hình chữ nhật truyền thống, mình đem luôn trải nghiệm bong bóng chat (Chat Heads) huyền thoại của Android lên thẳng Windows 10/11.\n\n---\n\nApp này có gì đặc biệt về mặt kỹ thuật và trải nghiệm?\n\n1. Bong bóng chat chuẩn Native Win32 (Always on Top):\n* Không dùng Webview giả lập cho bong bóng: Toàn bộ bong bóng tròn được render 100% bằng Win32 Layered Window kết hợp thư viện đồ họa vector 2D Tiny-Skia trực tiếp từ Rust. Nhờ vậy, bong bóng hiển thị hoàn hảo, không viền đen, không ngốn GPU và phản hồi gần như 0ms.\n* Hiệu ứng vật lý lò xo (Spring Physics Animation) 60 FPS: Kéo thả mượt mà, tự động hít (snap) vào mép màn hình và tự động thụt gọn vào góc khi không dùng để tránh vướng tầm nhìn khi anh em code hay chơi game.\n* Badge thông báo tin nhắn chưa đọc dạng vector sắc nét, thu hút sự chú ý khi có tin nhắn mới tới.\n* Cơ chế tự động khởi động cùng Windows vô cùng tiện lợi khi data của các tài khoản đã được lưu ở profiles/ và không cần đăng nhập lại.\n\n2. Hỗ trợ Đa tài khoản (Multi-Account) cách ly hoàn toàn:\n* Chạy song song lên tới 5 tài khoản Messenger cùng lúc (dự định mở rộng không giới hạn trong tương lai).\n* Mỗi tài khoản chạy trong một phân vùng dữ liệu WebView2 hoàn toàn độc lập (Isolated User Data Directory), không bao giờ lo xung đột cookie, session hay bị logout chéo.\n* Mỗi tài khoản có màu viền nhận diện riêng, bong bóng riêng biệt có thể kéo thả độc lập.\n\n3. Cơ chế tối ưu RAM thông minh (Auto-Trim RAM):\n* Nỗi ám ảnh lớn nhất của các app bọc web là ngốn RAM. Mình tối ưu ở tầng backend Rust bằng cách can thiệp trực tiếp vào Windows Virtual Memory Manager (gọi SetProcessWorkingSetSize trên toàn bộ cây tiến trình WebView2).\n* 4 kịch bản xả RAM tự động: Sau khi bong bóng thụt mép 3s, sau khi nhận tin nhắn 2s, sau khi khởi động app 5s, và bộ quét ngầm định kỳ 5 phút/lần dọn rác bộ nhớ.\n* Khi đóng Dashboard về System Tray: Dashboard áp dụng cơ chế Dynamic Destruction — tiêu hủy hoàn toàn cửa sổ quản lý về đúng 0 MB RAM! Các session Messenger vẫn giữ ngầm để hứng tin nhắn nhưng được xả RAM tối đa, kéo tổng dung lượng từ 500–700 MB xuống chỉ còn quanh quẩn 80–140 MB.\n* Có hẳn một tab Performance Dashboard: Đo lường chi tiết mức RAM của từng PID theo thời gian thực.\n\n4. Các tiện ích hoàn thiện khác:\n* Tự động chuyển đổi Dark Mode / Light Mode đồng bộ theo Windows.\n* Phím tắt toàn cục (Ctrl + Shift + M): Ẩn/hiện nhanh tức thì toàn bộ bong bóng trên màn hình.\n* Tự động cập nhật bảo mật (In-app Auto-Update) xác thực bằng chữ ký số Minisign (Ed25519) chống can thiệp mã độc.\n* Hỗ trợ đầy đủ song ngữ: Tiếng Việt và Tiếng Anh.\n\n5. Dự định\n* Mở rộng ra cả Zalo, Discord, Telegram,... nếu được...\n\n---\n\nTech stack của dự án:\n* Core Backend & Floating Heads (bong bóng): Tauri v2 + Rust (Win32 API, Tiny-Skia, Sysinfo)\n* Dashboard Frontend: React 19 + TypeScript + Tailwind CSS + Vite\n* Web Engine nhúng Messenger: Microsoft Edge WebView2 (Isolated sessions)\n\n- Bộ cài siêu nhẹ: Chỉ 3.18 MB.\n\nDự án hoàn toàn mã nguồn mở (Open Source), phi lợi nhuận và tôn trọng tuyệt đối quyền riêng tư (chỉ kết nối trực tiếp từ máy bạn đến máy chủ Meta, không server trung gian, không telemetry, dữ liệu lưu cục bộ trên máy của bạn).\n\nAnh em quan tâm có thể ghé qua repo xem code, tải bản release về dùng thử và cho mình xin 1 star hoặc góp ý/PR để app ngày càng hoàn thiện hơn cũng như giúp mình học hỏi được nhiều kiến thức hữu ích hơn nữa ạ:\n\n- GitHub Repo: [[https://github.com/Lelequyngocquy/desktop-bubble-chat](https://github.com/Lelequyngocquy/desktop-bubble-chat)](https://github.com/Lelequyngocquy/desktop-bubble-chat)\n\n- Cài đặt: [https://github.com/Lelequyngocquy/desktop-bubble-chat/releases/download/v0.3.1/DesktopBubbleChat_0.3.1_x64-setup.exe](https://github.com/Lelequyngocquy/desktop-bubble-chat/releases/download/v0.3.1/DesktopBubbleChat_0.3.1_x64-setup.exe)\n\nCảm ơn mng đã dành thời gian đọc bài hjhj!",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3236657956666302/",
-   "published_at": "2026-11-05T15:53:03+00:00",
-   "reactions": 144,
-   "comments_count": 18,
-   "top_comments": [
-    {
-     "author": "Facebook user",
-     "text": "hóng zalo bác ơi",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "Hóng bản linux",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "ô ngon, mỗi lần check tin nhắn xong vào facebook là ngồi doomscrolling mất mấy tiếng =))",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "sao dùng mượt với xịn quá bạn oi",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "Sao mình không đăng nhập được nhỉ",
-     "votes": 0
-    }
-   ]
-  },
-  {
-   "id": "3236288630036568",
-   "group_id": "j2team.community",
-   "group_name": "J2TEAM Community",
-   "title": "Chào mọi người ở J2Team, hôm qua dựa trên bản **VietQR.Core **của anh @[100009688216469:2048:Võ Ngọc Hiện], em có port lại với AI ",
-   "content": "Chào mọi người ở J2Team, hôm qua dựa trên bản **VietQR.Core **của anh @[100009688216469:2048:Võ Ngọc Hiện], em có port lại với AI Agents từ bản trên để support cho Node.js (Express, Nest) để phục vụ cho dự án cá nhân. Em cũng muốn đóng góp bằng cách share cho mọi người trên này ạ.\n\nMọi người thấy hữu ích và benefits cho anh em trong công việc có thể để lại cho em 1 sao trên repo ạ.\n\nGitHub: https://github.com/nguyenchanh0201/vietqr-node\nNPM: https://www.npmjs.com/package/vietqr-node\n\n**[#j2team_share](https://www.facebook.com/hashtag/j2team_share?__cft__[0]=AZhp13i6fm6eEt2TPSmBucCMBRY8bMgtQSwLhT1WYPhBR4XcM4M7V-BOjYGW2d6es3vJlmUFKEvkGXBLiXoiIU5kdjDKbpg_NPxB2npkDFGj2s-_ewok-X79l7a8njqauCh5dc1-A0P41zBtigWxnyQEVQO0wxsf8fNkN6HpEEKEJt5Fz6MMrD-euWj66zi7B5rg&__tn__=*NK-R)**** **[#vietqr](https://www.facebook.com/hashtag/vietqr?__cft__[0]=AZhp13i6fm6eEt2TPSmBucCMBRY8bMgtQSwLhT1WYPhBR4XcM4M7V-BOjYGW2d6es3vJlmUFKEvkGXBLiXoiIU5kdjDKbpg_NPxB2npkDFGj2s-_ewok-X79l7a8njqauCh5dc1-A0P41zBtigWxnyQEVQO0wxsf8fNkN6HpEEKEJt5Fz6MMrD-euWj66zi7B5rg&__tn__=*NK-R) [#opensource](https://www.facebook.com/hashtag/opensource?__cft__[0]=AZhp13i6fm6eEt2TPSmBucCMBRY8bMgtQSwLhT1WYPhBR4XcM4M7V-BOjYGW2d6es3vJlmUFKEvkGXBLiXoiIU5kdjDKbpg_NPxB2npkDFGj2s-_ewok-X79l7a8njqauCh5dc1-A0P41zBtigWxnyQEVQO0wxsf8fNkN6HpEEKEJt5Fz6MMrD-euWj66zi7B5rg&__tn__=*NK-R) #nodejs #TypeScript",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3236288630036568/",
-   "published_at": "2026-11-05T09:44:23+00:00",
-   "reactions": 140,
-   "comments_count": 6,
-   "top_comments": [
-    {
-     "author": "Facebook user",
-     "text": "mạnh 😗",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "const clean = removeDiacritics(trim(value)).slice(0, Math.min(25, remaining));\nThư viện này tự cắt nội dung ck đi, chỉ để tối đa 25 ký tự à sếp",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "Vietqr nó có cái link sẵn ném param vào là đc mà nhỉ 🤔 e sai gì các bác nhẹ tay",
-     "votes": 0
-    }
-   ]
-  },
-  {
-   "id": "1496117099091466",
-   "group_id": "vgu.tech.alumni",
-   "group_name": "VGU Tech Alumni",
-   "title": "[ Giải mã Harness Engineering: Khi bài toán AI dịch chuyển từ viết Prompt sang Kiến trúc vận hành ]",
-   "content": "# **[ Giải mã Harness Engineering: Khi bài toán AI dịch chuyển từ viết Prompt sang Kiến trúc vận hành ]**\n\n**TL;DR:**\n* Công thức cốt lõi: **Agent = Model + Harness**. Nếu LLM (GPT, Claude, Gemini) là \"bộ não\", thì **Harness** là toàn bộ môi trường, công cụ và quy trình bao quanh để biến bộ não đó thành một thực thể làm việc thực sự.\n* 3 giai đoạn tiến hóa: **Prompt Engineering** (viết yêu cầu sao cho khéo) -> **Context Engineering** (đưa đúng thông tin vào đúng lúc) -> **Harness Engineering** (tổ chức quy trình làm việc, tự kiểm thử và kiểm soát an toàn cho Agent).\n* Muốn AI Agent làm việc hiệu quả, thay vì chỉ tìm cách đổi sang Model mạnh hơn, chúng ta cần tối ưu hóa 9 thành phần trong Harness và thiết lập cơ chế phản hồi (Feedback Loop) rõ ràng.\n\n======================\n\nCre: anh Việt Nguyễn AI \n\nDạo gần đây anh chị em làm công nghệ chắc hẳn nghe nhắc rất nhiều đến cụm từ **Harness Engineering**. Để hiểu một cách đơn giản và trực quan nhất khái niệm này khác gì với *Prompt* hay *Context Engineering*, mọi người hãy hình dung câu chuyện **vận hành một quán phở** trong video của anh Việt Nguyễn AI.\n\nGiả sử bạn thuê được một anh đầu bếp thiên tài (**Model**), món gì cũng biết nấu nhưng lại có 2 nhược điểm: chỉ làm đúng những gì ghi trên phiếu gọi món (**Prompt**) và chỉ nhớ được những thứ đang bày trên mặt bàn bếp trước mặt (**Context Window**). Cái gì dẹp khỏi bàn là quên sạch.\n\n## **1. Ba giai đoạn tiến hóa của AI Agent**\n* **Prompt Engineering (Viết phiếu gọi món sao cho rõ):** Thời kỳ đầu mặt bàn bếp rất bé (Context chỉ khoảng 4.000 tokens). Cách duy nhất là viết phiếu yêu cầu thật chi tiết. Điểm yếu là làm việc kiểu **One-shot**: nấu một lần bưng ra là xong, không tự đi lấy thêm nguyên liệu, không nếm thử, sai không biết tự sửa.\n* **Context Engineering (Bày đúng thứ cần lên bàn bếp):** Khi mặt bàn rộng hơn, chúng ta dùng 3 kỹ thuật để cấp nguyên liệu thông minh: **Tool Calling** (đầu bếp tự vào kho lấy nguyên liệu và thao tác), **MCP** (chuẩn hóa ổ cắm để kết nối thiết bị ngoài), và **RAG** (sổ tay công thức, cần món nào mở đúng trang đó). Tuy nhiên, khi làm các việc quá lớn (như nấu cỗ 500 mâm trong 12 tiếng), bàn bếp sẽ bị đầy. Khi Agent tự dọn bàn và **tóm tắt ngữ cảnh (Context Summarization)**, nó rất dễ nhớ nhầm hoặc bỏ sót việc, dẫn đến tình trạng code còn lỗi, tính năng chưa chạy nhưng đã báo cáo \"hoàn thành\".\n* **Harness Engineering (Quy trình vận hành cả căn bếp):** Thay vì để đầu bếp làm thông 12 tiếng trên một cái bàn ngày càng bừa bộn, công việc được bóc tách từ tài liệu yêu cầu (**PRD**) thành một danh sách việc (**Checklist JSON**). Mỗi ca làm việc, Agent bắt đầu với một **Context mới tinh (bàn bếp sạch)**, nhặt đúng 1 món trong danh sách, làm xong, chạy test kiểm tra (\"nếm thử\"), ghi sổ rồi mới qua ca mới. Cách chia ca này giúp Agent làm việc dài hơi mà không bao giờ bị loạn trí nhớ.\n\nHiểu ngắn gọn về sự khác biệt với các thư viện hiện nay: **Framework** (như LangChain, AutoGen) là bộ đồ nghề rời để chúng ta tự lắp ráp căn bếp; còn **Harness** (như Claude Code, Cursor, Codex) là một căn bếp đã xây sẵn quy trình, Agent chỉ việc bước vào vận hành.\n\n## **2. Chín thành phần bên trong một Harness hiện đại (Ví dụ từ Claude Code)**\n1. **Vòng lặp chính (Main Loop):** Bản chất là vòng lặp `while` — đọc hướng dẫn, gọi công cụ, nhận kết quả, kiểm tra lại cho đến khi xong việc hoặc chạm giới hạn số vòng lặp (*Max Turns*).\n2. **Quản lý ngữ cảnh (Context Compaction):** Khi Context đầy khoảng 80-90%, hệ thống tự động giữ lại các thông tin quan trọng gần nhất, nén các bước cũ và xóa dữ liệu rác.\n3. **Công cụ (Tools) & Kỹ năng (Skills):** *Tools* là thao tác cơ bản (đọc/ghi file, chạy lệnh) giống như dao, thớt. *Skills* là bí quyết riêng của từng dự án (đóng gói trong file Markdown). Khi cần làm đến đâu Agent mới mở file *Skill* đó ra đọc để tiết kiệm bộ nhớ.\n4. **Agent con (Sub-agents):** Như các phụ bếp có bàn làm việc riêng và quyền hạn giới hạn (phụ bếp chỉ tìm kiếm, phụ bếp code, phụ bếp chạy test). Làm xong chỉ gửi kết quả cuối về cho bếp trưởng để không làm rác Context chính.\n5. **Kỹ năng có sẵn (Built-in Skills):** Các nghiệp vụ tích hợp sẵn như đọc sửa code, tạo Git Commit, mở Pull Request, chạy Test.\n6. **Bộ nhớ phiên (Session Memory):** Cuốn sổ nhật ký chỉ cho phép ghi nối tiếp xuống ổ đĩa (*Append-only log*). Nếu hệ thống sập nguồn giữa chừng, chỉ cần đọc lại (*Replay*) từ đầu sổ là khôi phục được ngay trạng thái đang làm dở.\n7. **Lắp ráp System Prompt & Prefix Caching:** Tự động gom quy tắc chung và quy tắc riêng của từng dự án (`CLAUDE.md`, `AGENTS.md`). Phần hướng dẫn tĩnh luôn được đặt lên đầu và phần động đặt ở dưới để tận dụng **Prefix Caching**, giúp giảm mạnh chi phí và độ trễ qua hàng trăm vòng lặp.\n8. **Điểm móc mở rộng (Hooks):** Gồm *Pre-tool Hook* (kiểm duyệt, chặn hoặc sửa lệnh trước khi chạy) và *Post-tool Hook* (ghi log, kiểm toán sau khi chạy), giúp doanh nghiệp gắn quy tắc bảo mật mà không cần sửa lõi Harness.\n9. **Phân quyền & An toàn (Permissions):** Chia cấp độ từ *Chỉ xem (Read-only)*, *Ghi trong dự án (Workspace Write)* đến *Toàn quyền (Full Access)*. Những lệnh nhạy cảm như xóa dữ liệu hay can thiệp hệ thống sẽ bị chặn lại chờ con người xác nhận.\n## **3. Năm nguyên tắc thực chiến khi làm việc với AI Agent**\n* **Đừng vội đổi Model khi kết quả kém:** Cùng một đầu bếp nhưng đặt vào căn bếp lộn xộn sẽ nấu tệ hơn căn bếp ngăn nắp. Hãy xem đã cấp đủ thông tin và công cụ cho Agent chưa trước khi đổ lỗi cho Model.\n* **Tối ưu từ những thứ có sẵn:** Không cần tự code lại một AI Agent từ đầu. Việc bạn viết file `CLAUDE.md`, `AGENTS.md` rõ ràng, tạo *Skills* chuẩn chỉnh và gắn *Hooks* cho dự án chính là đang làm Harness Engineering.\n* **Chặn lỗi bằng cơ chế, đừng chỉ dặn bằng lời (Prompt):** Dặn đi dặn lại trong Prompt vẫn có lúc AI quên. Hãy dùng cơ chế cứng như phân quyền thư mục, *Pre-tool Hook* hoặc bộ Unit Test bắt buộc để khóa lỗi.\n* **Luôn tạo vòng lặp phản hồi (Feedback Loop):** Đầu bếp phải được nếm thử mới biết mặn nhạt. Hãy cho Agent công cụ chạy Test,",
-   "url": "https://facebook.com/groups/vgu.tech.alumni/permalink/1496117099091466/",
-   "published_at": "2026-11-05T14:58:34+00:00",
-   "reactions": 352,
-   "comments_count": 1,
-   "top_comments": [
-    {
-     "author": "Facebook user",
-     "text": "Video được anh Việt Nguyễn AI share rất chi tiết ở đây nha mọi người\nhttps://www.youtube.com/watch?v=e-bwG7iz6Rs",
-     "votes": 0
-    }
-   ]
   }
  ]
 }
