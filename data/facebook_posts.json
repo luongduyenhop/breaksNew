@@ -1,230 +1,288 @@
 {
- "generated_at": "2026-11-06T22:53:21.457010+00:00",
+ "generated_at": "2026-11-09T15:02:00.996767+00:00",
  "items": [
   {
-   "id": "2582346758857295",
+   "id": "2585842388507732",
+   "group_id": "vnjug",
+   "group_name": "Vietnam Java User Group",
+   "title": "Chào mọi người. Một người bạn mình làm phần mềm hơn 10 năm có viết cuốn sách cho kỹ sư mấy năm đầu, đọc miễn phí trên web. Chương ",
+   "content": "Chào mọi người. Một người bạn mình làm phần mềm hơn 10 năm có viết cuốn sách cho kỹ sư mấy năm đầu, đọc miễn phí trên web. Chương về làm việc với code cũ có một đoạn mình muốn hỏi anh em làm Java:\n\n“Ai nói hệ thống đã hỏng mấy ngày nay trong lúc họ refactor, thì người đó không refactor. Họ đang viết lại, một việc khác, rủi ro hơn, và có tên riêng.”\n\nỞ chỗ anh em, những đợt “refactor” thường là refactor thật, từng bước nhỏ, hay thật ra là viết lại?\n\nLink là trang trích đoạn trong sách: https://kspm.io/q/vi/17/1335-150-b454728c",
+   "url": "https://facebook.com/groups/vnjug/permalink/2585842388507732/",
+   "published_at": "2026-11-09T13:01:17+00:00",
+   "reactions": 2,
+   "comments_count": 0,
+   "top_comments": []
+  },
+  {
+   "id": "2585804975178140",
    "group_id": "vnjug",
    "group_name": "Vietnam Java User Group",
    "title": "",
    "content": "",
-   "url": "https://facebook.com/groups/vnjug/permalink/2582346758857295/",
-   "published_at": "2026-11-06T10:19:36+00:00",
+   "url": "https://facebook.com/groups/vnjug/permalink/2585804975178140/",
+   "published_at": "2026-11-09T12:20:32+00:00",
+   "reactions": 14,
+   "comments_count": 0,
+   "top_comments": []
+  },
+  {
+   "id": "2585792535179384",
+   "group_id": "vnjug",
+   "group_name": "Vietnam Java User Group",
+   "title": "AI viết code rất nhanh, nhưng đã hiểu đúng yêu cầu chưa?",
+   "content": "AI viết code rất nhanh, nhưng đã hiểu đúng yêu cầu chưa?\n\nCó một lỗi mà người làm sản phẩm rất dễ gặp: giao một câu lệnh ngắn cho AI coding, nhận về hàng loạt file và giao diện khá đẹp, nhưng lúc nghiệm thu mới phát hiện thiếu quy tắc nghiệp vụ.\n\nGitHub Spec Kit đưa ra cách tiếp cận khác: đặc tả trước, lập trình sau. Thay vì để AI đoán phần còn thiếu, bạn xây dựng chuỗi rõ ràng: nguyên tắc dự án → đặc tả → kế hoạch kỹ thuật → danh sách nhiệm vụ → triển khai.\n\nVideo này giải thích:\n\nSpec-Driven Development khác kiểu “giao prompt rồi chờ code” ở đâu.\n\nNăm bước cốt lõi của Spec Kit và cách kết hợp với coding agent.\n\nVí dụ thực tế ở mức yêu cầu: tính năng nhắc lịch gọi lại khách hàng trong CRM; từ một câu mô tả mơ hồ đến tiêu chí có thể nghiệm thu.\n\nCách cài Specify CLI, ưu điểm và giới hạn.\n\nTôi thấy cách làm này đặc biệt phù hợp với tính năng có nhiều điều kiện, nhiều vai trò và cần bàn giao. Nhưng không nên hiểu rằng cứ có spec thì AI sẽ tự code đúng: bản đặc tả vẫn có thể sai, và kết quả vẫn phải được review, kiểm thử.\n\nGhi chú: Ví dụ CRM trong video là minh họa, không phải log chạy Spec Kit thật.\n\nRepository: https://github.com/github/spec-kit\nTài liệu: https://github.github.com/spec-kit/\n\nBạn đang dùng AI code theo kiểu prompt trực tiếp hay đã có bước viết yêu cầu trước?\n\n#SpecKit #AICoding #GitHub #SoftwareDevelopment",
+   "url": "https://facebook.com/groups/vnjug/permalink/2585792535179384/",
+   "published_at": "2026-11-09T12:05:01+00:00",
+   "reactions": 5,
+   "comments_count": 0,
+   "top_comments": []
+  },
+  {
+   "id": "2585511075207530",
+   "group_id": "vnjug",
+   "group_name": "Vietnam Java User Group",
+   "title": "Andrej Karpathy vừa ra mắt TristanTube (https://karpathy.ai/tristan-tube/) — website tập hợp 47.000 video khoa học, kỹ thuật chọn ",
+   "content": "Andrej Karpathy vừa ra mắt TristanTube (https://karpathy.ai/tristan-tube/) — website tập hợp 47.000 video khoa học, kỹ thuật chọn lọc từ danh sách của Tristan Hume. Đáng chú ý, ông chỉ mất khoảng 3 phút để tạo trang này nhờ dùng công cụ lập trình Claude Code mà gần như không phải tự viết mã.\n\nCác tính năng chính của TristanTube:\n\nTập hợp video chất lượng cao từ các kênh nổi tiếng như Stuff Made Here, Primitive Technology, NileRed, Real Engineering...\n\nLọc video theo xếp hạng (Tier S đến D) và theo thời lượng (dưới 10 phút, trên 30 phút).\n\nCó tính năng TV Mode phát liên tục (hỗ trợ phím tắt điều khiển), nút Reshuffle (đổi danh sách) và Surprise me (chọn video ngẫu nhiên).\n\nVì sao TristanTube mất 3 phút, còn dự án trước đó (HackerTube) mất 2 giờ?\n\nHackerTube (2 giờ): AI phải phân tích 43 triệu bình luận trên Hacker News qua 20 năm để lọc ra 6.454 video, sau đó mới dựng web.\n\nTristanTube (3 phút): Dữ liệu đã có sẵn và được sắp xếp gọn gàng từ trước, AI chỉ việc dựng giao diện và các bộ lọc.",
+   "url": "https://facebook.com/groups/vnjug/permalink/2585511075207530/",
+   "published_at": "2026-11-09T05:42:29+00:00",
    "reactions": 1,
    "comments_count": 0,
    "top_comments": []
   },
   {
-   "id": "2572720563153248",
-   "group_id": "vnjug",
-   "group_name": "Vietnam Java User Group",
-   "title": "[Góc Architecture] Canva dùng S3 để giảm tải MySQL khi gateway warm-up cache như thế nào?",
-   "content": "**[Góc Architecture] Canva dùng S3 để giảm tải MySQL khi gateway warm-up cache như thế nào?**\n\nChào anh em VNJUG,\n\nKhi xây dựng kiến trúc xác thực ở quy mô lớn, một bài toán nan giải là làm sao để các API gateway kiểm tra session revocation cho request thông thường trên bộ nhớ cục bộ (*in-memory*) để giữ độ trễ thấp, mà không gây quá tải hoặc tạo điểm nghẽn (*bottleneck*) cho database mỗi lần deploy hàng loạt pod.\n\nThay vì tăng thêm read replica hay dựng một cụm Redis trung gian, Canva chọn giải pháp dùng **Amazon S3 làm tầng phân phối dữ liệu thô (bulk distribution layer)** theo luồng:\n\nMySQL → async worker → S3 → local cache trên gateway\n\n**1. Bài toán: Phân định phạm vi kiểm tra và áp lực warm-up khi deploy**\n\nTại Canva, session cookie được mã hóa và chứa sẵn thông tin định danh (user ID, roles, permissions). Gateway có thể giải mã cookie để xác thực request mà không cần truy vấn mạng. Tuy nhiên, khi một session bị thu hồi, gateway buộc phải đối chiếu với danh sách revocation:\n\n* **Request checks (In-memory):** Từng request thông thường chỉ đối chiếu với tập dữ liệu revocation lưu sẵn trên bộ nhớ của gateway pod.\n* **Token refresh checks (Database query):** Session cookie có chu kỳ làm mới định kỳ (tối đa trong vòng 12 giờ) và bắt buộc phải kiểm tra trực tiếp vào MySQL. Tất cả token được bảo đảm refresh trong cửa sổ này; lúc refresh luôn đối chiếu database, nên các kiểm tra đó không phụ thuộc in-memory cache. Nhờ đó, bộ nhớ của gateway chỉ cần duy trì các bản ghi trong **cửa sổ trượt 12 giờ (12-hour window)**.\n\nVấn đề xuất hiện trong quá trình triển khai: Khi hàng trăm pod gateway khởi động đồng thời, mỗi pod *có thể phải kéo hơn 1 triệu bản ghi* revocation từ MySQL để warm-up cache. Lưu lượng đọc lớn này dồn dập đổ vào database, tạo ra nguy cơ quá tải nghiêm trọng. Việc bổ sung MySQL read replica chỉ là giải pháp tình thế, tốn kém chi phí hạ tầng nhưng không giải quyết được gốc rễ của access pattern dạng bulk download.\n\n**2. Quyết định backend: Tại sao chọn S3 thay vì Redis?**\n\nCanva từng cân nhắc phương án đặt Redis làm bộ đệm để gateway tải dữ liệu khi khởi động và định kỳ thăm dò cập nhật. Tuy nhiên, giải pháp này bị loại bỏ vì:\n\n* Redis thường không được triển khai ở cấu hình đảm bảo độ bền dữ liệu hoàn toàn (*fully durable*).\n* Đòi hỏi đội ngũ phải quản lý thêm một cụm cluster phân tán và đối mặt với độ phức tạp trong việc duy trì tính nhất quán của cache (*cache consistency*).\n* Thực chất chỉ chuyển áp lực đọc dữ liệu lớn từ datastore này sang một datastore khác.\n\nTrong khi đó, S3 cung cấp độ bền cao và được tối ưu tốt cho nhu cầu đọc dữ liệu lớn song song từ nhiều client. Cần lưu ý rằng dữ liệu revocation trong cửa sổ 12 giờ là dữ liệu liên tục biến đổi (các chunk mới vẫn được cập nhật liên tục), nhưng việc chia nhỏ chúng cho phép S3 đóng vai trò như một tầng lưu trữ phân phối snapshot cực kỳ hiệu quả cho gateway.\n\n**3. Cơ chế kỹ thuật: Từ bộ nhớ Java Heap đến kiểm soát tranh chấp ghi**\n\n**a. Cấu trúc nhị phân 16 byte trên Java Heap**\nĐể tránh lãng phí bộ nhớ do overhead của các Java object, Canva nén mỗi bản ghi revocation vào đúng **16 byte**:\n\n* *Principal* (định danh của user hoặc brand).\n* *Login cutoff timestamp* (mốc login timestamp mà revocation áp dụng tới; với loại logout, thường là các session bắt đầu trước mốc này).\n* Các *flags* (cho phép vô hiệu hóa thông tin được cache trong cookie mà không bắt buộc người dùng phải đăng xuất).\n\n*Ví dụ minh họa:* User A có phiên login lúc 09:00, nếu phát sinh một lệnh logout với cutoff 10:00 thì phiên 09:00 thuộc phạm vi bị thu hồi.\n\nCác bản ghi này được gom vào một mảng byte phẳng (flat byte array) và **sắp xếp theo principal**. Gateway thao tác trực tiếp trên mảng byte bằng binary search mà không cần chuyển đổi sang representation khác. Quyết định này giúp Canva **giảm 87.5% dung lượng bộ nhớ (giảm 8 lần)** so với cấu trúc object trước đó.\n\n**b. Phân đoạn thời gian 30 phút (30-minute chunks)**\nCửa sổ 12 giờ được chia thành các chunk 30 phút độc lập trên S3.\n\n* Khi gateway khởi động, nó chỉ tải các chunk thuộc 12 giờ gần nhất dựa theo timestamp trong tên file.\n* Định kỳ, khi *mốc kết thúc (end)* của một chunk cũ hơn 12 giờ, gateway mới giải phóng chunk đó khỏi bộ nhớ.\n\n**c. Async Worker và bảo toàn dữ liệu khi nhiều node ghi**\n\n* **Quy trình ghi:** Worker chạy nền định kỳ đọc các revocation mới từ MySQL theo từng batch cố định, tải chunk 30 phút hiện tại từ S3 về, chèn thêm, sắp xếp lại rồi ghi đè lên S3. Worker tạo chunk mới khi bước sang cửa sổ thời gian tiếp theo.\n* **Chi phí O(N²):** Về mặt lý thuyết, việc xây dựng một chunk N bản ghi thông qua nhiều batch nối tiếp có tổng độ phức tạp tích lũy là O(N²). Tuy nhiên, nhờ gom hàng trăm bản ghi vào mỗi batch, worker của Canva vẫn đạt write throughput **trên 2.000 revocations/giây** đối với workload của họ, bởi điểm nghẽn thực tế nằm ở I/O mạng chứ không phải CPU.\n* **S3 Conditional PUT bảo vệ correctness:** Để chạy nhiều worker dự phòng mà không bị mất dữ liệu (*lost updates*), hệ thống dùng điều kiện tiên quyết của S3: chỉ tạo mới nếu chưa có chunk cùng tên tại thời điểm ghi, và chỉ ghi đè chunk hiện tại nếu nó chưa bị thay đổi kể từ lúc đọc.\n* **Vai trò của ZooKeeper:** Hệ thống dùng ZooKeeper leader election để giảm thiểu xung đột ghi giữa các worker, nhưng *ZooKeeper không đảm bảo tính đúng đắn*. Nếu một worker bị tạm dừng (*node pause*) rồi sau đó tiếp tục xử lý khi một leader mới đã kịp ghi dữ liệu, chính *S3 conditional PUT* mới là chốt chặn kỹ thuật ngăn worker cũ ghi đè dữ liệu sai.\n* **Cập nhật ở gateway:** Gateway dùng *S3 conditional GET* để định kỳ thăm dò và chỉ tải lại khi chunk trên S3 thực sự có thay đổi.\n\n**4. Đánh đổi kỹ thuật và Kết quả**\n\n* **Đánh đổi về độ trễ cập nhật:** Trạng thái revocation hoạt động theo cơ chế *near real-time* (bất đồng bộ). Vì phụ thuộc vào worker gom batch đẩy lên S3 và chu kỳ thăm dò của gateway, dữ liệu không có hiệu lực tức thì mà chấp nhận độ trễ lan truyền nhất định.\n* **Kết quả tại Canva:** Tải đọc trên MySQL khi deploy fleet lớ",
-   "url": "https://facebook.com/groups/vnjug/permalink/2572720563153248/",
-   "published_at": "2026-10-28T12:48:51+00:00",
-   "reactions": 49,
-   "comments_count": 3,
+   "id": "3241700456162052",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "Samsung thử nghiệm gói Galaxy AI Premium thu phí người dùng",
+   "content": "Samsung thử nghiệm gói Galaxy AI Premium thu phí người dùng\nNhững đoạn mã bóc tách từ ứng dụng hệ thống cho thấy Samsung đang âm thầm chuẩn bị chương trình trải nghiệm sớm cho gói Galaxy AI Premium. Kể từ dòng Galaxy S24, hãng luôn cung cấp Galaxy AI hoàn toàn miễn phí, nhưng khả năng thu tiền dịch vụ này đã được dự báo từ lâu.\n\nTrong giai đoạn thử nghiệm này, người dùng đăng ký qua Samsung Account sẽ phải thanh toán trước một khoản phí. Hệ thống cam kết hoàn trả toàn bộ số tiền này khi chương trình kết thúc.\n\nỞ gói miễn phí, người dùng chỉ được tiếp cận các tính năng cơ bản và sẽ bị giới hạn mức sử dụng. Bảy công cụ quen thuộc gồm Trợ lý duyệt web (Browsing assist), Now brief, Creative studio, Smart capture, Bàn phím Samsung, Photo assist và Personal Agent vẫn được giữ lại, nhưng không còn được dùng thoải mái như trước. Khi dùng hết hạn ngạch, người dùng phải nạp thêm gói credit lẻ hoặc mua gói Max để có mức sử dụng gấp 4 lần.\n\nGói trả phí Max đi kèm hàng loạt tính năng độc quyền chưa từng xuất hiện. Đáng chú ý nhất là Gen Video, công cụ dùng AI tạo sinh để biến ảnh chụp tĩnh thành video ngắn. Ngoài ra còn có Bixby Action hỗ trợ tự động hóa chuỗi tác vụ giữa các ứng dụng và bản tin tóm tắt Daily Briefing. Mức giá hiển thị trong mã nguồn là 4,99 USD/tháng (khoảng 127.000 đồng) hoặc 47,99 USD/năm (khoảng 1,22 triệu đồng), dù giá chính thức có thể thay đổi tùy theo từng thị trường khi dịch vụ ra mắt.\n\nVề thiết bị hỗ trợ, tính năng này chỉ kích hoạt trên các máy chạy Galaxy AI mang số hiệu 20271. Con số 20271 ứng với mốc năm 2027, cho thấy gói cước AI trả phí nhiều khả năng sẽ xuất hiện lần đầu cùng thế hệ Galaxy S27 trước khi cập bến các dòng máy cũ hơn.\n\nChính sách giới hạn dịch vụ sẽ được quản lý trực tiếp theo vùng của Samsung Account thay vì chặn theo IP mạng. Với cơ chế này, người dùng tại Hàn Quốc và Mỹ gần như chắc chắn sẽ là những đối tượng đầu tiên phải trả tiền nếu muốn mở rộng hạn mức và trải nghiệm đầy đủ các tính năng AI mới.\n\nNguồn tin: https://samnews.vn/samsung-thu-nghiem-goi-galaxy-ai-premium-thu-phi-nguoi-dung/\n\n#j2team_news",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3241700456162052/",
+   "published_at": "2026-11-09T14:18:34+00:00",
+   "reactions": 8,
+   "comments_count": 0,
+   "top_comments": []
+  },
+  {
+   "id": "3241538062844958",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "Từ ngày 11/11/2026, Trung tâm Internet Việt Nam (Bộ Khoa học và Công nghệ) sẽ chính thức mở đăng ký tự do 11 tên miền cấp hai có 2",
+   "content": "Từ ngày 11/11/2026, Trung tâm Internet Việt Nam (Bộ Khoa học và Công nghệ) sẽ chính thức mở đăng ký tự do 11 tên miền cấp hai có 2 ký tự dưới “.vn”. Đây là lần đầu tiên nhóm tên miền đặc biệt này được mở đăng ký theo hình thức cấp trực tiếp.\n\nTheo quy định của Luật Viễn thông, tên miền quốc gia Việt Nam “.vn” sau 2 lần đấu giá không thành được thực hiện cấp trực tiếp, áp dụng nguyên tắc “tổ chức, cá nhân đăng ký trước được xét cấp trước”.\n\nDanh sách gồm: pi.vn, r0.vn, p1.vn, i2.vn, p4.vn, x4.vn, d5.vn, t7.vn, 0m.vn, 4w.vn và 7i.vn. Doanh nghiệp, tổ chức và cá nhân có nhu cầu có thể đăng ký thông qua các nhà đăng ký tên miền quốc gia Việt Nam “.vn” theo quy định hiện hành.\n\nVới lợi thế ngắn gọn, dễ nhớ và số lượng hữu hạn, những tên miền này được kỳ vọng giúp nâng cao khả năng nhận diện thương hiệu, mở rộng sự hiện diện của doanh nghiệp và cá nhân trên môi trường số. Việc thúc đẩy sử dụng tên miền quốc gia “.vn” góp phần phát triển hạ tầng số, hỗ trợ doanh nghiệp và người dân tham gia chuyển đổi số theo Nghị quyết 57.\n\nNguồn: VTV24\n#j2team_news",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3241538062844958/",
+   "published_at": "2026-11-09T11:32:14+00:00",
+   "reactions": 163,
+   "comments_count": 32,
    "top_comments": [
     {
      "author": "Facebook user",
-     "text": "Session revocations at scale: https://www.canva.dev/blog/engineering/session-revocations-at-scale/",
+     "text": "Tên miền cá nhân mà xấu đau xấu đớn vậy ai dám dùng",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Thấy haha nhiều là biết đ ổn",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Lại chơi pi 😆",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "giống bên cam😂",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Tên miền cấp 2 toàn xấu",
      "votes": 0
     }
    ]
   },
   {
-   "id": "2581755845583053",
-   "group_id": "vnjug",
-   "group_name": "Vietnam Java User Group",
-   "title": "",
-   "content": "",
-   "url": "https://facebook.com/groups/vnjug/permalink/2581755845583053/",
-   "published_at": "2026-11-05T20:59:21+00:00",
-   "reactions": 1,
+   "id": "3240596262939138",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "Chào mọi người,",
+   "content": "Chào mọi người,\n\nDạo này mình đang tìm app để custom lại em Mac nhà mình thì tình cờ gặp một open source đã hơn 33k stars trên GitHub mang tên **Vorssaint**.\n\nTrước đây để giải quyết những vấn đề nhỏ nhặt hàng ngày, mình phải cài N cái app:\n\n- Dropover: kéo thả để copy file\n\n- RunCat Neo: monitor CPU/GPU\n\n- MacsAI: gỡ và cập nhật app tự động\n\n- Macs Fan Control: theo dõi và điều khiển quạt khi chạy tác vụ nặng\n\n- FireTune: volume mixer và chỉnh EQ\n\n- Thêm vài app khác chỉ để hiện widget nhạc\n\n💥 Và rồi bùm... Vorssaint gom hết những thứ trên vào một app duy nhất. Quan trọng hơn cả là tất cả đều miễn phí 🆓. Một vài tính năng của **Vorssaint **mình cảm thấy thích:\n- Tận hưởng trải nghiệm Dynamic Island mà ko cần đợi Macbook PROLED XDR về hàng hay M6 Pro release\n- Quản lý Agent Token: hỗ trợ claude, codex, copilot và opencode\n- Edit screenshot/ screen recording trực tiếp\n- Hỗ trợ cập nhật và quản lý app qua Homebrew\nCó đâu đó hơn 79 features, bật tắt tùy ý, không lo nặng máy, nên ae từ từ tìm hiểu\n\nWeb demo: [https://vorssaint.com](https://vorssaint.com)\n\nDưới đây là link tải về:\n\nMac Apple Silicon: [https://github.com/vorssaint/vorssaint-utils/releases](https://github.com/vorssaint/vorssaint-utils/releases)\nMac Intel:  [https://github.com/ngtanthanh-qc/vorssaint-utils/releases](https://github.com/ngtanthanh-qc/vorssaint-utils/releases)\n\nCảm ơn bác **Nguyen Tan Thanh** đã port bản cho Mac Intel nhé!\n\nMột vài lưu ý nhỏ với ae Mac Silicon,\n\n- Fan Control: vẫn đang ở giai đoạn Beta\n\n- EQ: vẫn đang trong giai đoạn phát triển\n\nAe nào đang cần gấp thì cứ tạo PR luôn cho nóng 😄. License GPL 3.0 nên mọi người fork thoải mái.\n\nP/s: nếu ae đọc bài này thấy quen thì đúng rồi đó, mình đã phải reup do vô tình xóa nhầm bài post trước đó.\n\n#j2team_share #j2team_software #macOS #MacApps #OpenSource #vorssaint",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3240596262939138/",
+   "published_at": "2026-11-08T17:02:47+00:00",
+   "reactions": 161,
+   "comments_count": 21,
+   "top_comments": [
+    {
+     "author": "Facebook user",
+     "text": "Macos 14 trở lên mới hỗ trợ 🥹",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Này tốn ram lắm ko bác",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "bác làm hả, đỉnh quá",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "ngon luôn",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Ko biết bao giờ ios mới có thanh âm lượng tách riêng ra nhỉ 🤣 android có gần 15 năm rồi trời oiii",
+     "votes": 0
+    }
+   ]
+  },
+  {
+   "id": "3241035306228567",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "JENSEN HUANG THỪA NHẬN BẢN THÂN ĐÃ NGOẠI TÌNH",
+   "content": "# JENSEN HUANG THỪA NHẬN BẢN THÂN ĐÃ NGOẠI TÌNH\n\nTrong email gửi toàn thể nhân viên công ty trước đó vào ngày 8/11, ông xác nhận đã không chung thủy với vợ, bà Lori, và gửi lời xin lỗi sâu sắc tới gia đình cùng các đồng nghiệp.\n\nMối quan hệ ngoài luồng này được xác định là với bà Alice Huang (không có quan hệ họ hàng), cựu giám đốc điều hành cấp cao tại Megaspeed, một công ty trung tâm dữ liệu có trụ sở tại Singapore và là khách hàng lớn của Nvidia tại Đông Nam Á. Hội đồng quản trị Nvidia đã thành lập một ủy ban độc lập để mở cuộc điều tra về cáo buộc cho rằng bà Alice Huang là gián điệp được tình báo Trung Quốc cài cắm nhằm thu thập thông tin công nghệ AI và tác động đến chính sách xuất khẩu chip của Mỹ. \n\n[https://nvidianews.nvidia.com/news/a-message-to-our-company](https://nvidianews.nvidia.com/news/a-message-to-our-company)\n\n#j2team_news",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3241035306228567/",
+   "published_at": "2026-11-09T01:52:24+00:00",
+   "reactions": 1037,
+   "comments_count": 63,
+   "top_comments": [
+    {
+     "author": "Facebook user",
+     "text": "Cả thế giới phụ thuộc vô bà vợ",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "lỗ hổng bảo mật",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Chuyện riêng mà, sao lại xin lỗi nhân viên nhỉ",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Khả năng cao công nghệ TQ 1 phần từ mấy ‘cái lổ’ này mà ra.",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "ý là mình phải công khai lên web cho toàn thế giới bjk z lun đó hả",
+     "votes": 0
+    }
+   ]
+  },
+  {
+   "id": "3241008169564614",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "Hướng dẫn parkour nhưng bạn không dám làm theo** <(\")",
+   "content": "# **Hướng dẫn parkour nhưng bạn không dám làm theo** <(\")\n\nCre: AdamMarrPK | FB\n\n#j2team_relax",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3241008169564614/",
+   "published_at": "2026-11-09T01:15:53+00:00",
+   "reactions": 467,
+   "comments_count": 32,
+   "top_comments": []
+  },
+  {
+   "id": "3240998519565579",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "📣 ĐIỂM TIN BUỔI SÁNG THỨ HAI (09/11/2026)",
+   "content": "📣 ĐIỂM TIN BUỔI SÁNG THỨ HAI (09/11/2026)\n\nChào buổi sáng cả nhà J2TEAM! Chúc mọi người một ngày mới làm việc và học tập tràn đầy năng lượng. Dưới đây là những tin tức công nghệ và an ninh mạng nổi bật nhất trên thế giới sáng nay để mọi người cùng cập nhật nhé:\n\n1️⃣ Epic Games Launcher chuẩn bị chính thức hỗ trợ SteamOS, mở đường cho Fortnite đổ bộ Steam Deck\n\n2️⃣ Nvidia chính thức mở cuộc điều tra nội bộ liên quan đến các cáo buộc gián điệp nhắm vào CEO Jensen Huang\n\n3️⃣ File cấu hình của công cụ Claude Code làm lộ mật khẩu và API key trong hơn 1.100 repository công khai trên GitHub\n\n4️⃣ Vụ rò rỉ dữ liệu WorkOS do một AI Agent tự hành bất ngờ vượt rào sandbox thử nghiệm gây ra\n\n5️⃣ Tin tặc rút ruột 133 triệu USD của ngân hàng Pháp thông qua đối tác cung cấp dịch vụ công nghệ\n\n6️⃣ Hãng bán lẻ Iris Ohyama của Nhật Bản bị xâm nhập dịch vụ đám mây, làm lộ dữ liệu 7,7 triệu khách hàng\n\n7️⃣ Nội bộ quỹ đầu tư mạo hiểm Sequoia bất ngờ khi đối tác điều hành Roelof Botha gia nhập hội đồng quản trị SpaceX\n\n8️⃣ Các nhà khoa học giải mã bí ẩn những đợt sụt giảm tần số đồng bộ trên lưới điện toàn cầu\n\n9️⃣ Binh sĩ Anh bị tống tiền vì phớt lờ mệnh lệnh tháo thẻ SIM khi đóng quân gần biên giới Nga\n\n🔟 Android chuẩn bị bổ sung tính năng cảnh báo bỏ quên đồ vật tương tự Apple Find My\n\n1️⃣1️⃣ Startup Thinking Machines trình làng mô hình AI trọng số mở mới, vượt mặt các đối thủ phương Tây\n\n1️⃣2️⃣ The New York Times Cooking tích hợp trợ lý AI thông minh giúp tùy biến và thay thế nguyên liệu món ăn\n\n#j2team_news #diemtinsang #news",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3240998519565579/",
+   "published_at": "2026-11-09T01:01:18+00:00",
+   "reactions": 44,
    "comments_count": 0,
    "top_comments": []
   },
   {
-   "id": "3234346643564100",
+   "id": "3240598439605587",
    "group_id": "j2team.community",
    "group_name": "J2TEAM Community",
-   "title": "Mở góii nạp đầu cho ae :))))",
-   "content": "Mở góii nạp đầu cho ae :))))\nĐang cho test gói plus ở Việt Năm. \n\nVà đây là những gì VIP sẽ có :) vẽ thêm chứ chưa plus lắm :( \n\nAi cũng được hay sao nhỉ.\n\n#j2team_news",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3234346643564100/",
-   "published_at": "2026-11-03T19:54:04+00:00",
-   "reactions": 214,
-   "comments_count": 90,
+   "title": "Đây có lẽ là phần mềm hỗ trợ download miễn phí có UI quen thuộc với người dùng IDM nhất hiện nay!",
+   "content": "Đây có lẽ là phần mềm hỗ trợ download miễn phí có UI quen thuộc với người dùng IDM nhất hiện nay!\n\nMister Download Manager (MDM) – một lựa chọn thay thế Internet Download Manager cực kỳ đáng thử, với giao diện và cách sử dụng quen thuộc gần như IDM.\n\n- Miễn phí 100%, mã nguồn mở, không quảng cáo.\n- Hỗ trợ tăng tốc tải xuống, chia nhỏ file, tiếp tục tải khi gián đoạn.\n- Có extension tích hợp trình duyệt, tự động bắt link tải xuống.\n- Hỗ trợ tải video, torrent và nhiều tính năng khác.\n- Hỗ trợ Windows, Linux và macOS (đang thử nghiệm).\n\nĐặc biệt, phần mềm được viết bằng Rust, mã nguồn mở, hoàn toàn miễn phí!\n\n#j2team_community",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3240598439605587/",
+   "published_at": "2026-11-08T17:05:00+00:00",
+   "reactions": 764,
+   "comments_count": 153,
    "top_comments": []
   },
   {
-   "id": "3236438940021537",
+   "id": "3240525722946192",
    "group_id": "j2team.community",
    "group_name": "J2TEAM Community",
-   "title": "Máy tính Casio không phế...tôi phế 🙃",
-   "content": "Máy tính Casio không phế...tôi phế 🙃\n#j2team_share\n\n#j2team_relax",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3236438940021537/",
-   "published_at": "2026-11-05T12:21:17+00:00",
-   "reactions": 613,
-   "comments_count": 26,
+   "title": "Touch ENV - Tool mở secret qua Touch ID để tránh bị lộ",
+   "content": "Touch ENV - Tool mở secret qua Touch ID để tránh bị lộ\n\nCó một người bạn mình bị tấn công vào máy local (do chạy cùng Tailscale tailnet với máy khác bị hack) và bị lộ secret key qua AI agent trên máy. Cách phòng thủ là secret nào quan trọng thì bắt qua Touch ID (1 dạng khóa hardware).\n\nMình build sẵn tool Touch ENV này cho anh em xài để tránh thiệt hại nhất có thể nếu máy bị xâm chiếm nhé: https://github.com/ptrinh/touch-env/\n\nHiện tại mới chỉ có cho MacOS. Bác nào dùng Windows thì có thể contribute thêm cho Windows nhé :D\n\n#j2team_share",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3240525722946192/",
+   "published_at": "2026-11-08T15:56:19+00:00",
+   "reactions": 54,
+   "comments_count": 8,
    "top_comments": []
   },
   {
-   "id": "3237661556565942",
+   "id": "3240429076289190",
    "group_id": "j2team.community",
    "group_name": "J2TEAM Community",
-   "title": "🔥 NGAY LÚC NÀY🔥",
-   "content": "🔥 NGAY LÚC NÀY🔥\nCuộc thi “Hành trình truy vết Tội phạm mạng” chính thức bước vào Vòng chung kết, nơi 12 đội thi xuất sắc cùng tranh tài trong 24 giờ liên tục, chinh phục những thử thách đòi hỏi tư duy sắc bén, kỹ năng chuyên môn và bản lĩnh vững vàng trên không gian mạng. 🚀🚀\n\n#j2team_news",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3237661556565942/",
-   "published_at": "2026-11-06T11:23:35+00:00",
-   "reactions": 345,
-   "comments_count": 16,
-   "top_comments": []
+   "title": "v-EMU - thay thế VMware workstation cho Linux",
+   "content": "**v-EMU - thay thế VMware workstation cho Linux**\n\nGiới thiệu đến anh em J2Team một nền tảng ảo hóa mình vừa thực hiện có đủ tính năng cho đa số nhu cầu lab ảo hóa trên Linux \n\n* Tốc độ native từ Libvirt/QEMU\n* Hỗ trợ mọi distro lớn họ RHEL, SuSe và Debian \n* Trải nghiệm thuần desktop, không phải mô hình client server như các giải pháp enterprise khác \n* Hỗ trợ giả lập cross-arch cho ARM64/RISCV64 \n* Firmware chuẩn hóa Secureboot đi kèm\n* Tối ưu cho lab với IaC, template, linked clone, snapshot\n* Chia sẻ tập tin giữa host-guest với VirtioFS hoặc USB passthrough \n* Network map, console tích hợp cho ai thích gõ\n* ...nhiều món khác chờ trải nghiệm\n\nNói chung, có thể thay thế cho mọi nền tảng quản lý ảo hóa đang có trên Linux như Cockpit/Virt-Manager, phần mềm rời như VMware workstation hay Oracle VirtualBox \n\nAnh em quan tâm có thể tham khảo tại repo Github và tải về cài theo 2 cách gồm cài từ source hoặc từ binary .run mình tạo sẵn\n\nRepo: [https://github.com/withcoresystem/v-EMU](https://github.com/withcoresystem/v-EMU) \n\n#j2team #j2team_share #linux #Virtualization",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3240429076289190/",
+   "published_at": "2026-11-08T14:41:47+00:00",
+   "reactions": 262,
+   "comments_count": 27,
+   "top_comments": [
+    {
+     "author": "Facebook user",
+     "text": "Dựng vm-based lab thì mình thấy có Vagrant, công cụ này có gì khác biệt không bác nhỉ.",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Có hỗ trợ cachyos (arch base) không bác",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Vi Ê Mu này khác Qe Mu của mình k a @[100002100333547:2048:Nguyễn La Thông] :)",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "trên Fedora/RHEL cũng có package về qemu-kvm chạy máy ảo và có giao diện điều khiển ngay trên cockpit, backed bởi Red Hat. Cái này có gì ngon hơn ko bác nhỉ?",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Muốn được trải nghiệm ạ",
+     "votes": 0
+    }
+   ]
   },
   {
-   "id": "3237496433249121",
-   "group_id": "j2team.community",
-   "group_name": "J2TEAM Community",
-   "title": "Kỷ niệm clb bóng đá người ta chơi lớn cỡ này.",
-   "content": "Kỷ niệm clb bóng đá người ta chơi lớn cỡ này.\nHình ảnh màn thắp pháo sáng rực trời của các cổ động viên câu lạc bộ bóng đá USM EI Harrach để kỷ niệm 95 năm ngày thành lập câu lạc bộ (1931 - 2026)\n#j2team_news",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3237496433249121/",
-   "published_at": "2026-11-06T08:25:07+00:00",
-   "reactions": 435,
-   "comments_count": 13,
-   "top_comments": []
-  },
-  {
-   "id": "3237506633248101",
-   "group_id": "j2team.community",
-   "group_name": "J2TEAM Community",
-   "title": "Khoe với một người một chút thủ công thư giãn ~ một vài chiếc móng trong nails box xương rắn thật bên mình vừa thực hiện 🫠",
-   "content": "Khoe với một người một chút thủ công thư giãn ~ một vài chiếc móng trong nails box xương rắn thật bên mình vừa thực hiện 🫠\n\n#j2team_relax",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3237506633248101/",
-   "published_at": "2026-11-06T08:35:21+00:00",
-   "reactions": 112,
+   "id": "2688254154965308",
+   "group_id": "machinelearningcoban",
+   "group_name": "Forum Machine Learning cơ bản",
+   "title": "Nhà máy có đội 5 nhân viên AI làm việc 24/7, mỗi AI một vai trò: theo dõi robot, đơn hàng, kho, sản xuất, chất lượng. Infinilab xâ",
+   "content": "Nhà máy có đội 5 nhân viên AI làm việc 24/7, mỗi AI một vai trò: theo dõi robot, đơn hàng, kho, sản xuất, chất lượng. Infinilab xây đội AI như vậy cho nhà máy của bạn. Nhắn để trao đổi thêm. #Infinilab #AI #NhanSuAI #NhaMay #ChuyenDoiSo",
+   "url": "https://facebook.com/groups/machinelearningcoban/permalink/2688254154965308/",
+   "published_at": "2026-11-09T11:13:00+00:00",
+   "reactions": 0,
    "comments_count": 1,
    "top_comments": []
   },
   {
-   "id": "3236815989983832",
-   "group_id": "j2team.community",
-   "group_name": "J2TEAM Community",
-   "title": "Sau hơn 2 năm tự mày mò, học hỏi, viết code và trải qua không ít khó khăn, cuối cùng mình cũng đã chính thức phát hành tựa game in",
-   "content": "Sau hơn 2 năm tự mày mò, học hỏi, viết code và trải qua không ít khó khăn, cuối cùng mình cũng đã chính thức phát hành tựa game indie đầu tay Ashen Legacy trên Steam! 🥹\n\nĐây không phải là một sản phẩm \"vibe coding\", mà là thành quả của hơn 2 năm mình tự tay lập trình, xây dựng các hệ thống gameplay, sửa vô số bug và hoàn thiện từng chút một.\n\nTừ một ý tưởng nhỏ ban đầu đến khi có thể đưa game lên Steam là cả một hành trình dài. Có những lúc thực sự rất nản, nhưng cảm giác nhìn thấy sản phẩm của mình chính thức ra mắt khiến mọi công sức bỏ ra đều trở nên xứng đáng.\n\nMình biết game vẫn còn nhiều thiếu sót, nhưng đây thực sự là một cột mốc rất ý nghĩa đối với bản thân.\n\nRất mong nhận được những góp ý, đánh giá từ anh em J2TEAM, đặc biệt là những anh em có kinh nghiệm lập trình và phát triển game, để mình có thể tiếp tục cải thiện sản phẩm!\n\n🎮 Link Steam: https://store.steampowered.com/app/5164260/Ashen_Legacy/\n\nCảm ơn anh em J2TEAM rất nhiều! ❤️\n\n#j2team_share",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3236815989983832/",
-   "published_at": "2026-11-05T18:52:12+00:00",
-   "reactions": 233,
-   "comments_count": 16,
-   "top_comments": [
-    {
-     "author": "Facebook user",
-     "text": "làm dạng stickman vớ vẩn lại hay =)))) như huyền thoại gif 2-25 năm trc",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "W",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "bác có định convert qua android k ạ",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "Mình có chơi thử demo của bạn và mình có vài cảm nhận như sau:\n1. Có lẽ do là demo nên không có tùy chọn điều chỉnh lại phím bấm, chứ những trò platform hiện nay mình chơi các nút cơ bản NHẢY sẽ là Z, tấn công là X và lướt sẽ là C, nó sẽ trong cùng một hàng phím, khi mình chơi khi nhảy và lướt ấn SPACE và SHIFT cùng lúc khá phiền, trong combat thường nhảy né khá nhiều nên ấn SPACE đối với mình không thuận tiện, và mình cũng thấy có phần không thoải mái khi Double Jump.\n\n2. Item rớt ra khi mở rương. Dù là game 2D nhưng phần item rớt ra trông khá phẳng và chưa được bắt mắt, việc rớt đồ ra khỏi rương nên là một cái gì đó nổi bật và đem lại cảm giác phần thưởng hiện vật có cảm giác thu nhặt cầm nắm xứng đáng, mình cảm thấy những viên ngọc khá phẳng và chưa thấy sự hấp dẫn trong việc nhặt đồ.\n\n3. Phần hitbox của địch khi đánh chưa đủ đầm. Cảm giác khi tấn công giống như mình đang đánh chưa tác động mạnh vào địch, tiếng hitbox cũng có nhưng mình thấy chưa ổn\n\nĐây là một vài cảm nhận của mình sau khi chơi demo game của bạn, chúc bạn thành công với game của mình!",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "Nhìn nó castlevania mà nó dead cells, nó blasphemous, nó shovel knight thế :v",
-     "votes": 0
-    }
-   ]
-  },
-  {
-   "id": "3237292893269475",
-   "group_id": "j2team.community",
-   "group_name": "J2TEAM Community",
-   "title": "j2team_share",
-   "content": "#j2team_share\nHai tuần, bốn người rời Anthropic: có những gương mặt quen của Claude Code, hai người sang OpenAI\n\nChỉ trong khoảng hai tuần, bốn người từng làm ở Anthropic lần lượt báo tin rời đi. Cũng trong thời gian này, Anthropic nộp hồ sơ IPO (S-1) hôm 26/10, xin niêm yết trên sàn Nasdaq.\n\nCat Wu - người gắn bó với Claude Code từ khi nó còn là một công cụ nội bộ nhỏ - vừa báo sẽ sang OpenAI để dẫn dắt quản lý sản phẩm cho mảng Core Products (nhóm sản phẩm cốt lõi). Austin Lau, người giúp xây bộ phận tăng trưởng của Anthropic, cũng vừa sang OpenAI.\n\nTrước đó, Thariq (hơn một năm làm Claude Code) và Anthony Morris (người tạo ra Claude Code bản desktop) cũng đã rời Anthropic. Trong bài chia tay, cả hai chưa nói sẽ đi đâu: Thariq nghỉ ngơi một chút trước khi bắt đầu việc mới, Anthony hẹn sớm chia sẻ bước tiếp theo.\n\nVới ai đang dùng Claude Code mỗi ngày, điều đáng theo dõi bây giờ là sản phẩm sẽ đi tiếp ra sao. Mọi người nghĩ thế nào?\n\nCre: Phong Ho",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3237292893269475/",
-   "published_at": "2026-11-06T04:36:46+00:00",
-   "reactions": 210,
-   "comments_count": 23,
-   "top_comments": [
-    {
-     "author": "Facebook user",
-     "text": "Content AI giật tít xàm xí vô vị",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "Quan trọng nhất đối với mấy thằng OpenAI/Anthropic vẫn là mấy ông giáo sư, tiến sĩ chịu trách nhiệm nghiên cứu, training AI/LLM ấy. \nChứ mấy cái như Claude Code, Claude Desktop, Harness thì nó cũng chỉ là những tools ở tầng app nên ko khó như vậy đâu, nó tìm người mới mấy mấy hồi.",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "Văn AI 😂",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "đẳng cấp vẫn là deepseek, giá rẻ lại mạnh khiếp 🔥🔥",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "Chắc về lại deepseek",
-     "votes": 0
-    }
-   ]
-  },
-  {
-   "id": "3237146069950824",
-   "group_id": "j2team.community",
-   "group_name": "J2TEAM Community",
-   "title": "📣 ĐIỂM TIN BUỔI SÁNG THỨ SÁU (06/11/2026)",
-   "content": "📣 ĐIỂM TIN BUỔI SÁNG THỨ SÁU (06/11/2026)\n\nChào buổi sáng cả nhà J2TEAM! Chúc mọi người một ngày mới làm việc và học tập tràn đầy năng lượng. Dưới đây là những tin tức công nghệ và an ninh mạng nổi bật nhất trên thế giới sáng nay để mọi người cùng cập nhật nhé:\n\n1️⃣ NASA bất ngờ công bố mẫu máy bay thử nghiệm X-70 Fractal với thiết kế module đa nhiệm tương lai\n\n2️⃣ Sony hồi sinh huyền thoại tai nghe Walkman MDR-3 từ năm 1979 với cổng cắm USB-C hiện đại\n\n3️⃣ The New York Times đàm phán chi 330 triệu USD thâu tóm mạng xã hội điện ảnh Letterboxd\n\n4️⃣ Bộ ba Big Tech Meta, Google và TikTok đồng loạt khởi kiện bang California về luật hạn chế mạng xã hội giới trẻ\n\n5️⃣ Airbnb chuẩn bị tung trợ lý du lịch ảo AI giúp lên lịch trình và quản lý toàn bộ chuyến đi\n\n6️⃣ Serve Robotics ra mắt mảng dịch vụ đám mây mới, đặt mục tiêu trở thành 'AWS trong giới Robot'\n\n7️⃣ Phát hiện kỹ thuật vượt rào chế độ Lockdown của ChatGPT, trích xuất dữ liệu chat không cần nạn nhân tương tác\n\n8️⃣ OpenSSH khẩn cấp vá lỗ hổng cho phép mật khẩu dài vượt mặt xác thực SSH trên Alpine Linux\n\n9️⃣ Perplexity ra mắt trợ lý AI Teammates chuyên biệt cho doanh nghiệp, cạnh tranh trực tiếp với OpenAI\n\n🔟 Chiến dịch lừa đảo tinh vi mạo danh sự kiện OpenAI và SpaceX để đánh cắp tài khoản Google, Microsoft\n\n1️⃣1️⃣ Chuẩn kết nối Bluetooth 7 sắp ra mắt: Cải tiến vượt bậc về độ trễ, thiết lập Smart Home và âm thanh Lossless\n\n1️⃣2️⃣ Anthropic tích hợp công cụ tài chính cá nhân vào Claude giúp phân tích chi tiêu an toàn với quyền chỉ đọc\n\n#j2team_news #diemtinsang #news",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3237146069950824/",
-   "published_at": "2026-11-06T01:44:58+00:00",
-   "reactions": 61,
-   "comments_count": 0,
-   "top_comments": []
-  },
-  {
-   "id": "3237228449942586",
-   "group_id": "j2team.community",
-   "group_name": "J2TEAM Community",
-   "title": "Danh sách các cấp độ gói đăng ký trả phí các dịch vụ trên internet. Tầng nào cũng có gói của các nhà cung cấp dịch vụ AI.",
-   "content": "Danh sách các cấp độ gói đăng ký trả phí các dịch vụ trên internet. Tầng nào cũng có gói của các nhà cung cấp dịch vụ AI.\nBạn đã tốn tiền đến level nào rồi.\n\n#j2team_community",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3237228449942586/",
-   "published_at": "2026-11-06T03:17:26+00:00",
-   "reactions": 899,
-   "comments_count": 178,
-   "top_comments": []
-  },
-  {
-   "id": "3237192129946218",
-   "group_id": "j2team.community",
-   "group_name": "J2TEAM Community",
-   "title": "MICROSOFT PAINT DÍNH LỖ HỔNG REMOTE CODE EXECUTION (RCE)",
-   "content": "#  MICROSOFT PAINT DÍNH LỖ HỔNG REMOTE CODE EXECUTION (RCE)\nMicrosoft đã công bố CVE-2026-83844, một lỗ hổng bảo mật trong Windows Paint có thể dẫn đến thực thi mã từ xa (Remote Code Execution).\n\nThông tin lỗ hổng:\n\nCVE: CVE-2026-83844\n\nCVSS 3.1: 8.1 (High)\n\nMức độ nghiêm trọng theo Microsoft: Important\n\nLoại lỗ hổng: CWE-125 (Out-of-bounds Read)\n\nTác động: Remote Code Execution (RCE)\n\nLỗ hổng được Microsoft công bố ngày 13/10/2026. Hiện chưa có bằng chứng được xác nhận về việc khai thác rộng rãi trong thực tế. \n\nNgười dùng Windows nên kiểm tra và cập nhật Microsoft Paint lên phiên bản 11.2605.91.0 hoặc mới hơn thông qua Microsoft Store. \n\n#j2team_share",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3237192129946218/",
-   "published_at": "2026-11-06T02:39:53+00:00",
-   "reactions": 413,
-   "comments_count": 49,
-   "top_comments": []
-  },
-  {
-   "id": "3237138079951623",
-   "group_id": "j2team.community",
-   "group_name": "J2TEAM Community",
-   "title": "Cloudflare ra mắt Zero Wire: Một public feed theo dõi lỗ hổng CVE và khai thác thực tế",
-   "content": "Cloudflare ra mắt Zero Wire: Một public feed theo dõi lỗ hổng CVE và khai thác thực tế\n\n#j2team_share\n\nVào ngày 3 tháng 11 năm 2026, Cloudflare đã chính thức ra mắt Zero Wire, một nguồn cấp dữ liệu tình báo lỗ hổng bảo mật công khai được thiết kế để hỗ trợ các đội ngũ an ninh mạng trong việc theo dõi các lỗ hổng CVE nghiêm trọng, hiểu rõ các hoạt động khai thác thực tế và tìm kiếm các bản vá bảo mật kịp thời.\n\nTrang này tích hợp trực tiếp vào phần bảo mật của Cloudflare Radar, mang đến các bản tóm tắt kỹ thuật dễ hiểu, hướng dẫn từ nhà cung cấp và các khuyến nghị hành động cụ thể.",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3237138079951623/",
-   "published_at": "2026-11-06T01:34:20+00:00",
-   "reactions": 197,
-   "comments_count": 17,
+   "id": "1500221502014359",
+   "group_id": "vgu.tech.alumni",
+   "group_name": "VGU Tech Alumni",
+   "title": "[ TẠI SAO MỘT LẬP TRÌNH VIÊN LẠI BỎ PHỐ VỀ LÀM NÔNG VÀ KIÊN QUYẾT \"MANUAL PROGRAMMING\" GIỮA KỶ NGUYÊN AI? ]",
+   "content": "**[ TẠI SAO MỘT LẬP TRÌNH VIÊN LẠI BỎ PHỐ VỀ LÀM NÔNG VÀ KIÊN QUYẾT \"MANUAL PROGRAMMING\" GIỮA KỶ NGUYÊN AI? ]**\n\n**TL;DR:**\n* Câu chuyện tự sự không lời (chỉ qua tiếng gõ phím trên Stickies và Google Translate) của Công Nguyễn (chủ kênh **Hayyoth** / **WingramOrg**) khi liên tục bị nghi ngờ là sản phẩm của AI.\n* Hành trình đi ngược số đông: Bỏ đại học vì thấy thiếu kiến thức thực tế, rời bỏ công ty tự mở, theo đuổi triết lý **Free Software** của Richard Stallman với **Arch Linux**, **Neovim**, **Golang**, **C** và **Low-level programming**.\n* Góc nhìn thẳng thắn: Anh không ghét AI hay sợ AI cướp việc, thứ anh ghét từ trước cả thời đại AI là những hệ thống đóng đang kìm kẹp con người và làm mất đi niềm vui tìm kiếm tri thức nguyên bản.\n\n======================\n\nDạo này lướt YouTube, không biết anh chị em có vô tình thấy kênh **Hayyoth** với slogan *\"The guardian of the craft of manual programming\"* (Người bảo vệ nghệ thuật lập trình thủ công) không? Hôm nay mình xem được một video tâm sự dài hơn 15 phút của bạn ấy – một lập trình viên người Việt. Điều đặc biệt là video hoàn toàn không có giọng nói hay transcript, chỉ có tiếng lạch cạch gõ từng dòng chữ trên ứng dụng Stickies, đôi chỗ bật Google Translate từ tiếng Việt sang tiếng Anh và mở lại những bức ảnh kỷ niệm cũ. Vậy mà xem cuốn từ đầu đến cuối.\n\nBối cảnh của video bắt đầu từ việc quá nhiều người trên mạng nói rằng anh ấy là do AI tạo ra, và họ không hiểu tại sao giữa thời buổi này một lập trình viên lại vẫn cố chấp giữ lấy việc **Manual Programming** (tự tay gõ từng dòng code mà không dùng AI). Thay vì lên tiếng tranh cãi, anh ấy bật camera bằng câu lệnh trên Terminal, mở thư viện ảnh cá nhân và gõ từng dòng để kể lại câu chuyện cuộc đời mình.\n\n## **1. Những năm tháng tuổi trẻ, \"I use Arch btw\" và sự khước từ lối mòn**\n\nQua những bức ảnh cũ từ thời trước năm 2018 đến giai đoạn 2018 - 2023, hình ảnh hiện lên rất quen thuộc với nhiều anh em làm kỹ thuật: một góc bàn học dán kín giấy note trên tường, chiếc mainboard máy tính được độ khung bằng các mảnh ghép đồ chơi đầy màu sắc, đam mê vật lý, khoa học, thích vẽ và mê máy tính.\n\nAnh tự nhận mình là một \"Linux guy\" chính hiệu kèm câu cửa miệng huyền thoại của giới mộ điệu: *\"I use Arch btw\"*. Thời sinh viên, anh từng đi làm với mức lương chỉ vỏn vẹn 100 đô một tháng. Nhưng lúc đó, tiền bạc không quan trọng bằng việc được nạp kiến thức thực sự.\n\nCàng đi sâu vào nghề, anh càng nhận ra mình không thuộc về những khuôn khổ gò bó:\n* Anh ghét việc đến trường và quyết định bỏ học đại học khi nhận ra nơi đó không dạy cho mình những kiến thức cốt lõi thực sự mà mình khao khát.\n* Anh ghét sự tù túng của văn phòng, chỉ thích xách laptop ra quán cà phê ngồi code.\n* Anh từng tự mở công ty riêng, nhưng rồi cũng tự rời bỏ chính công ty của mình khi nhận ra tiền bạc và guồng quay tư bản không phải là mục đích sống.\n* Đặc biệt, sau khi thấm nhuần triết lý của **Richard Stallman**, anh quyết định ngừng xây dựng các phần mềm đóng (**Non-Free software**) vì nhận ra mặt tối của chúng đối với người dùng.\n\n## **2. Năm 2024: Nghỉ việc, đắm mình vào Open Source và tự viết mọi thứ từ con số 0**\n\nNăm 2024, anh nghỉ việc và lập ra **WingramOrg** cùng tài khoản GitHub *codegram01* với một suy nghĩ rất thuần khiết: *\"I'm not a big tech company; I'm just one person who wants to make something good for the world.\"*\n\nNhìn vào danh sách gần trăm repositories và các buổi livestream \"Code with me\" của anh trong giai đoạn này mới thấy độ \"hardcore\" của một Web Developer yêu **Golang**, **Vue** và **Pure JS**:\n* Tự viết **GramJS** – một JavaScript framework siêu nhỏ gọn của riêng mình với triết lý *\"The only JavaScript Framework you can understand\"*, rồi dùng chính nó để build trình quản lý bookmark.\n* Dùng **Golang** viết lại các công cụ quản trị file trên Linux như **gfm** (Golang File Manager với chưa đầy 100 dòng code), **goff** (CLI tool so sánh thư mục và sự thay đổi của file), hay **godriver** (Remote Files Manager).\n* Coi **Terminal** là vũ khí tối thượng (*\"Terminal is a Weapon - You don't need any app, one terminal is enough\"*), thao tác mọi thứ trên **Neovim**, **tmux**, **w3m**, **gcc**, **make**...\n## **3. Thực tế cuộc sống cơm áo gạo tiền và kế hoạch \"Bỏ phố về trang trại\"**\n\nCuộc sống của một người theo đuổi lý tưởng tất nhiên không chỉ có màu hồng. Bước sang năm 2025, khi đã có vợ và một cô con gái nhỏ, áp lực tài chính là điều không thể tránh khỏi. Anh thẳng thắn gõ vào Google Translate: *\"Tiền bạc là quan trọng. Tôi cần tiền, vì vậy tôi trở lại công ty để làm việc.\"*\n\nAnh quay lại làm việc cho một công ty nhỏ nơi mình từng gắn bó từ thời công ty chỉ có 3 người. Nhưng khi công ty phát triển lớn mạnh lên, anh cảm thấy nó không còn vui như trước nữa. Thời gian này, niềm vui của anh là mở các lớp dạy Frontend miễn phí qua Google Meet cho hàng trăm bạn trẻ vì đơn giản là *\"I love share knowledge\"*.\n\nKhông muốn bản thân mãi rơi vào vòng lặp *\"nghỉ việc vì chán ghét công ty -> hết tiền -> lại phải quay về đời sống công sở\"*, giai đoạn 2025 - 2026, anh quyết định bắt đầu xây dựng một trang trại (trồng rau, nuôi gà, nuôi dê, nuôi bò) để chuẩn bị cho sự rút lui hoàn toàn khỏi chốn văn phòng.\n\nHình ảnh một ông bố cởi trần giữa nắng, vừa làm nông, vừa mở cốp sau ô tô để một bên là chiếc nôi của con gái nhỏ, một bên là chiếc laptop để ngồi code thực sự chạm đến cảm xúc. Trang trại giúp anh có được một năm tự do hoàn toàn để hòa mình vào thiên nhiên và quay lại học sâu vào ngôn ngữ **C**, **Low-level programming** và **Algorithms** – những kiến thức nền tảng mà thời đi làm bận rộn anh đã bỏ lỡ.\n\n## **4. Cú ngã gãy chân và sự ra đời của kênh Hayyoth**\n\nBước sang năm 2026, anh không may bị gãy chân và phải ngồi xe lăn. Có nhiều thời gian rảnh trên tay, anh nghĩ mình sẽ quay lại đóng góp mạnh mẽ cho cộng đồng **Open Source**.\n\nNhưng khi quay lại, thế giới phần mềm đã biến đổi hoàn toàn. AI đã phủ sóng khắp nơi. Anh nhận ra một sự thật buồn: *\"Con người không còn đủ tin tưởng nhau để cùng cộng tác nữa, và hầu như chẳng còn ai ",
+   "url": "https://facebook.com/groups/vgu.tech.alumni/permalink/1500221502014359/",
+   "published_at": "2026-11-09T14:51:59+00:00",
+   "reactions": 10,
+   "comments_count": 1,
    "top_comments": []
   }
  ]
