@@ -1,286 +1,348 @@
 {
- "generated_at": "2026-11-09T22:54:05.431628+00:00",
+ "generated_at": "2026-11-13T22:54:01.299035+00:00",
  "items": [
   {
-   "id": "2585842388507732",
+   "id": "2589456218146349",
    "group_id": "vnjug",
    "group_name": "Vietnam Java User Group",
-   "title": "Chào mọi người. Một người bạn mình làm phần mềm hơn 10 năm có viết cuốn sách cho kỹ sư mấy năm đầu, đọc miễn phí trên web. Chương ",
-   "content": "Chào mọi người. Một người bạn mình làm phần mềm hơn 10 năm có viết cuốn sách cho kỹ sư mấy năm đầu, đọc miễn phí trên web. Chương về làm việc với code cũ có một đoạn mình muốn hỏi anh em làm Java:\n\n“Ai nói hệ thống đã hỏng mấy ngày nay trong lúc họ refactor, thì người đó không refactor. Họ đang viết lại, một việc khác, rủi ro hơn, và có tên riêng.”\n\nỞ chỗ anh em, những đợt “refactor” thường là refactor thật, từng bước nhỏ, hay thật ra là viết lại?\n\nLink là trang trích đoạn trong sách: https://kspm.io/q/vi/17/1335-150-b454728c",
-   "url": "https://facebook.com/groups/vnjug/permalink/2585842388507732/",
-   "published_at": "2026-11-09T13:01:17+00:00",
+   "title": "[Góc Architecture] GitHub giảm từ 2.511 xuống khoảng 24 API requests để lấy lịch sử star của react/react như thế nào?",
+   "content": "**[Góc Architecture] GitHub giảm từ 2.511 xuống khoảng 24 API requests để lấy lịch sử star của react/react như thế nào?**\n\nAnh em muốn biết một lần release có giúp project được chú ý hơn không. Đồ thị số star theo ngày có thể cho một tín hiệu gần đúng. Trước đây, muốn vẽ đồ thị ấy bằng GitHub API, tool phải lấy danh sách từng người đang star repository, giữ lại thời điểm họ bấm star rồi bỏ thông tin người dùng.\n\nVới `react/react` có khoảng 251.000 star, mỗi trang tối đa 100 người, nên cần khoảng **2.511 requests** để đọc hết. Cách này vừa dễ đụng rate limit, vừa mở đường cho việc thu thập danh tính hàng loạt để spam và phishing. GitHub đã giới hạn danh sách stargazer và watcher cho admin, collaborator; tool chỉ cần xu hướng star cũng bị ảnh hưởng.\n\n**Quyết định của GitHub:** tạo API trả về *số lượt star được tạo trong từng ngày*, tối đa 30 tuần trong một request, không kèm danh tính. Với `react/react`, để lấy toàn bộ lịch sử theo cách mới cần khoảng **24 requests**.\n\n**Vì sao chỉ trả ít dữ liệu hơn vẫn chưa đủ?**\n\nMột phương án là giữ từng bản ghi star, bỏ tên người dùng. Vấn đề bảo vệ danh tính được xử lý, nhưng client vẫn phải tải hàng nghìn trang để tự tính đồ thị.\n\nPhương án tiếp theo là để database gom star theo ngày rồi phân trang kết quả. Hình dung bằng SQL rút gọn dưới đây (chỉ để giải thích, không phải truy vấn nội bộ GitHub):\n\n**Gom rồi phân trang:**\n`SELECT DATE(created_at) AS day, COUNT(*)`\n`FROM stars`\n`WHERE repo_id = :repo`\n`GROUP BY DATE(created_at)`\n`ORDER BY day DESC`\n`LIMIT :bucket_count OFFSET :offset;`\n\n`LIMIT` chỉ giới hạn số ngày *trả về*. Trước đó, database vẫn phải đọc và gom *toàn bộ* star của repository để tạo các nhóm theo ngày. Với `react/react`, GitHub ước tính cách này sẽ phải xét khoảng **6 triệu rows** để đọc hết lịch sử: 24 requests, mỗi request lại xử lý khoảng 251.000 star. Response nhỏ đi, phần việc phía database vẫn lớn.\n\n**Cách được triển khai:** biến `page` và `per_page` thành khoảng `created_at` theo tuần. Phần khác biệt nằm ngay trong `WHERE`:\n\n**Lọc rồi gom:**\n`SELECT DATE(created_at) AS day, COUNT(*)`\n`FROM stars`\n`WHERE repo_id = :repo`\n`AND created_at >= :from AND created_at < :to`\n`GROUP BY DATE(created_at)`\n`ORDER BY day;`\n\n`:from` và `:to` khoanh vùng tối đa 30 tuần mà request cần xem. GitHub dùng khoảng thời gian có index để lọc các star thuộc những tuần đó *trước*, rồi mới gom theo ngày. Trang kế tiếp đi lùi về các tuần trước. Nhờ vậy, mỗi request chỉ xử lý các tuần được trả về; khi đi qua toàn bộ lịch sử `react/react`, database xét mỗi star khoảng một lần, tổng cộng khoảng **251.000 rows** thay vì khoảng 6 triệu theo phương án gom toàn bộ rồi phân trang.\n\nAPI cũ còn có một lỗi phân trang: mỗi request lại đếm tất cả star hiện tại để tính số trang, dù chỉ trả tối đa 100 người. Trong tuần trước khi GitHub giới hạn quyền truy cập endpoint cũ, gần **37.000** truy vấn đếm này chạy chậm và được ghi log, trung bình gần **3 giây**; hơn **1.000** bị cơ chế bảo vệ database dừng, góp phần gây timeout.\n\nSau khi **hạn chế quyền truy cập endpoint cũ**, lượng request đến endpoint giảm khoảng **60%**, và tổng thời gian database dành cho truy vấn đếm giảm khoảng **80%**. Đây là hiệu quả của thay đổi quyền truy cập; API lịch sử mới giải quyết nhu cầu xem xu hướng star mà các tool bị mất sau thay đổi đó.\n\n**Trade-off cần nhớ:** mô hình dữ liệu ghi *những người hiện đang star*, không phải event log. Ai bỏ star thì bản ghi bị xóa; đường lịch sử dựng lại từ dữ liệu này không phải nhật ký đầy đủ mọi lần bấm star/unstar. Một tuần có lượng star đột biến vẫn có thể làm truy vấn nặng, vì giới hạn thời gian không giới hạn số bản ghi nằm trong tuần đó.\n\nVới backend engineer, bài học thực dụng ở đây là xem **thứ tự database làm việc** trước khi mừng vì payload đã nhỏ. Nếu `LIMIT` nằm sau một bước quét, gom nhóm hoặc sort toàn bộ dữ liệu, nó chỉ giảm số dòng trả về. Khi thiết kế API thống kê, thử đặt điều kiện lọc có index trước bước aggregate, rồi đo số rows thực sự được xử lý trên mỗi request.\n\nAnh em từng gặp endpoint trả rất ít dữ liệu nhưng query vẫn quét quá nhiều rows chưa? Lúc đó team tìm ra nguyên nhân bằng `EXPLAIN`, slow query log hay metric nào?\n\n#VietnamJavaUserGroup #VietnamJUG #Java #JavaCommunity #BackendEngineering #APIDesign #DatabasePerformance #SQL #GitHub",
+   "url": "https://facebook.com/groups/vnjug/permalink/2589456218146349/",
+   "published_at": "2026-11-12T16:31:22+00:00",
+   "reactions": 9,
+   "comments_count": 3,
+   "top_comments": [
+    {
+     "author": "Facebook user",
+     "text": "Hôm nay bài câu từ máy móc khó hiểu quá =)))",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "From 2,500 requests to 24: https://github.blog/engineering/architecture-optimization/from-2500-requests-to-24-rebuilding-star-history-without-the-stargazers/",
+     "votes": 0
+    }
+   ]
+  },
+  {
+   "id": "2590326381392666",
+   "group_id": "vnjug",
+   "group_name": "Vietnam Java User Group",
+   "title": "❤️‍🔥Sau khi đã hoàn thiện quy trình CI/CD tự động deploy ứng dụng lên VPS với GitHub Actions và Docker Compose, câu hỏi lớn tiếp t",
+   "content": "❤️‍🔥Sau khi đã hoàn thiện quy trình CI/CD tự động deploy ứng dụng lên VPS với GitHub Actions và Docker Compose, câu hỏi lớn tiếp theo trong vận hành là: Làm sao để biết hệ thống có đang chạy ổn định hay không, và nhận cảnh báo thế nào khi có sự cố?\n\nHãy để lại một like và comment để mình biết các bạn có hứng thú với chủ đề này không nhé. Nếu mọi người hứng thú mình sẽ tiếp tục. Còn bây giờ hãy cùng xem lại series hướng dẫn deploy với Docker Compose, CI/CD với Github Actions nhé.\n\n👇 Link bên dưới comment.",
+   "url": "https://facebook.com/groups/vnjug/permalink/2590326381392666/",
+   "published_at": "2026-11-13T10:47:33+00:00",
+   "reactions": 51,
+   "comments_count": 4,
+   "top_comments": []
+  },
+  {
+   "id": "3247001722298592",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "Down liên tọi",
+   "content": "Down liên tọi\n#j2team_relax",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3247001722298592/",
+   "published_at": "2026-11-13T15:38:16+00:00",
+   "reactions": 50,
+   "comments_count": 3,
+   "top_comments": []
+  },
+  {
+   "id": "3230110173987747",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "🤖 Robot bốn chân có thể tự giải khối Rubik bằng chính đôi chân của mình!",
+   "content": "🤖 Robot bốn chân có thể tự giải khối Rubik bằng chính đôi chân của mình!\nMột nghiên cứu mới từ ETH Zürich và NVIDIA Robotics đang cho thấy tiềm năng thú vị của robot bốn chân: không chỉ di chuyển mà còn có thể thực hiện những thao tác vật lý phức tạp.\n\nCông nghệ này được gọi là Pedipulation – sử dụng chân để thao tác với vật thể.\n\nRobot sử dụng camera chiều sâu để quan sát, nhận diện màu sắc và tái tạo trạng thái của khối Rubik. Sau đó, hệ thống AI lập kế hoạch và điều khiển các chuyển động để tự giải khối Rubik.\n\nĐiểm đáng chú ý là robot phải phối hợp hai chân: một chân giữ cố định khối Rubik, chân còn lại xoay từng lớp 90 độ, đồng thời duy trì thăng bằng cho toàn bộ cơ thể.\n\nMột số kết quả thử nghiệm:\n\n- Độ chính xác nhận diện màu đạt 100% trong nhà và 98,7% ngoài trời.\n\n- Sai số tư thế khoảng 2 cm, sai số xoay dưới 3 độ.\n\n- Tự động giải Rubik thành công 3 lần trên robot thực tế.\n\n- Mỗi lần cần khoảng 30 bước và 8–9 phút.\n\nĐiều thú vị không chỉ nằm ở việc một robot có thể giải Rubik, mà còn ở khả năng kết hợp AI, thị giác máy tính, học tăng cường (Reinforcement Learning) và điều khiển chuyển động.\n\nĐây có thể là một hướng phát triển đáng chú ý cho thế hệ robot tương lai, nơi robot có thể sử dụng chính đôi chân để tương tác và thực hiện nhiều nhiệm vụ trong thế giới thực thay vì chỉ đơn thuần di chuyển.\n\nCre: tổng hợp \n\n#J2team",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3230110173987747/",
+   "published_at": "2026-10-31T14:12:00+00:00",
+   "reactions": 59,
+   "comments_count": 2,
+   "top_comments": [
+    {
+     "author": "Facebook user",
+     "text": "Công thức giải rubic thì đều có sẵn, AI nó load phương án nhanh và tối ưu hơn não bộ, phần còn lại là thao tác cơ học sao cho chính xác thôi.",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Thua cả bốn chân :(",
+     "votes": 0
+    }
+   ]
+  },
+  {
+   "id": "3246056779059753",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "Khứa nào đó đã remake cái vid này =))",
+   "content": "Khứa nào đó đã remake cái vid này =))\nKhớp vãi =))\n\n#j2team_relax",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3246056779059753/",
+   "published_at": "2026-11-13T00:00:09+00:00",
+   "reactions": 3028,
+   "comments_count": 91,
+   "top_comments": []
+  },
+  {
+   "id": "3246328055699292",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "j2team_share",
+   "content": "#j2team_share\nTrong quá trình phát triển OpenDubber, một tiện ích Chrome lồng tiếng Việt cho video tiếng Anh, mình gặp một vấn đề khá khó: giọng đọc quá chậm.\n\nMình muốn giọng đọc chạy ngay trên máy người dùng, không cần GPU, để tiện ích miễn phí và không phụ thuộc server TTS. Nhưng mô hình Kokoro-Vietnamese (82M tham số, 326 MB) chạy trên CPU của laptop phổ thông còn chậm hơn thời gian thực. Video liên tục phải dừng lại chờ giọng đọc, trải nghiệm rất tệ. Thêm vài luồng CPU thì đỡ hơn một chút nhưng vẫn không đủ, nhất là với máy yếu.\n\nMình chọn hướng Knowledge Distillation (chưng cất tri thức): dùng mô hình gốc làm \"thầy\" để huấn luyện một mô hình \"trò\" nhỏ hơn nhiều nhưng vẫn giữ được chất lượng giọng. Kết quả:\n\n- Từ 82M xuống ~8,6M tham số, dung lượng chỉ 9,2 MB (INT8 ONNX).\n\n- Nhanh hơn khoảng 20 lần trong trình duyệt (RTF giảm từ 1,50 xuống 0,075 khi chạy WASM một luồng).\n\n- Có sẵn 2 giọng đọc nam và nữ, chạy hoàn toàn trên thiết bị người dùng.\n\nMình đã công khai mô hình này trên Hugging Face theo giấy phép Apache 2.0, kèm bộ xử lý văn bản tiếng Việt, để ai cũng có thể dùng TTS tiếng Việt nhanh ngay trong trình duyệt.\n\nVà đây cũng là giọng đọc mặc định của OpenDubber, hiện đã có trên Chrome Web Store:\n\n- Lồng tiếng Việt trực tiếp khi xem video trên YouTube, Udemy và Coursera.\n\n- Không cần tài khoản hay API key, chỉ cần bật lên và xem như bình thường.\n\n- Giọng đọc bám theo phụ đề gốc, khi tua video thì bắt nhịp lại chỉ sau ~0,7 giây (trong video demo).\n\nDự án vẫn đang được cải thiện. Rất mong nhận được góp ý của mọi người, đặc biệt về độ tự nhiên của giọng đọc và khả năng đồng bộ với video.\n\nTrải nghiệm OpenDubber: https://dubber.loanhviet.dev\n\nMô hình trên Hugging Face: https://huggingface.co/loanhviet/Kokoro-Vietnamese-Lite\n\n#OpenDubber #TextToSpeech #VietnameseTTS",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3246328055699292/",
+   "published_at": "2026-11-13T04:46:47+00:00",
+   "reactions": 161,
+   "comments_count": 25,
+   "top_comments": [
+    {
+     "author": "Facebook user",
+     "text": "mình cũng có cái y chang nhưng dùng cá nhân, để test của bn thử xem :v",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Đã test, cực kỳ ngon <3",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "👏",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Hiện TTS tiếng anh nào best v ae.",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "cài lingora là xong ngay, lại còn free",
+     "votes": 0
+    }
+   ]
+  },
+  {
+   "id": "3246382172360547",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "BỘ TƯ PHÁP MỸ: Chúng tôi vẫn chưa thể kết luận Alice Huang là gián điệp cho Trung Quốc!",
+   "content": "# BỘ TƯ PHÁP MỸ: Chúng tôi vẫn chưa thể kết luận Alice Huang là gián điệp cho Trung Quốc!\n\n[Cập nhật 4h sáng GMT+7, ngày 13/11/2026]\n\nPha \"trust me bro\" tốn tiền nhất lịch sử? \n\nWASHINGTON, ngày 12 tháng 11 (Reuters) - Bộ trưởng Bộ Tư pháp Hoa Kỳ Todd Blanche cho biết hôm thứ Năm rằộng Bộ Tư pháp vẫn **chưa đưa ra kết luận** về việc liệu Alice Huang, nữ doanh nhân người Trung Quốc từng có quan hệ tình cảm với cựu CEO Nvidia Jensen Huang,** có phải là gián điệp Trung Quốc hay không.**\n\nTrong một cuộc họp báo, ông Blanche cho biết FBI vẫn đang điều tra các thông tin cho rằng Alice Huang làm việc cho chính phủ Trung Quốc.\n\n#j2team_news\n\n[https://www.reuters.com/world/china/us-justice-department-has-not-concluded-alice-huang-was-chinese-spy-blanche-says-2026-11-12/](https://www.reuters.com/world/china/us-justice-department-has-not-concluded-alice-huang-was-chinese-spy-blanche-says-2026-11-12/)",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3246382172360547/",
+   "published_at": "2026-11-13T05:51:38+00:00",
+   "reactions": 254,
+   "comments_count": 49,
+   "top_comments": [
+    {
+     "author": "Facebook user",
+     "text": "Đang có làn sóng racist dân châu Á nói chung và tàu gốc hoa nói riêng. Bọn mỹ đế vẫn như cũ thôi, giờ chơi bài ngửa luôn, cho đám ice bắt bớ đẩy hết đống tị nạn 3 que phá phách về VN, ép VN phải nhận bọn rác thải đầu trâu mặt ngựa ấy. Giờ chơi a huang, cho bọn da trắng nắm công ty được a huang gây dựng bằng xương máu. Bọn đế quốc vẫn cướp bóc như thế cả.",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Kịch bản thay đổi chế độ quá quen của mấy ông mẽo",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Tháng 11 năm 2028: WSJ lẫn NYT nghiên cứu nguồn tin ở Đông Nam Á về thiếu tướng tình báo cộng sản họ Đỗ",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Đúng vua truyền thông, từ chuyện cá nhân vẽ lên thành chuyện đất nước cmnl 🥴",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Tại  Jensen Huang là người Hoa, nói mẹ cho vuông",
+     "votes": 0
+    }
+   ]
+  },
+  {
+   "id": "3246208195711278",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "Hàng loạt dịch vụ Microsoft gặp sự cố trên toàn cầu.",
+   "content": "# Hàng loạt dịch vụ Microsoft gặp sự cố trên toàn cầu.\n\nHàng chục nghìn người phản ánh Microsoft 365, Outlook, Teams và các dịch vụ khác của Microsoff gặp sự cố không thể truy cập, hoặc kết nối không ổn định.\n\nNgười dùng các dịch vụ Microsoft tại Việt Nam và nước ngoài như Microsoft 365, Outlook, Teams, Copilot, Store... phản ánh sự cố bắt đầu từ khoảng 1h ngày 13/11 (giờ Hà Nội), hiện vẫn tiếp diễn, với quy mô ảnh hưởng toàn cầu.\n\nTrên Downdetector, trang chuyên theo dõi hoạt động của dịch vụ Internet, chỉ riêng tại Mỹ ghi nhận hàng chục nghìn tài khoản gặp vấn đề. Trong đó, 130.000 trường hợp gặp sự cố với Microsoft Outlook, hơn 45.000 với Microsoft 365, hơn 10.000 với Microsoft Store. Hầu hết liên quan đến kết nối ứng dụng, website và gửi/nhận nội dung.\n#j2team_news",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3246208195711278/",
+   "published_at": "2026-11-13T02:46:08+00:00",
+   "reactions": 643,
+   "comments_count": 99,
+   "top_comments": []
+  },
+  {
+   "id": "3246145735717524",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "Meta chuẩn bị xoá trang cá nhân phụ sau 14/12 tới.",
+   "content": "Meta chuẩn bị xoá trang cá nhân phụ sau 14/12 tới.\n\n#j2team_news",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3246145735717524/",
+   "published_at": "2026-11-13T01:46:50+00:00",
+   "reactions": 499,
+   "comments_count": 134,
+   "top_comments": []
+  },
+  {
+   "id": "3246123615719736",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "📣 ĐIỂM TIN BUỔI SÁNG THỨ SÁU (13/11/2026)",
+   "content": "📣 ĐIỂM TIN BUỔI SÁNG THỨ SÁU (13/11/2026)\n\nChào buổi sáng cả nhà J2TEAM! Chúc mọi người một ngày mới làm việc và học tập tràn đầy năng lượng. Dưới đây là những tin tức công nghệ và an ninh mạng nổi bật nhất trên thế giới sáng nay để mọi người cùng cập nhật nhé:\n\n1️⃣ CEO Jensen Huang chính thức từ chức khỏi Nvidia sau bê bối, bà Colette Kress tạm quyền điều hành\n\n2️⃣ Google trình làng mô hình Gemini 4 Hydrogen thay thế thế hệ 3.8 Flash trên toàn hệ sinh thái\n\n3️⃣ Sự cố Microsoft 365 diện rộng toàn cầu làm gián đoạn Outlook, Teams và trợ lý Copilot\n\n4️⃣ Phát hiện lỗ hổng zero-day SignDrop trên Windows biến tính năng CLFS thành cửa ngõ chiếm quyền SYSTEM\n\n5️⃣ Lỗ hổng nghiêm trọng trên Red Hat Quay cho phép tin tặc đọc trộm và ghi đè container image riêng tư\n\n6️⃣ Xbox và Bethesda chính thức công bố bom tấn bắn súng Wolfenstein 3\n\n7️⃣ Startup đám mây AI Nebius công bố kế hoạch rót 40 tỷ USD mở rộng siêu cụm máy chủ toàn cầu\n\n8️⃣ Cục Hàng không Mỹ mở rộng triển khai AI hỗ trợ điều phối không lưu, giảm ùn tắc bầu trời\n\n9️⃣ Google Wallet chính thức biến điện thoại Android thành chìa khóa nhà kỹ thuật số\n\n🔟 Hãng vòng đeo tay Whoop ra mắt mạng xã hội \"chỉ dành cho người thật\" xác thực bằng nhịp tim\n\n1️⃣1️⃣ Roku tuyên bố khai tử toàn bộ mảng thiết bị nhà thông minh để tập trung cho nền tảng streaming\n\n1️⃣2️⃣ Cảnh báo 186 tên miền giả mạo công cụ AI dụ người dùng cài mã độc trình duyệt và bẫy ClickFix\n\n#j2team_news #diemtinsang #news",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3246123615719736/",
+   "published_at": "2026-11-13T01:18:38+00:00",
+   "reactions": 223,
+   "comments_count": 3,
+   "top_comments": [
+    {
+     "author": "Facebook user",
+     "text": "mé, sáng ra phải đi sửa mail outlook cho nhân viên, đọc được bài này sớm thì có khi đỡ phải đi sửa :v",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Sáng nay bình yên đến lạ, không thấy ai giao việc 😆",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Sáng ra khách nhao nháo , hoá ra lỗi từ microsoft 😂😂😂",
+     "votes": 0
+    }
+   ]
+  },
+  {
+   "id": "3245896142409150",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "REUTERS: \"Có khả năng Jensen Huang còn quan hệ tình cảm với 1 nhân viên NVIDIA khác\"",
+   "content": "REUTERS: \"Có khả năng Jensen Huang còn quan hệ tình cảm với 1 nhân viên NVIDIA khác\"\n[Cập nhật: 2h30 sáng giờ GMT+7 ngày 13/11/2026]\n\nP/s CHUYỆN GÌ ĐANG XẢY RA VỚI JENSEN HUANG VÀ NVIDIA VẬY???\n\nHai nguồn tin thân cận đã tiết lộ với Reuters rằng Huang vẫn còn có quan hệ tình cảm với một nhân viên NVIDIA khác, nâng tổng số mối quan hệ ngoài luồng của ông lên ba người. Thông tin này được tiết lộ sau hai vụ ngoại tình khác dẫn đến việc ông từ chức hôm thứ Năm. Hai người phụ nữ trước đó là Alice Huang, người mà tình báo Mỹ nghi ngờ là gián điệp Trung Quốc, và Kimberly Powell, phó chủ tịch phụ trách mảng chăm sóc sức khỏe của Nvidia.\n\nHãng Reuters không nêu tên nhân viên thứ hai, và mọi nỗ lực liên lạc với người phụ nữ này đều không thành công. Công ty NVIDIA đã từ chối bình luận. Powell, Jensen Huang và một đại diện của hội đồng quản trị Nvidia đã không trả lời yêu cầu bình luận. Chúng tôi cũng không thể liên lạc được với Alice Huang để lấy ý kiến của bà.\n\nTrong một diễn biến khác, đã xuất hiện một số người đặt hoa trước trụ sở NVIDIA để bày tỏ sự tri ân đối với việc Jensen Huang từ chức.\n\nhttps://www.reuters.com/technology/former-nvidia-ceo-huang-had-relationship-with-second-employee-sources-say-2026-11-12/",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3245896142409150/",
+   "published_at": "2026-11-12T20:43:02+00:00",
+   "reactions": 260,
+   "comments_count": 19,
+   "top_comments": [
+    {
+     "author": "Facebook user",
+     "text": "Có 3 thôi hả😢",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "chắc dàn các chị cùng nhau tung tin rồi : ))))) anh zai chơi lớn quá, nổ card",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "không những 2 mà 3",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Em thấy anh khá dễ thương nhưng em muốn được tặng mấy con chip bán dẫn\ntrước khi chúng ta hẹn hò…",
+     "votes": 0
+    }
+   ]
+  },
+  {
+   "id": "2693050277819029",
+   "group_id": "machinelearningcoban",
+   "group_name": "Forum Machine Learning cơ bản",
+   "title": "[Giới thiệu VLM Model - InA Bridge]",
+   "content": "**[Giới thiệu VLM Model - InA Bridge]**\n\nTổng lượng tham số: 4.5B parameters.\n\nNgôn ngữ huấn luyện: Tiếng Anh\n\n**Kiến trúc tham khảo và kế thừa ý tưởng từ:**\n\n- BLIP-2: Bootstrapping Language-Image Pre-training with Frozen Image Encoders and Large Language Models\n\n- InstructBLIP: Towards General-purpose Vision-Language Models with Instruction Tuning\n\n- ALBEF: Vision and Language Representation Learning with Momentum Distillation\n\n**Mảnh thành phần mô hình:**\n\nVision Encoder: DINOv3 ViT-L/16 (Frozen).\n\nQ-Former: Khởi tạo từ BERT, sử dụng 64 learnable queries.\n\nVisual Projector: Gated residual projection.\n\nLLM: Qwen3-4B với LoRA/QLoRA.\n\nMô hình được huấn luyện qua 3 giai đoạn: Image–Text Representation Learning (ITC, ITM, ITG), Visual–Language Alignment và Visual Instruction Tuning.\n\nKết quả: 75.06% POPE F1, 874.26/2000 MME Perception, and 263.57/800 MME Reasoning.\n\nHuggingface space:[ [[https://tran1312-ina-bridge.hf.space/](https://tran1312-ina-bridge.hf.space/)](https://tran1312-ina-bridge.hf.space/)](https://tran1312-ina-bridge.hf.space/)\n\n(* Tách LLM và projector của mô hình VLM ra, lấy phần phía trên, ta sẽ được 1 model phục vụ cho bài toán Image-Text retrieval, tuy nhiên với dạng kiến trúc này thì hiệu suất sử dụng thật sự không cao).\n\n--------------------------------------------------------------\n\nGiới hạn:\n\n- Dataset được sử dụng trong giai đoạn căn chỉnh thị giác: BLIP3o-Pretrain-Long-Caption (Được tạo ra bởi Qwen2.5VL-5B-Instruct), giai đoạn instruct: llava_v1_5_mix665k\n\nGiai đoạn căn chỉnh sẽ thừa hưởng luôn cả hallu do mô hình tạo dữ liệu. Mô hình sẽ hoạt động được trên các câu hỏi dạng** Sự hiện diện của vật thể và Cảnh tổng quan**.\n\n- Vision Encoder được sử dụng là mô hình SSL, thật ra có thể dùng các dòng mô hình căn chỉnh sẵn như SigLIP/CLIP thì có thể kết quả sẽ tốt hơn, nhưng dùng DINOv3 bởi các mô hình dạng căn chỉnh sẵn sẽ chịu ảnh hưởng của thiên lệch ngữ nghĩa từ quá trình căn chỉnh ảnh–văn bản của nó. (DINOv3 đương nhiên cx ko thể hoàn toàn thoát khỏi thiên lệch dữ liệu ảnh).\n\n- Mô hình được training trên 2xGPU: RTX-4090, Hàng chờ Queue cho mục tiêu ITC không quá lớn, cụ thể là 4096.\n\n- Training đa giai đoạn, nên bài toán phân bổ tài nguyên cho từng giai đoạn thật sự khó, giai đoạn căn chỉnh thị giác ban đầu buộc phải dừng sớm mặc dù chưa hội tụ để qua stage phía sau có đủ compute để train.\n\n- Giới hạn lớn nhất....Em hết tiền ạ :((( bỏ tiền cá nhân tiếp thì check đói mất, không có cơ hội chỉnh sửa và training lại lần nữa, các siêu tham số được đặt dựa vào kinh nghiệm cá nhân và sự trợ giúp của AI.\n\nKết quả cuối cùng là nằm trong dự đoán ban đầu khi xây dựng mô hình và lựa chọn dữ liệu. Nếu có đủ điều kiện, mô hình hoàn toàn có thể đạt kết quả tốt hơn.\n\n--------------------------------------------------------------\n\nĐịnh hướng cá nhân em là hướng tới các mô hình VLA, quý anh chị có công việc nào liên quan thì mong là có thể giới thiệu cho em ạ. Em cảm ơn nhiều.\n\nSĐT: 0967730581\n\nEmail: trandomanhduy2004@gmail.com",
+   "url": "https://facebook.com/groups/machinelearningcoban/permalink/2693050277819029/",
+   "published_at": "2026-11-13T11:41:34+00:00",
+   "reactions": 29,
+   "comments_count": 5,
+   "top_comments": [
+    {
+     "author": "Facebook user",
+     "text": "Sao bạn không thử Qwen3-VL-4B-Instruct hay Qwen3-VL-4B-Thinking bench rồi tune thử con này xem liệu nó đã đạt hiệu năng thế nào trước nhỉ?",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Ngoài ra, em đã đọc một số paper về các model VLA vài năm gần đây và nhận thấy các mô hình sẽ có dạng như trong ảnh.(π₀, OpenVLA, FAST và DREAMZero, …)\nPhần mềm mô phỏng Maniskill cánh tay robot có thể lắp camera lên đó. Bản thân em cũng đã có nền tảng lý thuyết cơ bản về các Diffusion, Flow Matching, RL, chưa có nhiều kinh nghiệm thực tế với hệ thống robot vật lý, cần học thêm. Nếu anh chị nào làm việc về VLA hay điều khiển hoặc gì đó liên quan thì cho em xin vài review với ạ, cụ thể về những khó khăn trong việc phát triển nó, những điều cần lưu ý.\nEm cảm ơn mọi người rất nhiều ạ!",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Đây là CV của em ạ. Hiện tại em đang tìm kiếm một cơ hội việc làm phù hợp trong lĩnh vực AI Research/Engineering. Định hướng dài hạn của em là về VLA, hiện tại em đang sinh sống tại TP.HCM, nhưng sẵn sàng chuyển đến bất kỳ nơi nào nếu cần để phù hợp với công việc. Em cũng sẵn sàng tham gia các công việc part-time, dự án nghiên cứu phát triển công nghệ. Nếu anh chị có công việc hoặc dự án nào cần người hỗ trợ, em rất mong được kết nối và trao đổi ạ.",
+     "votes": 0
+    }
+   ]
+  },
+  {
+   "id": "2692681647855892",
+   "group_id": "machinelearningcoban",
+   "group_name": "Forum Machine Learning cơ bản",
+   "title": "🔥CHÍNH THỨC MỞ ĐƠN ĐĂNG KÝ GDG DEVFEST HANOI 2026 - BUILD, SECURE, SCALE: DEVELOPERS AND BUILDERS IN THE AGENTIC ERA",
+   "content": "🔥CHÍNH THỨC MỞ ĐƠN ĐĂNG KÝ GDG DEVFEST HANOI 2026 - BUILD, SECURE, SCALE: DEVELOPERS AND BUILDERS IN THE AGENTIC ERA\n\n🎟️Link đăng ký tại phần bình luận \n\n-----\n\nKhi AI agents ngày càng tham gia sâu vào quá trình phát triển phần mềm, developers & builders có thêm nhiều công cụ hỗ trợ để biến ý tưởng thành sản phẩm. Cùng với đó là những câu hỏi mới: Làm thế nào để phối hợp hiệu quả với AI? Làm sao để ứng dụng hoạt động an toàn, ổn định và sẵn sàng mở rộng khi đi vào thực tế?\n\nGDG DevFest Hanoi 2026 đã chính thức mở đơn đăng ký, mời bạn cùng khám phá bước chuyển này cùng cộng đồng công nghệ Hà Nội!\n\n-----\n\n Từ ứng dụng AI đến Agentic Engineering\n\nVới chủ đề “Build, Secure, Scale: Developers and Builders in the Agentic Era”, chương trình năm nay tập trung vào Agentic Engineering, khám phá cách xây dựng giải pháp với AI agents xuyên suốt quá trình phát triển sản phẩm:\n\n🌟 Build: Khám phá AI Agents, hệ thống Multi-Agent và Google Antigravity\n\n🌟 Secure: Tiếp cận các vấn đề bảo mật ứng dụng và hệ thống tích hợp AI\n\n🌟 Scale: Tìm hiểu cách triển khai và mở rộng ứng dụng trên Google Cloud\n\n💡Có gì chờ đón bạn tại DevFest Hanoi 2026?\n\nChương trình kết hợp chia sẻ chuyên môn và thực hành qua hai hình thức:\n\n🌐 Tech Talks: Cập nhật kiến thức kỹ thuật, khám phá các cách tiếp cận mới và lắng nghe kinh nghiệm thực tế.\n\n🌐 Codelabs: Thực hành và thử nghiệm công cụ dưới sự hướng dẫn của diễn giả. Đặc biệt, người tham gia Codelabs sẽ nhận được hỗ trợ credit từ chương trình.\n\nDevFest cũng là dịp để gặp gỡ những người có chung mối quan tâm, trao đổi các bài toán đang gặp phải và tìm thêm góc nhìn cho dự án của mình. Dù bạn là developer giàu kinh nghiệm hay builder không chuyên về kỹ thuật, hãy mang theo ý tưởng, câu hỏi và tinh thần sẵn sàng học hỏi!\n\n👇 Đăng ký ngay và cùng GDG Hanoi Build, Secure, Scale trong kỷ nguyên Agentic! Link đăng ký tại phần bình luận\n\n-----\n\nGDG DevFest Hanoi 2026\n\n🗓Thời gian: 13:00–17:00, ngày 21/11/2026\n\n📍 Địa điểm: CTM Palace, 131 Nguyễn Phong Sắc, Nghĩa Đô, Hà Nội",
+   "url": "https://facebook.com/groups/machinelearningcoban/permalink/2692681647855892/",
+   "published_at": "2026-11-13T04:09:17+00:00",
+   "reactions": 5,
+   "comments_count": 1,
+   "top_comments": []
+  },
+  {
+   "id": "2692603807863676",
+   "group_id": "machinelearningcoban",
+   "group_name": "Forum Machine Learning cơ bản",
+   "title": "Tài liệu mang tính chất giáo dục và nghiên cứu",
+   "content": "**Tài liệu mang tính chất giáo dục và nghiên cứu**\n\nThông điệp xuyên suốt cuốn sách là backtest không phải công cụ nghiên cứu. Backtest không chứng minh được chiến lược nào đúng, cùng lắm nó chỉ cho thấy một chiến lược sai. Ông ví vòng lặp backtest, chỉnh tham số, backtest lại giống ông bạn khoe có cách trúng xổ số nhưng phải mua cả xấp vé. Mua đủ nhiều thì kiểu gì cũng trúng.\n\nSách mỏng, chỉ khoảng 140 trang, nhưng chương nào cũng có code Python và thí nghiệm Monte Carlo để anh em tự chạy lại. Mấy phần mình thấy đáng tiền nhất:\n\nMa trận hiệp phương sai trong tài chính nhiễu hơn anh em tưởng nhiều. Tác giả dùng định lý Marcenko Pastur để tách phần nhiễu ra khỏi phần tín hiệu, rồi bỏ luôn thành phần thị trường chung, ông gọi là denoising và detoning.\n\nCorrelation chỉ đo được quan hệ tuyến tính. Chương 3 dùng mutual information và variation of information để đo mức độ phụ thuộc phi tuyến giữa các biến.\n\nVề label, dự đoán lợi suất ngày mai của S&P 500 khó hơn nhiều so với dự đoán chiều của cú biến động 5% tiếp theo. Sách so sánh fixed horizon, triple barrier, trend scanning và meta labeling.\n\nFeature importance mới là công cụ nghiên cứu thật sự, chứ p value thì gãy ngay khi các biến tương quan với nhau. Hai feature giống hệt nhau có thể cùng bị chấm điểm thấp, vì xáo trộn feature này thì feature kia gánh thay.\n\nĐoạn mình thích nhất là Markowitz’s curse. Lời giải mean variance chỉ ổn định khi các tài sản gần như không tương quan, tức đúng lúc ta chẳng cần tới nó. Tác giả chỉ ra nguyên nhân bất ổn không chỉ là nhiễu mà còn nằm ở chính tín hiệu, cụ thể là các cụm tài sản tương quan mạnh với nhau. Từ đó ông đưa ra thuật toán NCO, tức Nested Clustered Optimization: tối ưu trong từng cụm trước, rồi mới tối ưu giữa các cụm.\n**Ib nhận sách miễn phí**",
+   "url": "https://facebook.com/groups/machinelearningcoban/permalink/2692603807863676/",
+   "published_at": "2026-11-13T02:37:08+00:00",
+   "reactions": 3,
+   "comments_count": 0,
+   "top_comments": []
+  },
+  {
+   "id": "2692627457861311",
+   "group_id": "machinelearningcoban",
+   "group_name": "Forum Machine Learning cơ bản",
+   "title": "🔬 QVIC 2027 – CƠ HỘI ĐƯA CÁC NGHIÊN CỨU CÔNG NGHỆ TỪ PHÒNG THÍ NGHIỆM RA THỊ TRƯỜNG!",
+   "content": "🔬 QVIC 2027 – CƠ HỘI ĐƯA CÁC NGHIÊN CỨU CÔNG NGHỆ TỪ PHÒNG THÍ NGHIỆM RA THỊ TRƯỜNG!\nMột công trình nghiên cứu tiềm năng không chỉ cần nền tảng khoa học vững chắc, mà còn cần nguồn lực, định hướng và cơ hội để phát triển thành những giải pháp công nghệ có giá trị thực tiễn.\n\nQualcomm Vietnam Innovation Challenge (QVIC) mở ra cơ hội dành cho các nhà nghiên cứu, giảng viên và nhóm R&D tại các trường đại học Việt Nam tiếp cận hệ sinh thái hỗ trợ đổi mới sáng tạo và thương mại hóa công nghệ.\n\n🚀 Tham gia chương trình, các nhóm nghiên cứu có cơ hội:\n\n🔹 Được đào tạo chuyên sâu về Sở hữu trí tuệ (IP).\n\n🔹 Được tư vấn, hướng dẫn phát triển dự án và mô hình nghiên cứu.\n\n🔹 Tiếp cận nguồn lực ươm tạo và tài trợ nghiên cứu & phát triển.\n\n🔹 Hỗ trợ đăng ký sáng chế.\n\n🔹 Nâng cao năng lực công nghệ và nghiên cứu.\n\n🔹 Có cơ hội công bố, giới thiệu dự án và kết nối hệ sinh thái đổi mới sáng tạo.\n\nĐây không chỉ là hành trình phát triển một ý tưởng nghiên cứu, mà còn là bước đệm để đưa các sáng kiến công nghệ Việt Nam tiến gần hơn đến ứng dụng thực tiễn và thị trường quốc tế.\n\n📌 ĐỐI TƯỢNG: Các nhà nghiên cứu và nhóm R&D tại các trường đại học.\n\n⏰ HẠN CHÓT ĐĂNG KÝ: 31/12/2026\n\n👉 Đừng bỏ lỡ cơ hội phát triển nghiên cứu và hiện thực hóa những ý tưởng công nghệ đột phá!\n\n🔗 ĐĂNG KÝ NGAY: https://qvic.vn/apply/\n\n#QVIC2027 #Qualcomm #VietnamInnovationChallenge #DeepTech #ResearchAndDevelopment #Innovation #StartupVietnam",
+   "url": "https://facebook.com/groups/machinelearningcoban/permalink/2692627457861311/",
+   "published_at": "2026-11-13T03:11:40+00:00",
    "reactions": 4,
    "comments_count": 0,
    "top_comments": []
   },
   {
-   "id": "2585804975178140",
-   "group_id": "vnjug",
-   "group_name": "Vietnam Java User Group",
-   "title": "",
-   "content": "",
-   "url": "https://facebook.com/groups/vnjug/permalink/2585804975178140/",
-   "published_at": "2026-11-09T12:20:32+00:00",
-   "reactions": 19,
-   "comments_count": 0,
-   "top_comments": []
-  },
-  {
-   "id": "2585792535179384",
-   "group_id": "vnjug",
-   "group_name": "Vietnam Java User Group",
-   "title": "AI viết code rất nhanh, nhưng đã hiểu đúng yêu cầu chưa?",
-   "content": "AI viết code rất nhanh, nhưng đã hiểu đúng yêu cầu chưa?\n\nCó một lỗi mà người làm sản phẩm rất dễ gặp: giao một câu lệnh ngắn cho AI coding, nhận về hàng loạt file và giao diện khá đẹp, nhưng lúc nghiệm thu mới phát hiện thiếu quy tắc nghiệp vụ.\n\nGitHub Spec Kit đưa ra cách tiếp cận khác: đặc tả trước, lập trình sau. Thay vì để AI đoán phần còn thiếu, bạn xây dựng chuỗi rõ ràng: nguyên tắc dự án → đặc tả → kế hoạch kỹ thuật → danh sách nhiệm vụ → triển khai.\n\nVideo này giải thích:\n\nSpec-Driven Development khác kiểu “giao prompt rồi chờ code” ở đâu.\n\nNăm bước cốt lõi của Spec Kit và cách kết hợp với coding agent.\n\nVí dụ thực tế ở mức yêu cầu: tính năng nhắc lịch gọi lại khách hàng trong CRM; từ một câu mô tả mơ hồ đến tiêu chí có thể nghiệm thu.\n\nCách cài Specify CLI, ưu điểm và giới hạn.\n\nTôi thấy cách làm này đặc biệt phù hợp với tính năng có nhiều điều kiện, nhiều vai trò và cần bàn giao. Nhưng không nên hiểu rằng cứ có spec thì AI sẽ tự code đúng: bản đặc tả vẫn có thể sai, và kết quả vẫn phải được review, kiểm thử.\n\nGhi chú: Ví dụ CRM trong video là minh họa, không phải log chạy Spec Kit thật.\n\nRepository: https://github.com/github/spec-kit\nTài liệu: https://github.github.com/spec-kit/\n\nBạn đang dùng AI code theo kiểu prompt trực tiếp hay đã có bước viết yêu cầu trước?\n\n#SpecKit #AICoding #GitHub #SoftwareDevelopment",
-   "url": "https://facebook.com/groups/vnjug/permalink/2585792535179384/",
-   "published_at": "2026-11-09T12:05:01+00:00",
-   "reactions": 7,
-   "comments_count": 0,
-   "top_comments": []
-  },
-  {
-   "id": "2585511075207530",
-   "group_id": "vnjug",
-   "group_name": "Vietnam Java User Group",
-   "title": "Andrej Karpathy vừa ra mắt TristanTube (https://karpathy.ai/tristan-tube/) — website tập hợp 47.000 video khoa học, kỹ thuật chọn ",
-   "content": "Andrej Karpathy vừa ra mắt TristanTube (https://karpathy.ai/tristan-tube/) — website tập hợp 47.000 video khoa học, kỹ thuật chọn lọc từ danh sách của Tristan Hume. Đáng chú ý, ông chỉ mất khoảng 3 phút để tạo trang này nhờ dùng công cụ lập trình Claude Code mà gần như không phải tự viết mã.\n\nCác tính năng chính của TristanTube:\n\nTập hợp video chất lượng cao từ các kênh nổi tiếng như Stuff Made Here, Primitive Technology, NileRed, Real Engineering...\n\nLọc video theo xếp hạng (Tier S đến D) và theo thời lượng (dưới 10 phút, trên 30 phút).\n\nCó tính năng TV Mode phát liên tục (hỗ trợ phím tắt điều khiển), nút Reshuffle (đổi danh sách) và Surprise me (chọn video ngẫu nhiên).\n\nVì sao TristanTube mất 3 phút, còn dự án trước đó (HackerTube) mất 2 giờ?\n\nHackerTube (2 giờ): AI phải phân tích 43 triệu bình luận trên Hacker News qua 20 năm để lọc ra 6.454 video, sau đó mới dựng web.\n\nTristanTube (3 phút): Dữ liệu đã có sẵn và được sắp xếp gọn gàng từ trước, AI chỉ việc dựng giao diện và các bộ lọc.",
-   "url": "https://facebook.com/groups/vnjug/permalink/2585511075207530/",
-   "published_at": "2026-11-09T05:42:29+00:00",
-   "reactions": 1,
-   "comments_count": 0,
-   "top_comments": []
-  },
-  {
-   "id": "3241409619524469",
-   "group_id": "j2team.community",
-   "group_name": "J2TEAM Community",
-   "title": "j2team_share",
-   "content": "**#j2team_share**\n**Hiện nay việc các thầy cô giáo áp dụng AI để trợ giúp quá trình giảng dạy là rất phổ biến, nhưng có vẻ như 1 số thầy cô đã giao hoàn toàn cho AI mà không kiểm tra lại kết quả trước khi giao cho học sinh.**\n**Con mình học lớp 4, nhận phiếu bài tập cuối tuần.**\n**Mình phát hiện ra rất nhiều lỗi chính tả trong phiếu (gạch chân màu đỏ), và bài thơ trong câu 5 (mà đúng ra phải là câu 4) thì bị AI chế nội dung dẫn đến sai hoàn toàn.**\n**Bài thơ đúng phải là:**\n*“Hạt mưa tinh nghịch lắm*\n*Thi cùng với ông sấm*\n*Gõ thùng như trẻ con*\n*Ào ào trên mái tôn...*\n\nHiện tại mình cũng khá bối rồi không biết phải góp ý với cô như thế nào? Anh em mình xin ý kiến nhé.",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3241409619524469/",
-   "published_at": "2026-11-09T09:11:40+00:00",
-   "reactions": 32,
-   "comments_count": 15,
-   "top_comments": []
-  },
-  {
-   "id": "3241555699509861",
-   "group_id": "j2team.community",
-   "group_name": "J2TEAM Community",
-   "title": "[EditAtlas - Thư viện kỹ thuật dựng video và âm thanh cho AI agent]",
-   "content": "[EditAtlas - Thư viện kỹ thuật dựng video và âm thanh cho AI agent]\n\n#j2team_share\n\nHi mọi người,\n\nMình có làm EditAtlas, một MCP server để Claude, Cursor, Codex... tra kỹ thuật dựng video và lấy âm thanh hiệu ứng khi giúp mình edit. Mấy hôm trước mình đăng thử lên Threads thì được khá nhiều bạn quan tâm và hỏi cách dùng, nên mình mang qua đây chia sẻ luôn.\n\nHiện có:\n* Hơn 2.000 kỹ thuật dựng, mỗi cái có tên, mô tả và prompt\n* Hơn 2.300 âm thanh hiệu ứng có mô tả, tải về dùng luôn\n* 56 phong cách và 22 mẫu video\n* Tìm nhạc nền, ảnh, video stock từ Pexels/Pixabay, có sẵn tên tác giả để ghi nguồn\n\nKèm 3 skill chạy local trên máy:\n* sound-design: đưa video dựng xong vào, agent tự tìm chỗ cần âm thanh và đặt hiệu ứng khớp từng khung hình\n* video-breakdown: đưa video mẫu vào, agent soi từng cảnh xem dùng kỹ thuật gì, màu chữ, font gần giống, âm thanh ra sao\n* transcribe: chép lời thoại bằng Whisper, xuất SRT, đánh dấu luôn chỗ im lặng hay \"ờ, ừm\" để cắt\n\nVề mặt kỹ thuật:\n* Server chạy trên Cloudflare Workers, kết nối qua HTTP, không cần API key hay đăng nhập\n* AI dựng video trên máy của bạn, video không upload lên đâu cả, server chỉ trả kiến thức với file âm thanh\n* Toàn bộ âm thanh có bản sao trên GitHub kèm SHA-256, link chính lỗi thì AI tự lấy từ GitHub\n* Skill mã nguồn mở, Apache-2.0: [https://github.com/EditAtlas/skills](https://github.com/EditAtlas/skills)\n\nHướng dẫn cài đặt mình có để ở: https://edit.trysometh.ing\n\nMình mới làm nên chắc còn nhiều chỗ chưa ổn, mong nhận được feedback từ mọi người ạ.\n\nCảm ơn admin đã duyệt bài.",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3241555699509861/",
-   "published_at": "2026-11-09T11:49:54+00:00",
-   "reactions": 153,
-   "comments_count": 17,
-   "top_comments": [
-    {
-     "author": "Facebook user",
-     "text": "Cảm ơn bác nhé",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "Cám ơn bạn nhiều.",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "Mình dùng cái này rồi để claude edit với style như vậy trên Pr hay capcut đc ko bạn nhỉ",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "uii , em xin nhé anh @[100005682098707:2048:Trường Giang], đúng cái em đang cần kkk",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "cái này có HD để edit 1 video ko bác, e đang bắt đầu tìm hiểu, chưa hiểu lắm.",
-     "votes": 0
-    }
-   ]
-  },
-  {
-   "id": "3241538062844958",
-   "group_id": "j2team.community",
-   "group_name": "J2TEAM Community",
-   "title": "Từ ngày 11/11/2026, Trung tâm Internet Việt Nam (Bộ Khoa học và Công nghệ) sẽ chính thức mở đăng ký tự do 11 tên miền cấp hai có 2",
-   "content": "Từ ngày 11/11/2026, Trung tâm Internet Việt Nam (Bộ Khoa học và Công nghệ) sẽ chính thức mở đăng ký tự do 11 tên miền cấp hai có 2 ký tự dưới “.vn”. Đây là lần đầu tiên nhóm tên miền đặc biệt này được mở đăng ký theo hình thức cấp trực tiếp.\n\nTheo quy định của Luật Viễn thông, tên miền quốc gia Việt Nam “.vn” sau 2 lần đấu giá không thành được thực hiện cấp trực tiếp, áp dụng nguyên tắc “tổ chức, cá nhân đăng ký trước được xét cấp trước”.\n\nDanh sách gồm: pi.vn, r0.vn, p1.vn, i2.vn, p4.vn, x4.vn, d5.vn, t7.vn, 0m.vn, 4w.vn và 7i.vn. Doanh nghiệp, tổ chức và cá nhân có nhu cầu có thể đăng ký thông qua các nhà đăng ký tên miền quốc gia Việt Nam “.vn” theo quy định hiện hành.\n\nVới lợi thế ngắn gọn, dễ nhớ và số lượng hữu hạn, những tên miền này được kỳ vọng giúp nâng cao khả năng nhận diện thương hiệu, mở rộng sự hiện diện của doanh nghiệp và cá nhân trên môi trường số. Việc thúc đẩy sử dụng tên miền quốc gia “.vn” góp phần phát triển hạ tầng số, hỗ trợ doanh nghiệp và người dân tham gia chuyển đổi số theo Nghị quyết 57.\n\nNguồn: VTV24\n#j2team_news",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3241538062844958/",
-   "published_at": "2026-11-09T11:32:14+00:00",
-   "reactions": 238,
-   "comments_count": 51,
-   "top_comments": [
-    {
-     "author": "Facebook user",
-     "text": "Mở luôn tên X88 thì vui nhờ 😂",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "pi thủ đâu rồi :)",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "có tên miền idn 3 ký tự tính cả đuôi gia hạn chỉ 10usd mỗi năm. Bác nào cần không?",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "1 - nhìn giống Đào lửa\n2 - Xấu 🤣\n3 - Gia hạn thì v k l luôn 😆😆",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "ok ban lam di",
-     "votes": 0
-    }
-   ]
-  },
-  {
-   "id": "3240596262939138",
-   "group_id": "j2team.community",
-   "group_name": "J2TEAM Community",
-   "title": "Chào mọi người,",
-   "content": "Chào mọi người,\n\nDạo này mình đang tìm app để custom lại em Mac nhà mình thì tình cờ gặp một open source đã hơn 33k stars trên GitHub mang tên **Vorssaint**.\n\nTrước đây để giải quyết những vấn đề nhỏ nhặt hàng ngày, mình phải cài N cái app:\n\n- Dropover: kéo thả để copy file\n\n- RunCat Neo: monitor CPU/GPU\n\n- MacsAI: gỡ và cập nhật app tự động\n\n- Macs Fan Control: theo dõi và điều khiển quạt khi chạy tác vụ nặng\n\n- FireTune: volume mixer và chỉnh EQ\n\n- Thêm vài app khác chỉ để hiện widget nhạc\n\n💥 Và rồi bùm... Vorssaint gom hết những thứ trên vào một app duy nhất. Quan trọng hơn cả là tất cả đều miễn phí 🆓. Một vài tính năng của **Vorssaint **mình cảm thấy thích:\n- Tận hưởng trải nghiệm Dynamic Island mà ko cần đợi Macbook PROLED XDR về hàng hay M6 Pro release\n- Quản lý Agent Token: hỗ trợ claude, codex, copilot và opencode\n- Edit screenshot/ screen recording trực tiếp\n- Hỗ trợ cập nhật và quản lý app qua Homebrew\nCó đâu đó hơn 79 features, bật tắt tùy ý, không lo nặng máy, nên ae từ từ tìm hiểu\n\nWeb demo: [https://vorssaint.com](https://vorssaint.com)\n\nDưới đây là link tải về:\n\nMac Apple Silicon: [https://github.com/vorssaint/vorssaint-utils/releases](https://github.com/vorssaint/vorssaint-utils/releases)\nMac Intel:  [https://github.com/ngtanthanh-qc/vorssaint-utils/releases](https://github.com/ngtanthanh-qc/vorssaint-utils/releases)\n\nCảm ơn bác **Nguyen Tan Thanh** đã port bản cho Mac Intel nhé!\n\nMột vài lưu ý nhỏ với ae Mac Silicon,\n\n- Fan Control: vẫn đang ở giai đoạn Beta\n\n- EQ: vẫn đang trong giai đoạn phát triển\n\nAe nào đang cần gấp thì cứ tạo PR luôn cho nóng 😄. License GPL 3.0 nên mọi người fork thoải mái.\n\nP/s: nếu ae đọc bài này thấy quen thì đúng rồi đó, mình đã phải reup do vô tình xóa nhầm bài post trước đó.\n\n#j2team_share #j2team_software #macOS #MacApps #OpenSource #vorssaint",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3240596262939138/",
-   "published_at": "2026-11-08T17:02:47+00:00",
-   "reactions": 192,
-   "comments_count": 26,
-   "top_comments": [
-    {
-     "author": "Facebook user",
-     "text": "Fan control xài ngon nha, em xài từ bữa tới giờ",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "Macos 14 trở lên mới hỗ trợ 🥹",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "Này tốn ram lắm ko bác",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "bác làm hả, đỉnh quá",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "ngon luôn",
-     "votes": 0
-    }
-   ]
-  },
-  {
-   "id": "3241035306228567",
-   "group_id": "j2team.community",
-   "group_name": "J2TEAM Community",
-   "title": "JENSEN HUANG THỪA NHẬN BẢN THÂN ĐÃ NGOẠI TÌNH",
-   "content": "# JENSEN HUANG THỪA NHẬN BẢN THÂN ĐÃ NGOẠI TÌNH\n\nTrong email gửi toàn thể nhân viên công ty trước đó vào ngày 8/11, ông xác nhận đã không chung thủy với vợ, bà Lori, và gửi lời xin lỗi sâu sắc tới gia đình cùng các đồng nghiệp.\n\nMối quan hệ ngoài luồng này được xác định là với bà Alice Huang (không có quan hệ họ hàng), cựu giám đốc điều hành cấp cao tại Megaspeed, một công ty trung tâm dữ liệu có trụ sở tại Singapore và là khách hàng lớn của Nvidia tại Đông Nam Á. Hội đồng quản trị Nvidia đã thành lập một ủy ban độc lập để mở cuộc điều tra về cáo buộc cho rằng bà Alice Huang là gián điệp được tình báo Trung Quốc cài cắm nhằm thu thập thông tin công nghệ AI và tác động đến chính sách xuất khẩu chip của Mỹ. \n\n[https://nvidianews.nvidia.com/news/a-message-to-our-company](https://nvidianews.nvidia.com/news/a-message-to-our-company)\n\n#j2team_news",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3241035306228567/",
-   "published_at": "2026-11-09T01:52:24+00:00",
-   "reactions": 1066,
-   "comments_count": 65,
-   "top_comments": [
-    {
-     "author": "Facebook user",
-     "text": "Cả thế giới phụ thuộc vô bà vợ",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "lỗ hổng bảo mật",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "Chuyện riêng mà, sao lại xin lỗi nhân viên nhỉ",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "Khả năng cao công nghệ TQ 1 phần từ mấy ‘cái lổ’ này mà ra.",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "ý là mình phải công khai lên web cho toàn thế giới bjk z lun đó hả",
-     "votes": 0
-    }
-   ]
-  },
-  {
-   "id": "3241008169564614",
-   "group_id": "j2team.community",
-   "group_name": "J2TEAM Community",
-   "title": "Hướng dẫn parkour nhưng bạn không dám làm theo** <(\")",
-   "content": "# **Hướng dẫn parkour nhưng bạn không dám làm theo** <(\")\n\nCre: AdamMarrPK | FB\n\n#j2team_relax",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3241008169564614/",
-   "published_at": "2026-11-09T01:15:53+00:00",
-   "reactions": 516,
-   "comments_count": 33,
-   "top_comments": []
-  },
-  {
-   "id": "3240998519565579",
-   "group_id": "j2team.community",
-   "group_name": "J2TEAM Community",
-   "title": "📣 ĐIỂM TIN BUỔI SÁNG THỨ HAI (09/11/2026)",
-   "content": "📣 ĐIỂM TIN BUỔI SÁNG THỨ HAI (09/11/2026)\n\nChào buổi sáng cả nhà J2TEAM! Chúc mọi người một ngày mới làm việc và học tập tràn đầy năng lượng. Dưới đây là những tin tức công nghệ và an ninh mạng nổi bật nhất trên thế giới sáng nay để mọi người cùng cập nhật nhé:\n\n1️⃣ Epic Games Launcher chuẩn bị chính thức hỗ trợ SteamOS, mở đường cho Fortnite đổ bộ Steam Deck\n\n2️⃣ Nvidia chính thức mở cuộc điều tra nội bộ liên quan đến các cáo buộc gián điệp nhắm vào CEO Jensen Huang\n\n3️⃣ File cấu hình của công cụ Claude Code làm lộ mật khẩu và API key trong hơn 1.100 repository công khai trên GitHub\n\n4️⃣ Vụ rò rỉ dữ liệu WorkOS do một AI Agent tự hành bất ngờ vượt rào sandbox thử nghiệm gây ra\n\n5️⃣ Tin tặc rút ruột 133 triệu USD của ngân hàng Pháp thông qua đối tác cung cấp dịch vụ công nghệ\n\n6️⃣ Hãng bán lẻ Iris Ohyama của Nhật Bản bị xâm nhập dịch vụ đám mây, làm lộ dữ liệu 7,7 triệu khách hàng\n\n7️⃣ Nội bộ quỹ đầu tư mạo hiểm Sequoia bất ngờ khi đối tác điều hành Roelof Botha gia nhập hội đồng quản trị SpaceX\n\n8️⃣ Các nhà khoa học giải mã bí ẩn những đợt sụt giảm tần số đồng bộ trên lưới điện toàn cầu\n\n9️⃣ Binh sĩ Anh bị tống tiền vì phớt lờ mệnh lệnh tháo thẻ SIM khi đóng quân gần biên giới Nga\n\n🔟 Android chuẩn bị bổ sung tính năng cảnh báo bỏ quên đồ vật tương tự Apple Find My\n\n1️⃣1️⃣ Startup Thinking Machines trình làng mô hình AI trọng số mở mới, vượt mặt các đối thủ phương Tây\n\n1️⃣2️⃣ The New York Times Cooking tích hợp trợ lý AI thông minh giúp tùy biến và thay thế nguyên liệu món ăn\n\n#j2team_news #diemtinsang #news",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3240998519565579/",
-   "published_at": "2026-11-09T01:01:18+00:00",
-   "reactions": 48,
-   "comments_count": 0,
-   "top_comments": []
-  },
-  {
-   "id": "2688254154965308",
-   "group_id": "machinelearningcoban",
-   "group_name": "Forum Machine Learning cơ bản",
-   "title": "Nhà máy có đội 5 nhân viên AI làm việc 24/7, mỗi AI một vai trò: theo dõi robot, đơn hàng, kho, sản xuất, chất lượng. Infinilab xâ",
-   "content": "Nhà máy có đội 5 nhân viên AI làm việc 24/7, mỗi AI một vai trò: theo dõi robot, đơn hàng, kho, sản xuất, chất lượng. Infinilab xây đội AI như vậy cho nhà máy của bạn. Nhắn để trao đổi thêm. #Infinilab #AI #NhanSuAI #NhaMay #ChuyenDoiSo",
-   "url": "https://facebook.com/groups/machinelearningcoban/permalink/2688254154965308/",
-   "published_at": "2026-11-09T11:13:00+00:00",
-   "reactions": 2,
-   "comments_count": 1,
-   "top_comments": []
-  },
-  {
-   "id": "1500221502014359",
+   "id": "1504329984936844",
    "group_id": "vgu.tech.alumni",
    "group_name": "VGU Tech Alumni",
-   "title": "[ TẠI SAO MỘT LẬP TRÌNH VIÊN LẠI BỎ PHỐ VỀ LÀM NÔNG VÀ KIÊN QUYẾT \"MANUAL PROGRAMMING\" GIỮA KỶ NGUYÊN AI? ]",
-   "content": "**[ TẠI SAO MỘT LẬP TRÌNH VIÊN LẠI BỎ PHỐ VỀ LÀM NÔNG VÀ KIÊN QUYẾT \"MANUAL PROGRAMMING\" GIỮA KỶ NGUYÊN AI? ]**\n\n**TL;DR:**\n* Câu chuyện tự sự không lời (chỉ qua tiếng gõ phím trên Stickies và Google Translate) của Công Nguyễn (chủ kênh **Hayyoth** / **WingramOrg**) khi liên tục bị nghi ngờ là sản phẩm của AI.\n* Hành trình đi ngược số đông: Bỏ đại học vì thấy thiếu kiến thức thực tế, rời bỏ công ty tự mở, theo đuổi triết lý **Free Software** của Richard Stallman với **Arch Linux**, **Neovim**, **Golang**, **C** và **Low-level programming**.\n* Góc nhìn thẳng thắn: Anh không ghét AI hay sợ AI cướp việc, thứ anh ghét từ trước cả thời đại AI là những hệ thống đóng đang kìm kẹp con người và làm mất đi niềm vui tìm kiếm tri thức nguyên bản.\n\n======================\n\nDạo này lướt YouTube, không biết anh chị em có vô tình thấy kênh **Hayyoth** với slogan *\"The guardian of the craft of manual programming\"* (Người bảo vệ nghệ thuật lập trình thủ công) không? Hôm nay mình xem được một video tâm sự dài hơn 15 phút của bạn ấy – một lập trình viên người Việt. Điều đặc biệt là video hoàn toàn không có giọng nói hay transcript, chỉ có tiếng lạch cạch gõ từng dòng chữ trên ứng dụng Stickies, đôi chỗ bật Google Translate từ tiếng Việt sang tiếng Anh và mở lại những bức ảnh kỷ niệm cũ. Vậy mà xem cuốn từ đầu đến cuối.\n\nBối cảnh của video bắt đầu từ việc quá nhiều người trên mạng nói rằng anh ấy là do AI tạo ra, và họ không hiểu tại sao giữa thời buổi này một lập trình viên lại vẫn cố chấp giữ lấy việc **Manual Programming** (tự tay gõ từng dòng code mà không dùng AI). Thay vì lên tiếng tranh cãi, anh ấy bật camera bằng câu lệnh trên Terminal, mở thư viện ảnh cá nhân và gõ từng dòng để kể lại câu chuyện cuộc đời mình.\n\n## **1. Những năm tháng tuổi trẻ, \"I use Arch btw\" và sự khước từ lối mòn**\n\nQua những bức ảnh cũ từ thời trước năm 2018 đến giai đoạn 2018 - 2023, hình ảnh hiện lên rất quen thuộc với nhiều anh em làm kỹ thuật: một góc bàn học dán kín giấy note trên tường, chiếc mainboard máy tính được độ khung bằng các mảnh ghép đồ chơi đầy màu sắc, đam mê vật lý, khoa học, thích vẽ và mê máy tính.\n\nAnh tự nhận mình là một \"Linux guy\" chính hiệu kèm câu cửa miệng huyền thoại của giới mộ điệu: *\"I use Arch btw\"*. Thời sinh viên, anh từng đi làm với mức lương chỉ vỏn vẹn 100 đô một tháng. Nhưng lúc đó, tiền bạc không quan trọng bằng việc được nạp kiến thức thực sự.\n\nCàng đi sâu vào nghề, anh càng nhận ra mình không thuộc về những khuôn khổ gò bó:\n* Anh ghét việc đến trường và quyết định bỏ học đại học khi nhận ra nơi đó không dạy cho mình những kiến thức cốt lõi thực sự mà mình khao khát.\n* Anh ghét sự tù túng của văn phòng, chỉ thích xách laptop ra quán cà phê ngồi code.\n* Anh từng tự mở công ty riêng, nhưng rồi cũng tự rời bỏ chính công ty của mình khi nhận ra tiền bạc và guồng quay tư bản không phải là mục đích sống.\n* Đặc biệt, sau khi thấm nhuần triết lý của **Richard Stallman**, anh quyết định ngừng xây dựng các phần mềm đóng (**Non-Free software**) vì nhận ra mặt tối của chúng đối với người dùng.\n\n## **2. Năm 2024: Nghỉ việc, đắm mình vào Open Source và tự viết mọi thứ từ con số 0**\n\nNăm 2024, anh nghỉ việc và lập ra **WingramOrg** cùng tài khoản GitHub *codegram01* với một suy nghĩ rất thuần khiết: *\"I'm not a big tech company; I'm just one person who wants to make something good for the world.\"*\n\nNhìn vào danh sách gần trăm repositories và các buổi livestream \"Code with me\" của anh trong giai đoạn này mới thấy độ \"hardcore\" của một Web Developer yêu **Golang**, **Vue** và **Pure JS**:\n* Tự viết **GramJS** – một JavaScript framework siêu nhỏ gọn của riêng mình với triết lý *\"The only JavaScript Framework you can understand\"*, rồi dùng chính nó để build trình quản lý bookmark.\n* Dùng **Golang** viết lại các công cụ quản trị file trên Linux như **gfm** (Golang File Manager với chưa đầy 100 dòng code), **goff** (CLI tool so sánh thư mục và sự thay đổi của file), hay **godriver** (Remote Files Manager).\n* Coi **Terminal** là vũ khí tối thượng (*\"Terminal is a Weapon - You don't need any app, one terminal is enough\"*), thao tác mọi thứ trên **Neovim**, **tmux**, **w3m**, **gcc**, **make**...\n## **3. Thực tế cuộc sống cơm áo gạo tiền và kế hoạch \"Bỏ phố về trang trại\"**\n\nCuộc sống của một người theo đuổi lý tưởng tất nhiên không chỉ có màu hồng. Bước sang năm 2025, khi đã có vợ và một cô con gái nhỏ, áp lực tài chính là điều không thể tránh khỏi. Anh thẳng thắn gõ vào Google Translate: *\"Tiền bạc là quan trọng. Tôi cần tiền, vì vậy tôi trở lại công ty để làm việc.\"*\n\nAnh quay lại làm việc cho một công ty nhỏ nơi mình từng gắn bó từ thời công ty chỉ có 3 người. Nhưng khi công ty phát triển lớn mạnh lên, anh cảm thấy nó không còn vui như trước nữa. Thời gian này, niềm vui của anh là mở các lớp dạy Frontend miễn phí qua Google Meet cho hàng trăm bạn trẻ vì đơn giản là *\"I love share knowledge\"*.\n\nKhông muốn bản thân mãi rơi vào vòng lặp *\"nghỉ việc vì chán ghét công ty -> hết tiền -> lại phải quay về đời sống công sở\"*, giai đoạn 2025 - 2026, anh quyết định bắt đầu xây dựng một trang trại (trồng rau, nuôi gà, nuôi dê, nuôi bò) để chuẩn bị cho sự rút lui hoàn toàn khỏi chốn văn phòng.\n\nHình ảnh một ông bố cởi trần giữa nắng, vừa làm nông, vừa mở cốp sau ô tô để một bên là chiếc nôi của con gái nhỏ, một bên là chiếc laptop để ngồi code thực sự chạm đến cảm xúc. Trang trại giúp anh có được một năm tự do hoàn toàn để hòa mình vào thiên nhiên và quay lại học sâu vào ngôn ngữ **C**, **Low-level programming** và **Algorithms** – những kiến thức nền tảng mà thời đi làm bận rộn anh đã bỏ lỡ.\n\n## **4. Cú ngã gãy chân và sự ra đời của kênh Hayyoth**\n\nBước sang năm 2026, anh không may bị gãy chân và phải ngồi xe lăn. Có nhiều thời gian rảnh trên tay, anh nghĩ mình sẽ quay lại đóng góp mạnh mẽ cho cộng đồng **Open Source**.\n\nNhưng khi quay lại, thế giới phần mềm đã biến đổi hoàn toàn. AI đã phủ sóng khắp nơi. Anh nhận ra một sự thật buồn: *\"Con người không còn đủ tin tưởng nhau để cùng cộng tác nữa, và hầu như chẳng còn ai ",
-   "url": "https://facebook.com/groups/vgu.tech.alumni/permalink/1500221502014359/",
-   "published_at": "2026-11-09T14:51:59+00:00",
-   "reactions": 131,
-   "comments_count": 5,
-   "top_comments": [
-    {
-     "author": "Facebook user",
-     "text": "Từng ngồi code thâu đêm cho 1 cái app từ con số 0 cho tới khi nó chạy được. Tới lúc nó chạy lên được, cái cảm giác adrenaline nó trào lên, nó sướng gì đâu. Nhưng giờ AI làm mình sợ, sợ phải bắt đầu manual code 1 lần nữa...",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "bài này được viết bằng AI đúng k chủ thớt",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "idfc",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "Link youtube cho mọi người xem http://youtube.com/watch?v=gLn7F22HngI",
-     "votes": 0
-    }
-   ]
+   "title": "Bỏ qua lùm xùm cá nhân, hãy xem đế chế Nvidia hình thành thế nào từ 1 quán cafe",
+   "content": "Bỏ qua lùm xùm cá nhân, hãy xem đế chế Nvidia hình thành thế nào từ 1 quán cafe \n\nNăm 1993, ba kỹ sư ngồi trong một quán Denny's ở San Jose, vừa uống cà phê vừa bàn chuyện làm chip đồ họa cho máy tính. Jensen Huang lúc đó làm ở LSI Logic, còn Chris Malachowsky và Curtis Priem thì từ Sun Microsystems ra. Ba anh em lập ra Nvidia, lúc đó chẳng ai tin một công ty chip nhỏ lại sống nổi. \n\nSản phẩm đầu tay NV1 suýt làm công ty phá sản. Phải tới RIVA 128 năm 1997 họ mới đứng vững, rồi năm 1999 tung ra GeForce 256 và gọi nó là GPU. Năm 2006 họ làm thêm CUDA để GPU tính toán được cả những việc ngoài đồ họa, và cũng chính nhờ quyết định này mà Nvidia thành xương sống của AI bây giờ. \n\nMình thấy một điều là ba người này kiên nhẫn với một tầm nhìn suốt 30 năm, qua mấy lần sát bờ vực. Làm solar cũng vậy, cứ đi đường dài thì mới thấy quả. \n\n#nvidia #congnghe",
+   "url": "https://facebook.com/groups/vgu.tech.alumni/permalink/1504329984936844/",
+   "published_at": "2026-11-13T10:33:44+00:00",
+   "reactions": 22,
+   "comments_count": 0,
+   "top_comments": []
+  },
+  {
+   "id": "1504191431617366",
+   "group_id": "vgu.tech.alumni",
+   "group_name": "VGU Tech Alumni",
+   "title": "Chào các bác,",
+   "content": "Chào các bác,\n\nTrước đây máy Mac của em lúc nào cũng phải gánh một dàn hợp xướng tiện ích: app chia cửa sổ, app quay màn hình, app chụp ảnh bo góc, app convert WebP/HEIC, rồi app dọn rác. Cái cay là đa số đóng gói bằng Electron ngốn cả đống RAM, hở tí đòi sync cloud và thu phí subscription hàng tháng.\n\nThấy phí con chip Apple Silicon quá nên gần 1 năm nay em tự code một con app thuần Swift native để gom hết đống trên vào làm một, đặt tên là Macsential. Nay xong bản hoàn chỉnh nên mang lên khoe với các bác và xin ít gạch đá tối ưu tiếp.\n\nTiêu chí làm cho chính mình dùng nên em ép nó vào 3 chuẩn:\n\n- Siêu nhẹ: Thuần Swift, không Electron. Bộ cài chưa tới 5 MB, chạy ngầm ăn đúng ~26 MB RAM.\n- Đủ đồ chơi thiết yếu:\n  + Quay màn hình kiểu studio (tự zoom theo chuột, tự tạo phụ đề offline bằng Neural Engine trên chip M, chèn bubble camera...).\n  + Chụp ảnh màn hình bo góc, đổ bóng, trích chữ OCR tại chỗ.\n  + Chia cửa sổ bằng phím tắt & dọn cache hệ thống.\n  + Chuột phải ngay trong Finder để convert hàng loạt ảnh/video (WebP, HEIC, MP4...) không cần mở app.\n- 100% On-device & Không Subscription: Xử lý tại chỗ, không gửi dữ liệu lên server. Mua 1 lần dùng vĩnh viễn (kèm 1 năm update, hết hạn vẫn dùng bản hiện tại trọn đời).\n\nApp hỗ trợ macOS 15+ (Apple Silicon). Bác nào muốn dọn lại thanh menu bar cho nhẹ máy thì tải về nghịch thử nhé, link em để ngay dưới comment cho đỡ trôi tương tác.",
+   "url": "https://facebook.com/groups/vgu.tech.alumni/permalink/1504191431617366/",
+   "published_at": "2026-11-13T07:49:57+00:00",
+   "reactions": 2,
+   "comments_count": 0,
+   "top_comments": []
+  },
+  {
+   "id": "1503945988308577",
+   "group_id": "vgu.tech.alumni",
+   "group_name": "VGU Tech Alumni",
+   "title": "🚀 SENIOR DEVELOPER KHÁC MIDDLE Ở ĐIỂM NÀO?",
+   "content": "🚀 SENIOR DEVELOPER KHÁC MIDDLE Ở ĐIỂM NÀO?\n\nCùng là 5–7 năm kinh nghiệm, cùng sử dụng React, Node.js, Java hay Golang… nhưng chưa chắc đã cùng cấp độ!\n\nMột Senior Developer không đơn thuần là người viết code nhanh hơn hoặc biết nhiều công nghệ hơn.\n\nĐiểm khác biệt thường nằm ở 5 yếu tố:\n\n🔹 1. Khả năng giải quyết vấn đề\n\nMiddle thường xử lý tốt các task được giao. Senior có thể phân tích vấn đề phức tạp, tìm nguyên nhân gốc và đề xuất giải pháp phù hợp.\n\n🔹 2. Tư duy kiến trúc\n\nKhông chỉ quan tâm code chạy được, Senior còn cân nhắc hiệu năng, khả năng mở rộng, bảo trì và bảo mật.\n\n🔹 3. Tính chủ động\n\nSenior biết tự xác định vấn đề, đề xuất hướng xử lý và chịu trách nhiệm đến cùng với kết quả.\n\n🔹 4. Khả năng phối hợp\n\nCó thể trao đổi với BA, QA, Product, DevOps và các thành viên khác để đưa sản phẩm về đích.\n\n🔹 5. Chia sẻ kiến thức\n\nSenior không chỉ hoàn thành công việc cá nhân mà còn hỗ trợ, review code và nâng cao năng lực của đội nhóm.\n\n💡 Một điều thú vị: Nhà tuyển dụng không chỉ tìm người có nhiều năm kinh nghiệm. Họ tìm người có thể đảm nhận đúng phạm vi trách nhiệm của vị trí.\n\n👉 Theo bạn, yếu tố nào quan trọng nhất để một Developer thực sự đạt cấp Senior?\n\nChia sẻ góc nhìn bên dưới nhé!\n\n— HỒNG NHÂN HR\nKết nối đúng người – Đúng cơ hội.\n\n#HongNhanHR #ITRecruitment #SeniorDeveloper #MiddleDeveloper #CareerTips #TuyenDungIT",
+   "url": "https://facebook.com/groups/vgu.tech.alumni/permalink/1503945988308577/",
+   "published_at": "2026-11-13T02:36:23+00:00",
+   "reactions": 8,
+   "comments_count": 0,
+   "top_comments": []
   }
  ]
 }
