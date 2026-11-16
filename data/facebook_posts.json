@@ -1,305 +1,170 @@
 {
- "generated_at": "2026-11-14T22:53:58.841748+00:00",
+ "generated_at": "2026-11-16T03:10:19.121749+00:00",
  "items": [
   {
-   "id": "3248340318831399",
+   "id": "3249469502051814",
    "group_id": "j2team.community",
    "group_name": "J2TEAM Community",
-   "title": "j2team_share",
-   "content": "**#j2team_share**\n\nDự án hackathon thất bại nên em mang lên đây demo lại con AI tự chủ tự build, chạy bằng cơm và tool cào web, ăn tầm 500MB RAM nha các bác ::_)\n\nMấy cái các bác có thể nghịch:\n* Tự chỉnh sửa cá tính riêng, trọng số riêng tùy các bác định hướng.\n* Đã tích hợp cơ chế agent loop và autonomous nâng cấp \n* Đồ án dựng sẵn thành một hệ sinh thái, có thể tích hợp LaTeX hay mấy công cụ học tập FSRS.\n* Cả não lẫn vision đều chạy bằng cào free, tối ưu một lần chạy cỡ 20k token (game live thì có thể ít hơn).\n\nVideo bên dưới là em vừa test live một ván game, nó soi màn hình đọc text (tính năng em mới xây, chưa ổn định lắm)\n\nCác bác thấy vui mắt thì ủng hộ em xin 1 star GitHub với ạ, em còn sinh viên nên mấy cái này dẫu sao cũng có giá trị làm đẹp CV. Còn chức năng thì các bác có thể xài agent tool hay gì đó đọc qua repo em là rõ. em để link dưới cmt nha\n\nÀ mà trên repo em không pull tool giọng, VLM hay não đâu nha. Bác nào cần chạy free thì cứ inbox em, chuẩn bị tầm 3-5 acc Gmail là đủ để chạy thử rồi. Nhưng nói trước cào là cào, nó không sống mãi nha các bác, bác nào lười thì donate em 1 ly cà phê em cài hộ là được ạ!",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3248340318831399/",
-   "published_at": "2026-11-14T16:16:06+00:00",
-   "reactions": 12,
-   "comments_count": 1,
+   "title": "Thử train 1 con AI trên hơn 4 triệu reviews của GGMap để đọ với chính Gemini",
+   "content": "# Thử train 1 con AI trên hơn 4 triệu reviews của GGMap để đọ với chính Gemini\n\nTừ nhu cầu cá nhân mình cũng thử hỏi Gemini 1 vài lần để gợi ý đi đâu ăn gì ở HN, nhưng chưa lần nào đc vì review các quán thấy cứ na ná nhau. Thử test review mấy quán mình biết rõ rồi thì cũng k thấy đúng lắm. \n\nCũng hơi bất ngờ vì Gemini có kết nối thẳng tới GGMap. Tìm hiểu thêm chút thì mới biết nó chỉ đọc 10-20 reviews gì đấy thôi, mà cũng đúng vì đọc hết thì user lại phải chờ hơi lâu.\n\nNên mình cũng tò mò train thử trên tất cả reviews của gần 20k quán ở HN, hi vọng là đánh giá vừa chính xác hơn mà vẫn đủ nhanh. Kết quả có ngon hay không thì để ae phán :))\n\n[https://bonbeo.vn/review-quan](https://bonbeo.vn/review-quan)\n\n[#j2team_share](https://www.facebook.com/hashtag/j2team_share?__cft__[0]=AZj5ymjuCuCizJx6EOePKo8Nh3zvBapHcSNmLEEWIXFBsOq05CeYnmeZEhTqMTjVTENNk9A9roLDFioF2e2jPvecLKYj-EnpQ3g1IdTOVIqI-JMUv7k9WFkkNEQdAGdupJcnf2o3SQYS6HV8i15njmxgwmH0HwUvl5aKPI_G-fGh-XmHGzXLIC2r0w5Gf1IdiWO7GKmbkA&__tn__=*NK-R)",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3249469502051814/",
+   "published_at": "2026-11-15T12:35:30+00:00",
+   "reactions": 76,
+   "comments_count": 10,
+   "top_comments": [
+    {
+     "author": "Facebook user",
+     "text": "train? hay ý bạn là fine-tuning? ko có tí ý nghĩa gì, đầu ra thì chưa chắc chuẩn.\n1 con agent với prompt engineering + RAG là quá đủ. ko biết làm thì gắn cái mcp google maps vào.\nrồi làm quả web làm quái gì nữa. ai rảnh mà vào. làm con app, google maps có chức năng chia sẻ địa điểm ấy, ấn chia sẻ vào app của bạn thì tự chạy đọc review kèm search những quán tương tự trong bán kính xx gì đó.",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Bạn tin những review ở đó ???",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "mới dc cái mask, tốc độ trả dữ liệu thì chậm. m bạn dùng hài lòng thì dùng chứ đây như trẻ con level thôi",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "đừng phát minh lại cái bánh xe nữa.",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Cào review bằng tool nào ấy bác",
+     "votes": 0
+    }
+   ]
+  },
+  {
+   "id": "3249618718703559",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "Một project open src cho phép anh em tự host Server ( Discord ) trên máy ae 🐧",
+   "content": "Một project open src cho phép anh em tự host Server ( Discord ) trên máy ae 🐧\nLink: https://fluxer.com/ #j2team_share",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3249618718703559/",
+   "published_at": "2026-11-15T14:45:12+00:00",
+   "reactions": 267,
+   "comments_count": 25,
    "top_comments": []
   },
   {
-   "id": "3248313462167418",
+   "id": "3249206622078102",
    "group_id": "j2team.community",
    "group_name": "J2TEAM Community",
-   "title": "Các Brand rủ nhau tạo trend tạm gác việc khi Outlook và Microsoft 365 gặp sự cố toàn cầu.",
-   "content": "Các Brand rủ nhau tạo trend tạm gác việc khi Outlook và Microsoft 365 gặp sự cố toàn cầu.\n\n#j2team_share //Cre: RGB",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3248313462167418/",
-   "published_at": "2026-11-14T15:50:44+00:00",
-   "reactions": 55,
-   "comments_count": 0,
-   "top_comments": []
-  },
-  {
-   "id": "3248264592172305",
-   "group_id": "j2team.community",
-   "group_name": "J2TEAM Community",
-   "title": "Fable 5.2 ra mắt được mấy ngày, nhóm mình cũng đã có bài đánh giá rồi. Mình thử giao cho nó đề bài vẽ một thành phố bên sông, tái ",
-   "content": "Fable 5.2 ra mắt được mấy ngày, nhóm mình cũng đã có bài đánh giá rồi. Mình thử giao cho nó đề bài vẽ một thành phố bên sông, tái hiện đồ họa máy tính qua từng thời kỳ, từ ký tự chữ đến path tracing.\n\n13 giây đầu là quá trình agent tự dựng (đã tua nhanh), sau đó là phim. Toàn bộ được thực hiện bằng code do Fable 5.2 viết và Blender dựng hình, không dùng model AI tạo ảnh hay video.\n\nCác bác nhận ra những công trình nào?\n\n#j2team_share #j2team_ai",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3248264592172305/",
-   "published_at": "2026-11-14T15:07:36+00:00",
-   "reactions": 116,
-   "comments_count": 8,
-   "top_comments": []
-  },
-  {
-   "id": "3248171112181653",
-   "group_id": "j2team.community",
-   "group_name": "J2TEAM Community",
-   "title": "[Share Open Source]",
-   "content": "**[Share Open Source]**\nChào mọi người, hôm nay mình muốn chia sẻ một dự án open-source mà mình đang phát triển có tên là **LockLens**.\n\nTrong các hệ thống, chúng ta có thể sử dụng OpenTelemetry hoặc log để tracing và xác định API nào đang bị chậm, thậm chí truy vết đến SQL query. Nhưng câu hỏi khó hơn là: Tại sao cùng một câu SQL bình thường chạy rất nhanh, đến một thời điểm lại chậm bất thường?\n\nNguyên nhân có thể đến từ lock contention, blocking transactions, execution plan thay đổi hoặc database đang chịu tải lớn. Việc xác định chính xác root cause ở tầng database đôi khi mất nhiều thời gian để kiểm tra.\n\nTừ bài toán đó, mình xây dựng **LockLens**, một công cụ hỗ trợ monitoring và troubleshooting PostgreSQL.\n\nMột số tính năng chính:\n* Real-time monitoring: Theo dõi database metrics.\n* Blocking analysis: Phân tích blocking và root blockers.\n* Query performance: Phát hiện slow queries và performance anomalies.\n* Incident investigation: Hỗ trợ điều tra và phân tích sự cố.\n* Replication monitoring: Theo dõi replication lag và workload.\n\n**Tech stack:** Go, React, PostgreSQL, TimescaleDB.\n\n**Website:** [[https://huy-8bit.github.io/locklens-site/](https://huy-8bit.github.io/locklens-site/)](https://huy-8bit.github.io/locklens-site/)\n\n**GitHub:** [[https://github.com/Huy-8bit/locklens](https://github.com/Huy-8bit/locklens)](https://github.com/Huy-8bit/locklens)\n\n[#j2team_share](https://www.facebook.com/hashtag/j2team_share?__cft__[0]=AZhPACN4Yj1WIGZJ-8bORbhSTK35GEriAvM7FA4RxIi_Qm2qZScpEXHCKb-Z9nHYttbDJPlALnoC6XLS02u89O_xISI-pJrQEJ2o1bAb3ufadZhojs3axb3VWWdvbYgypznGJg-_ns8dZNGxTvu6dNTgqKWfBEelQOEconD_LcZbwrdPhZBFM_3uWrG-4QnL&__tn__=*NK-R) #opensource",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3248171112181653/",
-   "published_at": "2026-11-14T13:36:57+00:00",
-   "reactions": 66,
-   "comments_count": 0,
-   "top_comments": []
-  },
-  {
-   "id": "3246998805632217",
-   "group_id": "j2team.community",
-   "group_name": "J2TEAM Community",
-   "title": "Claude ra mắt \"Claude Meetings\"",
-   "content": "Claude ra mắt \"Claude Meetings\"\n\nBữa thấy có bác nào build Record meeting tổng hợp & note lại các kiểu.\n\nMấy bác đó cạnh tranh nổi cty lớn như này ko ta @@, nguyên 1 hệ sinh thái.\n\n#j2team_news",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3246998805632217/",
-   "published_at": "2026-11-13T15:34:59+00:00",
-   "reactions": 103,
-   "comments_count": 8,
-   "top_comments": []
-  },
-  {
-   "id": "3247780365554061",
-   "group_id": "j2team.community",
-   "group_name": "J2TEAM Community",
-   "title": "các pháp sư việt nam vẫn âm thầm đục đẽo được cả những công nghệ diệt bọ diệt sâu của nhân loại. 1 lưu ý cho mọi người ở hiện tại ",
-   "content": "các pháp sư việt nam vẫn âm thầm đục đẽo được cả những công nghệ diệt bọ diệt sâu của nhân loại. 1 lưu ý cho mọi người ở hiện tại là nên cảnh giác với tất cả phần mềm tải xuống, cho dù wd ko cảnh báo gì hay quá tin vào virus total\n#j2team_news",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3247780365554061/",
-   "published_at": "2026-11-14T06:55:17+00:00",
-   "reactions": 112,
-   "comments_count": 15,
-   "top_comments": []
-  },
-  {
-   "id": "3247104062288358",
-   "group_id": "j2team.community",
-   "group_name": "J2TEAM Community",
-   "title": "Nhất tâm nhị dụng: 2 tay chơi 2 tướng trong cùng 1 trận đấu.",
-   "content": "Nhất tâm nhị dụng: 2 tay chơi 2 tướng trong cùng 1 trận đấu.\nCụ thể thì anh chàng trong Video vừa chơi Thresh tay trái vừa chơi Draven tay phải. Không khác gì Tiểu Long Nữ tay vẽ tròn tay vẽ vuông.\n\nTự làm tự ăn, khỏi lo bị bảo là AD được nuôi.😆\n\n#j2team_relax",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3247104062288358/",
-   "published_at": "2026-11-13T17:07:04+00:00",
-   "reactions": 794,
-   "comments_count": 45,
-   "top_comments": []
-  },
-  {
-   "id": "3247518505580247",
-   "group_id": "j2team.community",
-   "group_name": "J2TEAM Community",
-   "title": "📣 ĐIỂM TIN BUỔI SÁNG THỨ BẢY (14/11/2026)",
-   "content": "📣 ĐIỂM TIN BUỔI SÁNG THỨ BẢY (14/11/2026)\n\nChào buổi sáng cả nhà J2TEAM! Chúc mọi người một ngày mới làm việc và học tập tràn đầy năng lượng. Dưới đây là những tin tức công nghệ và an ninh mạng nổi bật nhất trên thế giới sáng nay để mọi người cùng cập nhật nhé:\n\n1️⃣ SpaceX thực hiện thành công chuyến bay thứ 15 của siêu tên lửa Starship, sẵn sàng màn gắp tàu bằng tháp phóng\n\n2️⃣ Cục Hàng không Mỹ ban hành lệnh đình chỉ cất cánh trên toàn quốc lần thứ 3 trong lịch sử\n\n3️⃣ Amazon phát triển dự án lập chỉ mục toàn bộ dữ liệu sản phẩm thương mại điện tử toàn cầu bằng AI\n\n4️⃣ OpenAI ra mắt ChatGPT Wallet, cho phép trợ lý AI tự động mua sắm và thanh toán hộ người dùng\n\n5️⃣ Trezor xác nhận phát hiện chip phần cứng độc hại cấy lén trong ví lạnh bán qua đại lý CryptoBilis\n\n6️⃣ PostgreSQL tung bản vá 52 lỗ hổng bảo mật, xử lý lỗi thực thi mã từ xa tồn tại âm thầm suốt 22 năm\n\n7️⃣ Lỗ hổng Mior và Skyfall cho phép máy chủ cloud độc hại đọc trộm dữ liệu máy ảo AMD SEV-SNP\n\n8️⃣ Startup năng lượng xanh gọi vốn phát triển trung tâm dữ liệu nổi trên biển, làm mát bằng nhiệt đại dương\n\n9️⃣ Nền tảng xây dựng AI Agent LangChain chính thức chạm mốc định giá 3 tỷ USD\n\n🔟 Amazon trình làng máy đọc sách màn hình màu Kindle Colorsoft thế hệ mới nhắm vào phân khúc cao cấp\n\n1️⃣1️⃣ Keychron ra mắt chuột không dây T1 HE độc đáo với khả năng tùy chỉnh linh hoạt vị trí bi lăn trackball\n\n1️⃣2️⃣ Thành viên hội đồng quản trị OpenAI cảnh báo kịch bản AI vượt tầm kiểm soát có thể xảy ra sau vài tháng nữa\n\n#j2team_news #diemtinsang #news",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3247518505580247/",
-   "published_at": "2026-11-14T01:28:50+00:00",
-   "reactions": 58,
+   "title": "Chào anh em, mình đang phát triển Mini Panel, một bảng điều khiển VPS viết bằng Go dành cho anh em tự quản một hoặc vài máy chủ nh",
+   "content": "Chào anh em, mình đang phát triển Mini Panel, một bảng điều khiển VPS viết bằng Go dành cho anh em tự quản một hoặc vài máy chủ nhỏ. Mình làm nó để những việc hay lặp lại như tạo website, cấp SSL, sao lưu hay xem log có thể làm ngay trên web.\nMini Panel có thể cài trên VPS từ 1 GB RAM. Panel được đóng gói thành một tệp thực thi Go, không cần Docker hay cài riêng PHP và MySQL để chạy. Các dịch vụ cho website thì anh em cài theo nhu cầu.\n\nHiện Mini Panel có các tính năng:\n\nWebsite — Chạy PHP, Node.js, Python, web tĩnh hoặc reverse proxy. Có trình quản lý tệp, SSH/SFTP, terminal trên trình duyệt, lịch cron, nhật ký và chỉnh cấu hình Nginx theo từng site.\n\nWordPress và ứng dụng PHP — Cài WordPress hoặc tạo sẵn dự án Laravel, CodeIgniter 4, CakePHP và Yii 2. Với WordPress cài qua panel, anh em có thể quản lý plugin, giao diện và cập nhật ngay trong panel.\n\nCơ sở dữ liệu — Hỗ trợ MariaDB và MySQL, tạo tài khoản riêng cho từng cơ sở dữ liệu và mở phpMyAdmin từ giao diện.\n\nEmail theo tên miền — Quản lý hộp thư và địa chỉ chuyển tiếp, đọc và gửi thư qua webmail. Nếu dùng Cloudflare, panel có thể hỗ trợ thêm bản ghi DNS cho email.\n\nSSL và sao lưu — Cấp và tự gia hạn chứng chỉ Let’s Encrypt hoặc cài chứng chỉ riêng. Sao lưu tự động mỗi đêm, giữ 7 bản gần nhất, có thể khôi phục và đồng bộ lên Google Drive.\n\nGiám sát và bảo mật — Theo dõi CPU, RAM, ổ đĩa, mạng và trạng thái dịch vụ. Có tường lửa nftables, ModSecurity với bộ quy tắc OWASP CRS, fail2ban và xác thực hai bước cho tài khoản quản trị.\n\n🌐 Website — https://mpanel.biz/\n\n💻 GitHub mini-panel — https://github.com/marixdev/mini-panel\n\n📖 Tài liệu — https://mpanel.biz/intro/\n\nAnh em nào có VPS test hoặc đang tự host WordPress, Laravel hay app cá nhân thì dùng thử và góp ý giúp mình nhé. Mình muốn biết nhất là từ lúc cài panel đến lúc website đầu tiên chạy được HTTPS, có bước nào khó hiểu hoặc mất thời gian không. Nếu gặp lỗi, anh em cho mình xin bản hệ điều hành và bước đang làm để mình dễ kiểm tra.\n\nCảm ơn anh em!\n\n#j2team_share \n\nChào anh em, mình đang phát triển Mini Panel, một bảng điều khiển VPS viết bằng Go dành cho anh em tự quản một hoặc vài máy chủ nhỏ. Mình làm nó để những việc hay lặp lại như tạo website, cấp SSL, sao lưu hay xem log có thể làm ngay trên web.",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3249206622078102/",
+   "published_at": "2026-11-15T08:14:44+00:00",
+   "reactions": 38,
    "comments_count": 2,
    "top_comments": [
     {
      "author": "Facebook user",
-     "text": "Sáng này hơi sáng quá... Sắp 1h chiều luôn r..",
+     "text": ".",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": ".",
      "votes": 0
     }
    ]
   },
   {
-   "id": "3243839139281517",
+   "id": "3249221545409943",
    "group_id": "j2team.community",
    "group_name": "J2TEAM Community",
-   "title": "Mấy dự án vibe code kiểu:",
-   "content": "# Mấy dự án vibe code kiểu:\n\n#j2team_relax",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3243839139281517/",
-   "published_at": "2026-11-11T06:55:01+00:00",
-   "reactions": 316,
-   "comments_count": 13,
-   "top_comments": []
-  },
-  {
-   "id": "2694426821014708",
-   "group_id": "machinelearningcoban",
-   "group_name": "Forum Machine Learning cơ bản",
-   "title": "Mọi người dùng gì để triển khai chạy model quy mô lớn ạ?",
-   "content": "Mọi người dùng gì để triển khai chạy model quy mô lớn ạ?\nHiện tại em đang dùng llama.cpp và có vẻ nó đã trạm trần đến giới hạn rồi ko thể tăng tốc lên được nữa. Em có thử sáng vllm nhưng tốc độ chậm hơn rõ rệt hơn 30%. Em có thử tìm hiểu các ông lớn họ sẽ chạy bằng gì nhưng ko có kết quả ạ. Mọi người có gợi ý nào hay típ nào để tăng tốc độ hơn chỉ em với ạ, em xin cảm ơn ❤\n\nHiện tại mình chạy model nemotron 3.5 bolt e4e, 4 luồng song song trên llama.cpp với rtx 5060ti ạ",
-   "url": "https://facebook.com/groups/machinelearningcoban/permalink/2694426821014708/",
-   "published_at": "2026-11-14T13:37:22+00:00",
-   "reactions": 19,
-   "comments_count": 17,
-   "top_comments": []
-  },
-  {
-   "id": "2694118834378840",
-   "group_id": "machinelearningcoban",
-   "group_name": "Forum Machine Learning cơ bản",
-   "title": "𝗘𝘅𝗰𝗶𝘁𝗲𝗱 𝘁𝗼 𝘀𝗵𝗮𝗿𝗲 𝗺𝘆 𝗹𝗮𝘁𝗲𝘀𝘁 𝗲𝘅𝗽𝗲𝗿𝗶𝗺𝗲𝗻𝘁 𝗼𝗻 𝗩𝗶𝗲𝘁𝗻𝗮𝗺𝗲𝘀𝗲 𝗦𝗽𝗲𝗲𝗰𝗵-𝘁𝗼-𝗧𝗲𝘅𝘁 𝘄𝗶𝘁𝗵 𝗦𝗽𝗲𝗮𝗸𝗲𝗿 𝗗𝗶𝗮𝗿𝗶𝘇𝗮𝘁𝗶𝗼𝗻",
-   "content": "**𝗘𝘅𝗰𝗶𝘁𝗲𝗱 𝘁𝗼 𝘀𝗵𝗮𝗿𝗲 𝗺𝘆 𝗹𝗮𝘁𝗲𝘀𝘁 𝗲𝘅𝗽𝗲𝗿𝗶𝗺𝗲𝗻𝘁 𝗼𝗻 𝗩𝗶𝗲𝘁𝗻𝗮𝗺𝗲𝘀𝗲 𝗦𝗽𝗲𝗲𝗰𝗵-𝘁𝗼-𝗧𝗲𝘅𝘁 𝘄𝗶𝘁𝗵 𝗦𝗽𝗲𝗮𝗸𝗲𝗿 𝗗𝗶𝗮𝗿𝗶𝘇𝗮𝘁𝗶𝗼𝗻**\n\nBuilt on the 𝗠𝗢𝗦𝗦 𝗮𝗿𝗰𝗵𝗶𝘁𝗲𝗰𝘁𝘂𝗿𝗲 𝘄𝗶𝘁𝗵 ~𝟬.𝟵𝗕 𝗽𝗮𝗿𝗮𝗺𝗲𝘁𝗲𝗿𝘀 and finetuned on 𝟲,𝟬𝟬𝟬 𝗵𝗼𝘂𝗿𝘀 𝗼𝗳 𝗩𝗶𝗲𝘁𝗻𝗮𝗺𝗲𝘀𝗲 𝘀𝗽𝗲𝗲𝗰𝗵 𝗱𝗮𝘁𝗮.\n\n🎯 𝗨𝗻𝗶𝗳𝗶𝗲𝗱 𝗔𝗦𝗥 + 𝗗𝗶𝗮𝗿𝗶𝘇𝗮𝘁𝗶𝗼𝗻 𝗶𝗻 𝗮 𝘀𝗶𝗻𝗴𝗹𝗲 𝗺𝗼𝗱𝗲𝗹 — no separate pipelines needed! One forward pass outputs transcription with timestamps AND speaker labels.\n\n⚡ 𝗣𝗿𝗼𝗱𝘂𝗰𝘁𝗶𝗼𝗻-𝗿𝗲𝗮𝗱𝘆 𝘀𝗲𝗿𝘃𝗶𝗻𝗴 𝘄𝗶𝘁𝗵 𝗦𝗚𝗟𝗮𝗻𝗴 𝗼𝗿 𝘃𝗟𝗟𝗠 for high-throughput inference.\n\n━━━━━━━━━━━━━━━━━━\n\n𝗔𝗿𝗰𝗵𝗶𝘁𝗲𝗰𝘁𝘂𝗿𝗲: MOSS 0.9B 𝗕𝗮𝘀𝗲 𝗠𝗼𝗱𝗲𝗹: OpenMOSS-Team/MOSS-Transcribe-Diarize 𝗧𝗮𝘀𝗸: ASR + Speaker Diarization (end-to-end) 𝗦𝗲𝗿𝘃𝗶𝗻𝗴: SGLang, vLLM 𝗧𝗿𝗮𝗶𝗻𝗶𝗻𝗴 𝗗𝗮𝘁𝗮𝘀𝗲𝘁: 6,000 hours\n\n𝗧𝗿𝗮𝗶𝗻𝗶𝗻𝗴 𝗱𝗮𝘁𝗮 𝗶𝗻𝗰𝗹𝘂𝗱𝗲𝘀: VLSP2020, VLSP2021, VLSP2023, FPT, VIET_BUD500, VietSpeech, FLEURS, VietMed_Labeled, Sub-GigaSpeech2-Vi, ViVoice, Sub-PhoAudioBook.\n\n🤗 𝗠𝗼𝗱𝗲𝗹: https://huggingface.co/hynt/MOSS-Transcribe-Diarize-Vietnamese-6000h\n\n━━━━━━━━━━━━━━━━━━\n\n🧪 𝗘𝘃𝗮𝗹𝘂𝗮𝘁𝗶𝗼𝗻 𝗥𝗲𝘀𝘂𝗹𝘁𝘀\n\n𝗧𝗲𝘀𝘁 𝗦𝗲𝘁: VnExpress Podcasts for multi domain\n\n𝗪𝗘𝗥 (𝗪𝗼𝗿𝗱 𝗘𝗿𝗿𝗼𝗿 𝗥𝗮𝘁𝗲): 🥇 𝗠𝗢𝗦𝗦-𝗙𝗶𝗻𝗲𝘁𝘂𝗻𝗲𝗱-𝟲𝟬𝟬𝟬𝗵 → 𝟭𝟭.𝟬𝟳% • MOSS-Pretrained → 16.91%\n\n𝗖𝗘𝗥 (𝗖𝗵𝗮𝗿𝗮𝗰𝘁𝗲𝗿 𝗘𝗿𝗿𝗼𝗿 𝗥𝗮𝘁𝗲): 🥇 𝗠𝗢𝗦𝗦-𝗙𝗶𝗻𝗲𝘁𝘂𝗻𝗲𝗱-𝟲𝟬𝟬𝟬𝗵 → 𝟳.𝟲𝟰% • MOSS-Pretrained → 13.14% \n\n𝗗𝗘𝗥 (𝗗𝗶𝗮𝗿𝗶𝘇𝗮𝘁𝗶𝗼𝗻 𝗘𝗿𝗿𝗼𝗿 𝗥𝗮𝘁𝗲): 🥇 𝗠𝗢𝗦𝗦-𝗙𝗶𝗻𝗲𝘁𝘂𝗻𝗲𝗱-𝟲𝟬𝟬𝟬𝗵 → 𝟱.𝟭𝟮% • MOSS-Pretrained → 10.35%\n\n━━━━━━━━━━━━━━━━━━\n\n#ASR #SpeakerDiarization #Vietnamese #SGLang #vLLM #OpenSource",
-   "url": "https://facebook.com/groups/machinelearningcoban/permalink/2694118834378840/",
-   "published_at": "2026-11-14T08:18:26+00:00",
-   "reactions": 85,
-   "comments_count": 2,
-   "top_comments": [
-    {
-     "author": "Facebook user",
-     "text": "Cảm ơn sếp",
-     "votes": 0
-    }
-   ]
-  },
-  {
-   "id": "2693941677729889",
-   "group_id": "machinelearningcoban",
-   "group_name": "Forum Machine Learning cơ bản",
-   "title": "",
-   "content": "",
-   "url": "https://facebook.com/groups/machinelearningcoban/permalink/2693941677729889/",
-   "published_at": "2026-11-14T04:54:25+00:00",
-   "reactions": 1,
-   "comments_count": 0,
-   "top_comments": []
-  },
-  {
-   "id": "1505799784789864",
-   "group_id": "vgu.tech.alumni",
-   "group_name": "VGU Tech Alumni",
-   "title": "[ Thông báo ]",
-   "content": "# **[ Thông báo ]**\n\nXin chào mọi người, hiện tại dạo gần đây, trộm vía nhóm đón nhận sự tham gia của rất nhiều thành viên mới vào nhóm nhờ vào một số bài viral được chia sẻ lại từ các clip trên youtube.\n\nCác bạn mới vào có thể chưa biết qua về nhóm mình, mình xin giới thiệu sơ qua. Nhóm mình là nhóm dùng để chia sẻ các bài viết, video liên quan đến công nghệ nói chung hay các bài chia sẻ về kỹ thuật liên quan đến hệ thống, tối ưu, vv.\n\nVì đa phần các thông tin liên quan đến công nghệ và kiến thức thì có thể xem như là vô hạn, và kiến thức của mỗi người là hữu hạn.\n\nNên đại đa số các bài viết chia sẻ của mình được tạo bằng AI bằng chính nội dung của bài viết đó để đảm bảo thông tin được chia sẻ đúng, không bịa đặt hoặc hiểu sai vấn đề.\n\nTất nhiên, khi sử dụng AI, sẽ luôn có một làn sóng trái chiều phản đối việc này, xem nội dung được tạo bởi AI là rác, nhưng nếu đó là khi bạn kêu nó tự bịa một câu chuyện, ở đây mình dùng nội dung hoàn toàn bằng clip hoặc bài đăng được chia sẻ lại để đảm bảo tính đúng đắn của nội dung, tóm gọn lại bằng TL;DR cho ai lười đọc. Bạn nào quan tâm thì có thể đọc toàn bộ bài viết.\n\nCòn không thì ở cuối bài, mình luôn chia sẻ nội dung bài viết, video đó để đảm bảo trích nguồn, không tự ý coi nội dung đó là do mình tự viết, ăn cắp ý tưởng, vv.\n\nMình chia sẻ chính là các video, bài viết hay ho cho mọi người đọc, được mình tự tìm kiếm để mọi người có thêm nhiều thông tin bổ ích.\n\nCộng đồng mình luôn chào đón các bạn chia sẻ các nội dung từ các bài viết, nền tảng khác để giúp mọi người đọc được nhiều thông tin bổ ích.\n\nĐồng thời, khi chia sẻ, mình luôn sẵn sàng trao đổi, nhận góp ý để cải thiện chất lượng bài viết.\n\n=> Các bạn không thích đọc các bài viết AI thì có thể bỏ qua, lướt sang bài viết khác thay vì đọc sau đó phán xét. \n\nMọi hành vi chửi, xúc phạm, lăng mạ mình, mình sẽ xóa comment + cấm vĩnh viễn khỏi group.\n\nKhông quen biết gì nhau, không gặp nhau bao giờ thì cũng đừng lên mạng và chửi nhau. \n\nMình đã set sẵn bộ lọc cho các hành vi nói trên nên yên tâm là mình cũng sẽ không đọc được các bình luận nói trên.\n\nXin cảm ơn mọi người đã đọc.\n\n#ShareThisPost #sharing #content #viral #post #Rule",
-   "url": "https://facebook.com/groups/vgu.tech.alumni/permalink/1505799784789864/",
-   "published_at": "2026-11-14T16:38:08+00:00",
-   "reactions": 41,
-   "comments_count": 7,
-   "top_comments": [
-    {
-     "author": "Facebook user",
-     "text": "Ad có hỗ trợ dùng thử perlego k ạ, được biết trường có thư viện tích hợp perlego",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "filter vẫn đang hoạt động tốt ạ, đã xóa + cấm vĩnh viễn",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "Mọi người nhớ like để bài viết cũng tiếp cận được nhiều người hơn",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "Mọi bình luận của các bạn mình đều đọc và lắng nghe góp ý, nếu có hành vi chửi, xúc phạm thì mình thẳng tay cấm khỏi nhóm ạ",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "Note: các bạn không thích các bài viết bằng AI có thể bỏ qua group mình hoặc tự tìm các bài viết chính thống để đọc thêm ạ",
-     "votes": 0
-    }
-   ]
-  },
-  {
-   "id": "1505671988135977",
-   "group_id": "vgu.tech.alumni",
-   "group_name": "VGU Tech Alumni",
-   "title": "[ Tại sao những kỹ sư phần mềm trông có vẻ \"lười biếng\" nhất lại luôn là người được thăng chức nhanh nhất? Góc nhìn thực chiến từ ",
-   "content": "# **[ Tại sao những kỹ sư phần mềm trông có vẻ \"lười biếng\" nhất lại luôn là người được thăng chức nhanh nhất? Góc nhìn thực chiến từ cựu Principal Engineer tại Amazon ]**\n\n**TL;DR:** Trong kỷ nguyên AI khi một kỹ sư có thể ship hàng ngàn Pull Requests mỗi tháng, việc cố gắng \"cày cuốc\" nhiều giờ hơn không còn là chiến lược giúp bạn thăng tiến. Những kỹ sư lên chức nhanh nhất ở các tập đoàn công nghệ lớn thực chất lại là những người trông có vẻ nhàn rỗi nhất. Họ làm chủ 4 nguyên tắc cốt lõi: Tìm mức nỗ lực tối thiểu chấp nhận được (Minimum Acceptable Effort), Loại bỏ công việc thay vì cố tự động hóa nó, Đứng trên vai người đi trước thay vì tự mò mẫm từ đầu, và Trao quyền giải quyết bài toán lớn nhưng vẫn giữ trọn Ownership.\n\n=========================\n\nGần đây anh chị em trong ngành chắc cũng có nghe câu chuyện về một Principal Engineer tại SpaceX đã ship tới 2,000 Pull Requests chỉ trong vòng một tháng. Cách đây vài năm, việc viết nhiều code hơn, đóng nhiều ticket hơn có thể là một chiến lược tốt để khẳng định năng lực. Nhưng ở thời điểm hiện tại, khi AI biến mức output khổng lồ đó thành bình thường mới, việc chỉ cắm đầu làm việc chăm chỉ hơn (working harder) đã không còn hiệu quả để cạnh tranh.\n\nQua quá trình quan sát và làm việc với hàng trăm kỹ sư cấp cao, có một nghịch lý rất thú vị trong ngành Software Engineering: **Những người được promote nhanh nhất thường lại là những người trông có vẻ \"lười biếng\" nhất ở bề nổi.** Họ về đúng giờ, không ôm việc vào cuối tuần, nhưng mọi dự án qua tay họ đều tạo ra impact lớn.\n\nBí mật nằm ở chỗ họ không bán thời gian, mà họ tối ưu hóa đòn bẩy thông qua 4 nguyên tắc thực chiến dưới đây:\n\n## **1. Tìm mức nỗ lực tối thiểu chấp nhận được (Find the Minimum Acceptable Effort)**\n## \n\nNhiều dự án phần mềm càng đắp thêm tính năng, càng cố làm cho phức tạp thì kết quả lại càng tệ đi. Mỗi một thành phần bạn thêm vào hệ thống sẽ làm tăng độ phức tạp (complexity), và hệ thống càng phức tạp thì ngày release càng xa vời. Những người thăng tiến nhanh là bậc thầy trong việc giảm thiểu công sức cần thiết nhưng vẫn đảm bảo vượt qua thanh tiêu chuẩn chất lượng (quality bar).\n\nHãy nhìn vào câu chuyện thực tế tại **Amazon Prime Video**: Mỗi dịp Q4 (mùa lễ hội mua sắm cuối năm), toàn bộ Amazon bước vào giai đoạn **Code Freeze** — hạn chế tối đa việc đẩy code mới lên production để bảo vệ sự ổn định của hệ thống. Tuy nhiên, hàng trăm team trải dài trên 6 múi giờ vẫn liên tục xin quyền ngoại lệ với lý do \"Emergency Changes\" để fix lỗi khẩn cấp.\n\nKhi được giao trọng trách làm người duy nhất review và approve toàn bộ các thay đổi này cho một tổ chức hàng ngàn kỹ sư, nếu làm theo cách thông thường là ngồi đọc từng Pull Request, bạn sẽ phải thức xuyên đêm và làm việc cả cuối tuần. Chưa kể nếu một bản vá gây sập hệ thống (outage), người duyệt sẽ phải chịu hoàn toàn trách nhiệm.\n\nThay vì tự biến mình thành cổ chai (bottleneck), giải pháp được đưa ra chỉ gói gọn trong **2 quy tắc**:\n* **Quy tắc 1:** Mặc định mọi yêu cầu thay đổi trong đợt Code Freeze đều là **NO**, trừ khi có sự chấp thuận trực tiếp từ cấp VP (Vice President).\n* **Quy tắc 2:** Chỉ review những thay đổi đã đi kèm một bản kế hoạch quản lý rủi ro (Change Management Plan) chi tiết, và bản kế hoạch này phải được ký duyệt trước bởi một Principal Engineer nằm sát với hệ thống đó nhất.\n\nKết quả là khối lượng công việc review giảm về gần như bằng không. Chỉ những thay đổi thực sự sống còn mới được gửi tới, và tất cả đều đã được rà soát kỹ lưỡng bởi các cấp cao nhất. Mùa lễ hội năm đó hệ thống đạt mức Availability tuyệt đối, không một sự cố nghiêm trọng nào xảy ra từ việc deploy code.\n\nBài học rút ra cho anh chị em khi đã qua cấp độ Junior: Không ai giao cho bạn một cái task gọn gàng với đầy đủ mọi gạch đầu dòng nữa. Kỹ sư thường có xu hướng thích xây dựng các hệ thống Validation siêu phức tạp cho những bài toán giả định, trong khi đôi khi đội ngũ Operations chỉ cần một cái **Excel Macro** với chi phí phát triển gần như bằng không là đã giải quyết xong việc. **Đừng xây cả một hệ thống mới khi bạn có thể giải quyết bài toán bằng công cụ sẵn có đơn giản nhất.**\n\n## **2. Đừng tự động hóa nó — Hãy ngừng làm nó (Don't Automate It, Just Don't Do It)**\n\nBản năng đầu tiên của anh em kỹ sư khi thấy một quy trình lặp đi lặp lại (SOP) là viết ngay một đoạn script, hoặc dựng một cái AI Workflow để tự động hóa.\n\nNhưng sự thật phũ phàng là: **Mọi dòng code sinh ra đều là một khoản nợ (All code is a liability)**, kể cả khi dòng code đó do AI viết ra. Khi bạn tự động hóa một quy trình, bạn phải định nghĩa logic, kiểm thử các edge cases, xử lý một cái đuôi dài các bug phát sinh, và tệ nhất là bạn phải chịu trách nhiệm duy trì (maintain) công cụ đó mãi mãi.\n\nNhiều khi trong các hệ thống lớn, một bước kiểm tra thủ công trong SOP tồn tại chỉ vì nó được viết ra từ nhiều năm trước — trước cả khi hệ thống **Monitoring & Alerting** tự động được dựng lên. Thay vì mất vài ngày viết tool tự động đọc alarm và đối chiếu dashboard, việc cần làm đơn giản là xóa bỏ bước thừa thãi đó khỏi quy trình.\n\nTrước khi bắt tay vào viết tool tự động hóa bất kỳ công việc thủ công nào, hãy tự hỏi: *\"Nếu mình ngừng làm việc này luôn thì có ai quan tâm không? Việc này có nằm trong bảng đánh giá hiệu suất (Performance Review) của mình không?\"* Đừng bao giờ viết code tự động hóa một cái báo cáo hàng tuần mà nếu bạn ngưng gửi cũng chẳng ai để ý.\n\n## **3. Để người khác tìm lời giải trước (Let Someone Else Figure It Out First)**\n\nTrở thành người đầu tiên tự mày mò một thứ mới mẻ luôn là cách học đắt đỏ nhất.\n\nGiả sử sếp tìm đến bạn — một Senior trong team — và hỏi: *\"Làm sao để áp dụng AI giúp tăng tốc độ phát triển sản phẩm ngay lập tức?\"* Bản năng của nhiều người là tự nhận về mình, cày thêm giờ ngoài công việc chính để thử nghiệm. Việc này đẩy bạn vào thế khó: bạn vừa phải cam kết một bước đột phá có deadline, vừa phải tự trả giá bằng thời gian của mình cho mọi ngõ cụt (dead ends) trong quá trình thử sai. Nếu thất bại, bạn mất đi sự tin tưởng.\n\nNếu ai từng chơi các tựa g",
-   "url": "https://facebook.com/groups/vgu.tech.alumni/permalink/1505671988135977/",
-   "published_at": "2026-11-14T14:11:14+00:00",
-   "reactions": 106,
-   "comments_count": 3,
-   "top_comments": [
-    {
-     "author": "Facebook user",
-     "text": "Không cần dài dòng.\n\nKỹ sư là gì, là người tìm shortcut. Tại sao phải như vậy, vì bản chất là lười nên phải làm thật nhanh cho xong để còn làm việc mình thích.",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "ở việt nam 90% dirty job làm outsourcing mà lúc cũng đem big tech là mẫu.",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "LInk youtube đầy đủ cho mọi người ai lười đọc bài viết nha\nhttps://www.youtube.com/watch?v=5s5e-CVfKDw",
-     "votes": 0
-    }
-   ]
-  },
-  {
-   "id": "1505507554819087",
-   "group_id": "vgu.tech.alumni",
-   "group_name": "VGU Tech Alumni",
-   "title": "[ Gennady \"tourist\" Korotkevich: Khi Đỉnh Cao Của Bộ Não Con Người Đứng Sau Huấn Luyện AI ]",
-   "content": "# **[ Gennady \"tourist\" Korotkevich: Khi Đỉnh Cao Của Bộ Não Con Người Đứng Sau Huấn Luyện AI ]**\n\n**TL;DR:**\n* Gennady Korotkevich (nickname *tourist*) là huyền thoại sống vĩ đại nhất lịch sử lập trình thi đấu (Competitive Programming), người đầu tiên phá vỡ cột mốc 4000 rating trên Codeforces vào tháng 8/2024 khiến nền tảng này phải tạo riêng một bậc rank mang tên anh.\n* Sở hữu bảng thành tích vô tiền khoáng hậu: 6 HCV IOI liên tiếp, 2 lần vô địch thế giới ICPC cùng Đại học ITMO, 8 chức vô địch Google Code Jam và 6 danh hiệu Meta Hacker Cup (gần nhất là năm 2025).\n* Tư duy giải quyết bài toán của *tourist* dựa trên sự tối giản tuyệt đối (dùng C++ thuần trên Far Manager/terminal, không phụ thuộc IDE nặng nề) và tâm lý vững vàng dưới áp lực cao. Hiện tại, anh đang làm việc tại Cognition AI để trực tiếp huấn luyện khả năng suy luận (reasoning) cho Devin AI.\n\n======================\n\nChào mọi người, nếu anh chị em làm trong ngành phần mềm từng một thời cày cuốc thuật toán trên Codeforces, TopCoder hay theo dõi các kỳ thi ACM-ICPC, chắc chắn cái tên **tourist** (Gennady Korotkevich) đã trở thành một biểu tượng không thể chạm tới. Hôm nay mình vừa xem được một video tổng hợp rất chi tiết từ kênh *Turing* về hành trình gần 20 năm thống trị của Gennady, có khá nhiều góc nhìn thú vị về tư duy kỹ thuật lẫn bước ngoặt sự nghiệp hiện tại của anh ấy nên muốn chia sẻ lại để anh em cùng bàn luận.\n\n## **1. Những con số \"out trình\" toàn bộ phần còn lại của thế giới**\n\nTrong hệ thống xếp hạng của Codeforces (tương tự hệ số Elo trong cờ vua), việc đạt mức rating 3000 (Legendary Grandmaster) đã là ước mơ của hàng triệu kỹ sư phần mềm trên toàn cầu — suốt hơn một thập kỷ chỉ có chưa tới 100 người làm được. Ở tầng cao nhất này, chỉ cần một lỗi nhỏ (bug) cũng đủ thổi bay thành quả cày cuốc của cả vài tháng.\n\nThế nhưng vào ngày 30/8/2024, ở tuổi 29 — độ tuổi mà nhiều vận động viên thể thao trí tuệ bắt đầu chững lại về phản xạ — Gennady đã chạm mốc **4009 rating**, trở thành người đầu tiên trong lịch sử vượt ngưỡng 4000 (sau đó vào tháng 1/2025 thần đồng Trung Quốc Jiangly mới là người thứ hai vượt mốc này với 4039 điểm). Để tôn vinh kỳ tích đó, đội ngũ Codeforces của Mike Mirzayanov đã phải tạo ra một bậc rank hoàn toàn mới nằm trên cả Legendary Grandmaster và đặt tên là **Tourist** (với chữ cái đầu màu đỏ và phần còn lại màu đen, đảo ngược màu của LGM).\n\nNhìn lại lịch sử thi đấu của chàng trai sinh năm 1994 tại Gomel (Belarus) này, mọi thống kê đều giống như một kịch bản hư cấu:\n* **Đấu trường học sinh (IOI):** Lọt vào đội tuyển quốc gia Belarus đi thi Olympic Tin học Quốc tế năm 11 tuổi (2006) và giành HCB. Cảm giác \"thất vọng vì không lấy được vàng\" năm đó đã thúc đẩy anh giành **6 Huy chương Vàng liên tiếp** từ 2007 đến 2012 (trong đó 3 lần đứng nhất tuyệt đối toàn đoàn vào các năm 2009, 2010, 2011).\n* **Đấu trường đại học (ACM-ICPC):** Chuyển đến Đại học ITMO (St. Petersburg) dưới sự dẫn dắt của HLV huyền thoại Andrey Stankevich, Gennady học cách chuyển từ kỹ năng cá nhân sang làm việc nhóm (3 người dùng chung 1 máy tính trong 5 giờ). Kết quả là 2 chức vô địch ICPC World Finals vào năm 2013 và 2015 (năm 2015 giải sạch toàn bộ 13/13 bài).\n* **Đấu trường chuyên nghiệp mở rộng:** Năm 2014, anh hoàn thành cú *Grand Slam* vô tiền khoáng hậu khi vô địch tất cả các giải lớn nhất hành tinh trong cùng một năm (Google Code Jam, Meta Hacker Cup, Yandex.Algorithm, Russian Code Cup, TopCoder Open). Tổng cộng anh đã bỏ túi **8 chức vô địch Google Code Jam** (chuỗi 7 năm liên tiếp từ 2014–2020 và giải cuối cùng năm 2022), **6 lần vô địch Meta Hacker Cup** (2014, 2015, 2019, 2020, 2023, 2025) và cả các giải Heuristic/Optimization kéo dài nhiều ngày như TopCoder Marathon Match (2018, 2019).\n## **2. Tư duy đằng sau tốc độ: Sự tối giản và khả năng kiểm soát tâm lý**\n## \n\nNhiều anh em thường thắc mắc: *Một người giải quyết các bài toán khó nhất thế giới nhanh như vậy thì môi trường làm việc (setup) của họ trông như thế nào?*\n\nTheo phân tích từ Andrew He (một Grandmaster hàng đầu của Mỹ), khi thi đấu, Gennady hoàn toàn không sử dụng các IDE đồ sộ hay công cụ Debugger phức tạp. Anh thao tác 100% trong môi trường dòng lệnh với **Far Manager** (trình quản lý file dạng text cổ điển), sử dụng một template C++ cực kỳ tinh gọn và biên dịch trực tiếp bằng các command-line flags.\n\nCó 3 yếu tố cốt lõi làm nên sự khác biệt của *tourist*:\n* **Khả năng lọc nhiễu và nhận diện mẫu (Pattern Recognition):** Giống như một đại kiện tướng cờ vua nhìn bàn cờ thành các thế trận đã thuộc lòng, khi đọc đề bài, Gennady bỏ qua ngay lập tức các câu chuyện dẫn dắt rườm rà để bóc tách ra bài toán toán học cốt lõi bên dưới. Những pattern về *Dynamic Programming* hay *Graph* mà người khác mất hàng giờ để thiết lập công thức thì anh nhận diện gần như tức thì.\n* **Ưu tiên giải pháp đơn giản nhất:** Thay vì viết những đoạn code phức tạp dễ phát sinh edge cases, anh luôn tìm cách rút gọn logic về dạng ngắn nhất, vừa đủ thỏa mãn giới hạn thời gian thực thi (*Time Complexity*).\n* **Kiểm soát cảm xúc tuyệt đối:** Trong trận chung kết Meta Hacker Cup 2014, đối thủ ngồi cạnh anh là Mark Gordon đã nộp bài xong trước cả 10 phút và quay sang mỉm cười thư giãn. Gennady vẫn giữ nguyên sự bình tĩnh, tiếp tục gõ và nộp bài cuối cùng khi chỉ còn 2–3 phút là hết cơ hội lật ngược thế cờ. Kết quả là 2 bài của Gordon bị dính bug khi chạy system test, còn Gennady lên ngôi vô địch nhờ sự chính xác tuyệt đối.\n## **3. Triết lý sống và sự trớ trêu thú vị ở kỷ nguyên AI**\n\nDù được cộng đồng lập trình viên xem như một vị thần, ngoài đời Gennady lại là một người cực kỳ giản dị. Anh từng chia sẻ lý do mình đam mê lập trình thi đấu là vì **tính khách quan tuyệt đối** của nó: một đoạn code khi biên dịch và chạy qua bộ test hoặc là đúng trong thời gian cho phép, hoặc là sai — không có chỗ cho sự cảm tính hay chính trị nơi công sở.\n\nNăm 2017, anh từng thẳng thừng từ chối những lời mời làm việc với mức đãi ngộ khổng lồ từ Google và Yandex để giữ sự tự do, sống thoải mái bằng tiền thưởng từ ",
-   "url": "https://facebook.com/groups/vgu.tech.alumni/permalink/1505507554819087/",
-   "published_at": "2026-11-14T11:11:06+00:00",
-   "reactions": 57,
-   "comments_count": 3,
-   "top_comments": [
-    {
-     "author": "Facebook user",
-     "text": "https://www.facebook.com/gennady.korotkevich/?locale=ru_RU",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "Thiên tài",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "Link video cho mọi người ai lười đọc bài viết nha\nhttps://www.youtube.com/watch?v=fj-FoLO_dKQ",
-     "votes": 0
-    }
-   ]
-  },
-  {
-   "id": "1505493174820525",
-   "group_id": "vgu.tech.alumni",
-   "group_name": "VGU Tech Alumni",
-   "title": "[ Giải Phẫu Sự Cố Sập Diện Rộng Của Microsoft: Khi Cascading Failure Và Thundering Herd Đánh Gục Hạ Tầng Cloud Tại 74 Quốc Gia ]",
-   "content": "# **[ Giải Phẫu Sự Cố Sập Diện Rộng Của Microsoft: Khi Cascading Failure Và Thundering Herd Đánh Gục Hạ Tầng Cloud Tại 74 Quốc Gia ]**\n\n*Nguồn tham khảo: Video \"Microsoft Just Went DOWN. Here's Why.\" từ kênh The World Backstage *\n\n**TL;DR:** Sự cố tê liệt diện rộng của Microsoft tại 74 quốc gia bắt nguồn từ tầng nền tảng **Exchange Online**. Dù chưa công bố báo cáo **Final Root Cause** cuối cùng, dữ liệu vận hành chỉ ra chuỗi nguyên nhân cốt lõi: một **Network Configuration Change** đã tạo ra **Correlated Failure** vượt qua các lớp **Redundancy**, khiến hàng loạt server trượt **Automated Health Checks**. Lưu lượng dồn sang các node còn lại làm quá tải tiến trình **Secure Connection Handshake** (gây **Cascading Failure**), cộng hưởng với bão **Thundering Herd** từ hàng triệu client thực hiện **Retry** khiến việc khôi phục không thể giải quyết bằng cách khởi động lại máy chủ.\n\n============================\n\nChào mọi người, mới đây một sự cố hạ tầng nghiêm trọng của Microsoft đã làm gián đoạn hoạt động tại 74 quốc gia chỉ trong vòng một giờ đồng hồ. Tàu hỏa tại Đức không thể gửi lịch trình, New Zealand ngưng xử lý thị thực, một bệnh viện tại Toronto phải ban bố tình trạng khẩn cấp (*Code Grey*), tòa án ở Úc không thể mở hồ sơ vụ án, và lượng báo cáo lỗi Outlook trên DownDetector tăng vọt hơn 2.000 lần.\n\nĐiều đáng chú ý dưới góc độ **System Architecture** là không hề có bất kỳ cuộc tấn công mạng (*malicious activity*), đứt cáp quang hay hỏa hoạn **Data Center** nào xảy ra. Mình đúc kết lại toàn bộ bức tranh kỹ thuật và chuỗi **Root Cause** đằng sau sự cố này để anh chị em cùng mổ xẻ các bài toán kinh điển khi thiết kế và vận hành **Distributed Systems** quy mô lớn nhé.\n\n## **1. Nghi phạm khởi phát sự cố (Triggering Event): Network Configuration Change và bẫy Correlated Failure**\n\nTính đến thời điểm phân tích, Microsoft vẫn chưa phát hành tài liệu **Final Root Cause** chính thức. Tuy nhiên, dựa trên nhật ký xử lý sự cố (*running commentary*) từ đội ngũ kỹ sư, nghi phạm số một khởi phát sự cố hướng về một thay đổi cấu hình mạng gần đó (**Recent Network Configuration Change**) có thời điểm triển khai trùng khớp hoàn toàn với lúc hệ thống bắt đầu đổ bệnh.\n\nNhiều bạn sẽ thắc mắc tại sao hệ thống sao lưu dự phòng (**Redundancy**) khắp thế giới của Microsoft không tự động chuyển đổi dự phòng (*failover*)? Câu trả lời nằm ở sự khác biệt giữa **Redundancy** và **Correlated Failure** (lỗi tương quan):\n* **Redundancy** bảo vệ hệ thống rất tốt trước các sự cố vật lý cục bộ như hỏng ổ cứng hay mất điện toàn bộ một tòa nhà.\n* Ngược lại, trong môi trường Cloud, mọi bản sao hộp thư đều chạy chung một phần mềm và tuân theo cùng một tập quy tắc điều phối mạng được đẩy tự động qua hệ thống **Automation**. Nếu bản thân tập quy tắc cấu hình có lỗi, cả máy chủ chính lẫn máy chủ dự phòng đều gặp chung một vấn đề cùng lúc. Dù đã áp dụng **Staged Rollouts** để thu hẹp **Blast Radius**, có những lỗi cấu hình ẩn chỉ thực sự kích hoạt khi gặp tải thực tế cực lớn hoặc sau nhiều giờ vận hành — lúc thay đổi đã lan ra toàn cầu.\n## **2. Nguyên nhân kỹ thuật trực tiếp (Direct Technical Cause): Cascading Failure tại bước Handshake**\n\nĐể phục vụ hàng triệu người dùng đồng thời, Microsoft đặt các cụm server khổng lồ phía sau hệ thống **Load Balancer** và liên tục thực hiện **Automated Health Checks**. Khi một máy chủ không phản hồi, nó lập tức bị rút khỏi cụm phục vụ (*taken out of service*) để bảo vệ trải nghiệm người dùng.\n\nTrong sự cố này, khi một lượng lớn server đột ngột trượt **Health Checks** cùng lúc và bị đóng lại, một chuỗi **Cascading Failure** (lỗi dây chuyền) đã nổ ra:\n* Microsoft chỉ rõ áp lực tải tăng vọt không phải do người dùng gửi email nhiều hơn, mà do số lượng máy chủ khả dụng bị sụt giảm đột ngột, đẩy toàn bộ **Traffic** hiện hữu dồn sang các server khỏe mạnh còn lại.\n* Điểm nghẽn (*bottleneck*) chí mạng xuất hiện tại tiến trình chịu trách nhiệm thiết lập kết nối bảo mật (**Secure Connection Handshake**). Mỗi khi ứng dụng client giao tiếp với server Microsoft, hai bên phải thực hiện bước xác thực danh tính và thỏa thuận khóa mã hóa. Quá trình này chỉ mất một phần nhỏ của giây nhưng tiêu tốn tài nguyên **CPU/Compute** thực sự. Khi hàng triệu ứng dụng cùng lúc dồn về số lượng server ngày càng ít ỏi để thực hiện **Handshake**, tiến trình này lập tức quá tải, kéo các server còn sống tiếp tục treo và bị **Load Balancer** rút khỏi hệ thống.\n## **3. Nguyên nhân lan rộng (Architectural Coupling): Hiệu ứng rút gỗ Jenga trên nền tảng Multi-tenant**\n\nVới phần lớn doanh nghiệp hiện nay, hệ sinh thái Microsoft đóng vai trò là toàn bộ văn phòng làm việc từ **Outlook**, **Teams**, **SharePoint**, **OneDrive**, **Copilot** cho đến bộ công cụ quản trị bảo mật của IT. Dù trông như những sản phẩm độc lập, rất nhiều dịch vụ trong số này lại phụ thuộc sâu vào cùng một tầng nền tảng bên dưới là **Exchange Online** — dịch vụ lưu trữ và phân phối hộp thư thực tế nằm tại **Data Center** của Microsoft (ứng dụng Outlook trên máy bạn chỉ là một cửa sổ giao diện).\n\nKhi các máy chủ **Exchange Online** ngừng phản hồi, dù tính năng chat cốt lõi trên Teams hay mở file trên SharePoint vẫn hoạt động phần lớn, mọi tác vụ cần gọi về hộp thư đều tê liệt theo dây chuyền: lịch biểu và đặt lịch họp trên Teams, trợ lý AI Copilot khi cần đọc mail, và trớ trêu thay là cả một số **Security & Admin Dashboards** mà đội ngũ IT dùng để chẩn đoán sự cố.\n\nTrong kiến trúc **Multi-tenant** (khi Amazon, Microsoft và Google nắm giữ khoảng 63% thị phần **Cloud Infrastructure** toàn cầu, riêng Microsoft chiếm khoảng 1/5), hàng triệu tổ chức đang cùng chia sẻ chung tầng mạng, phần cứng và bản cập nhật phần mềm. Khi đường ống chính ở tầng đáy gặp sự cố, toàn bộ các \"căn hộ\" bên trên tại 74 quốc gia đều bị ảnh hưởng cùng lúc.\n\n## **4. Nguyên nhân cản trở phục hồi (Recovery Bottleneck): Cơn bão Thundering Herd**\n\nKhi sự cố xảy ra, phản xạ đầu tiên của kỹ sư là khởi động lại (**Restart**) các máy chủ. Microsoft xác nhận các server sau khi bật lại ban đầu hiển thị trạng",
-   "url": "https://facebook.com/groups/vgu.tech.alumni/permalink/1505493174820525/",
-   "published_at": "2026-11-14T10:56:45+00:00",
-   "reactions": 391,
+   "title": "Tiếp tục khai thác “lỗ hổng kinh tế” của Cloudflare 😄",
+   "content": "Tiếp tục khai thác “lỗ hổng kinh tế” của Cloudflare 😄\n\nMình cần ghi chú sync qua lại giữa nhiều thiết bị, trong đó có những máy không đăng nhập tài khoản Google hay Apple mà lúc cần thì lại cần gấp. Thế là mình build luôn một tool ghi chú chạy ngay trên Cloudflare: **NoteFlare**.\n\n* Mã hoá đầu-cuối: ghi chú được mã hoá ngay trên trình duyệt, chỉ bạn đọc được, Cloudflare cũng không đọc được.\n* Chạy trong tài khoản Cloudflare của chính bạn, gói free là đủ. Chạy được offline, sync nhanh ở bất kỳ đâu nhờ hạ tầng siêu khủng của Cloudflare.\n* Nhập được từ Markdown, Obsidian và Google Keep.\n* Mã nguồn mở (MIT) nên tuỳ biến vô hạn.\n\nGitHub: [[https://github.com/homielab/noteflare](https://github.com/homielab/noteflare)](https://github.com/homielab/noteflare)\nDocs: [https://noteflare.homielab.com/vi/](https://noteflare.homielab.com/vi/)\n\n#j2team_share",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3249221545409943/",
+   "published_at": "2026-11-15T08:32:28+00:00",
+   "reactions": 361,
    "comments_count": 32,
    "top_comments": [
     {
      "author": "Facebook user",
-     "text": "Ông này là kỹ sư Microsoft hay sao mà chém nguyên nhân như đúng rồi vậy?\nVăn chương thì lủng củng, trình bày thì vòng vo, khái niệm thì lộn xộn.\nHoang tưởng cmnr.",
+     "text": "Hi bác, em vào bằng domain custom thì bị lock không cho làm gì cả. Vụ này xử lý sao nhỉ",
      "votes": 0
     },
     {
      "author": "Facebook user",
-     "text": "nếu nguyên nhân đúng như bài của tác giả thì các kỹ sư IT của Microsoft vứt đi. Hệ thống điện đã giải bài toán kiểu này từ nhiều năm nay rồi, bằng auto-reclose và load sheding.",
+     "text": "Có sync đc gg keep ko bác. Làm bản pwa thì ngon",
      "votes": 0
     },
     {
      "author": "Facebook user",
-     "text": "Plot twist : rút gỗ là 1 cảnh trong phim \"Leave The World Behind\" ngay sau khi mạng lưới thông tin bị đánh sập ..",
+     "text": "như vậy thì vẫn phải đăng nhập vào cloudflare hả bạn? vậy thì khác gì đăng nhập google nhỉ",
      "votes": 0
     },
     {
      "author": "Facebook user",
-     "text": "❤️",
+     "text": "Mấy ông khổ zâm vậy :)) t ghi chú qua Github hoặc FB nhanh lẹ",
      "votes": 0
     },
     {
      "author": "Facebook user",
-     "text": "sau bài này thì mình có đăng bài mới liên quan đến nội quy nhóm, mọi người có thể vào xem nha\n\nhttps://www.facebook.com/share/p/1Fij2e76zr/",
+     "text": "Thanks",
      "votes": 0
     }
    ]
   },
   {
-   "id": "1505417854828057",
-   "group_id": "vgu.tech.alumni",
-   "group_name": "VGU Tech Alumni",
-   "title": "",
-   "content": "",
-   "url": "https://facebook.com/groups/vgu.tech.alumni/permalink/1505417854828057/",
-   "published_at": "2026-11-14T09:22:01+00:00",
-   "reactions": 0,
+   "id": "3248748962123868",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "📣 ĐIỂM TIN BUỔI SÁNG CHỦ NHẬT (15/11/2026)",
+   "content": "📣 ĐIỂM TIN BUỔI SÁNG CHỦ NHẬT (15/11/2026)\n\nChào buổi sáng cả nhà J2TEAM! Chúc mọi người một ngày mới làm việc và học tập tràn đầy năng lượng. Dưới đây là những tin tức công nghệ và an ninh mạng nổi bật nhất trên thế giới sáng nay để mọi người cùng cập nhật nhé:\n\n1️⃣ Lỗ hổng chèn lệnh trên máy chủ UnrealIRCd bị tin tặc khai thác, CISA phát lệnh cảnh báo khẩn\n\n2️⃣ PostgreSQL phát hành bản vá 52 lỗ hổng, xóa sổ lỗi bảo mật RCE tồn tại suốt 22 năm\n\n3️⃣ Hai đòn tấn công Mior và Skyfall chọc thủng lớp bảo mật máy ảo đám mây AMD SEV-SNP\n\n4️⃣ SpaceX lập kỳ tích: Cánh tay cơ khí Mechazilla tóm gọn thành công tàu vũ trụ Starship giữa không trung\n\n5️⃣ Tựa game huyền thoại Magic: The Gathering chính thức cập bến Netflix với series hoạt hình Planeswalker\n\n6️⃣ FAA phải ra lệnh hoãn cất cánh trên toàn nước Mỹ do sự cố nâng cấp cáp quang thay thế đường dây đồng cũ\n\n7️⃣ Hé lộ lỗ hổng an ninh tại Nvidia: Cựu giám đốc bảo mật rời đi giữa tâm bão tuồn chip sang Trung Quốc\n\n8️⃣ Elon Musk cùng dàn lãnh đạo công nghệ ký đơn kêu gọi Nvidia phục chức cho CEO Jensen Huang\n\n9️⃣ Tesla mở đặt cọc xe tự hành Cybercab bản cá nhân: Phí duy trì 299 USD/tháng khiến Elon Musk cũng kêu đắt\n\n🔟 Trình soạn thảo AI Cursor bị tin tặc xâm nhập, phát tán extension Claude Code giả mạo chứa mã độc\n\n1️⃣1️⃣ Mỹ triệt phá chiến dịch FaceStealer của hacker Triều Tiên sau loạt vụ cuỗm hơn 400 triệu USD tiền mã hóa\n\n1️⃣2️⃣ Trezor xác nhận phát hiện vi mạch gián điệp cấy lén trong ví lạnh Safe 5 bán ra tại Đông Nam Á\n\n#j2team_news #diemtinsang #news",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3248748962123868/",
+   "published_at": "2026-11-15T00:14:33+00:00",
+   "reactions": 108,
    "comments_count": 0,
    "top_comments": []
+  },
+  {
+   "id": "3248762935455804",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "BLG đã vô địch Worlds 2026.",
+   "content": "BLG đã vô địch Worlds 2026.\n\n#j2team_news",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3248762935455804/",
+   "published_at": "2026-11-15T00:33:51+00:00",
+   "reactions": 291,
+   "comments_count": 37,
+   "top_comments": []
+  },
+  {
+   "id": "2695341487589908",
+   "group_id": "machinelearningcoban",
+   "group_name": "Forum Machine Learning cơ bản",
+   "title": "Đề LifeMate-ZAIC",
+   "content": "**Đề LifeMate-ZAIC **\n\nNăm nay khó nhằn thật, chỉ dựa vào train thì hơi khó, có vài team dựa vào rules/pattern của public test để tune solution không biết bị ban khi nộp k?",
+   "url": "https://facebook.com/groups/machinelearningcoban/permalink/2695341487589908/",
+   "published_at": "2026-11-15T07:29:18+00:00",
+   "reactions": 30,
+   "comments_count": 16,
+   "top_comments": []
+  },
+  {
+   "id": "1506837354686107",
+   "group_id": "vgu.tech.alumni",
+   "group_name": "VGU Tech Alumni",
+   "title": "[\"All Code Is Slop (Except Mine)\" của Lauren Tan]",
+   "content": "# [\"All Code Is Slop (Except Mine)\" của Lauren Tan]\n\nMấy hôm nay xem đi xem lại bài nói chuyện \"All Code Is Slop (Except Mine)\" của Lauren Tan (poteto — Principal Engineer làm Grok Bot tại SpaceX/xAI) ở AI Engineer Code Summit, thấy đây là một trong những góc nhìn thực tế và thẳng thắn nhất về chuyện dùng AI viết code ở quy mô lớn.\n\nAi làm sản phẩm gần đây chắc đều quen cảm giác này: AI giúp sinh code nhanh gấp chục lần, nhưng đổi lại là cảnh ngồi review mệt nghỉ vì đống \"slop\" - những đoạn code chạy thì có vẻ đúng nhưng lén lút nhét đầy workaround, anti-pattern và nợ kỹ thuật. Vậy mà tháng trước, một mình Lauren ship hơn 3.000 PRs lên production (cả team Grok Bot chạm mốc gần 11.000 PRs trong tháng 10 với 227 người đóng góp), phát hành bản stable mới gần như mỗi ngày, nhưng tỷ lệ revert code lại giảm xuống dưới 0,5% và app thậm chí còn chạy nhanh hơn lúc mới ra mắt.\n\nBí quyết của họ không nằm ở việc viết prompt khéo hơn hay nhồi nhét thêm luật vào file AGENTS.md. Nó nằm ở cách họ thiết kế lại toàn bộ môi trường xung quanh con AI.\n\n**1. Codebase là bộ nhớ của Agent** \n\nĐừng dạy AI bằng văn xuôi. Lauren đưa ra một mô hình gọi là \"Potato Pyramid\" (kim tự tháp ngược sắp xếp thứ tự ưu tiên đầu tư): ở đáy là human review và các file quy tắc bằng văn xuôi (AGENTS.md, rules, skills), còn hai tầng trên cùng quyết định tất cả lại là những thứ hoàn toàn xác định (deterministic): bản thân Codebase và Static Analysis.\n\nLý do rất đơn giản: toàn bộ repo chính là context đầu vào lớn nhất của AI. Khi code đổ về như một dòng chảy liên tục (từ vài PR một ngày hồi 2024 lên hàng trăm PR mỗi ngày bây giờ), codebase giống hệt một khu vườn. Chỉ cần một đoạn code chữa cháy lọt qua vòng review, các Agent chạy sau sẽ nhìn thấy nó, tưởng đó là chuẩn mực của dự án và nhân bản ra khắp nơi như cỏ dại.\n\nĐể chặn đứng chuyện này trên Grok Bot, team đã tự xây framework nội bộ tên là Dune và áp đặt kỷ luật cực kỳ khắt khe trực tiếp vào code:\n\n- *Cấm tiệt những API đòi hỏi sự tinh tế cao*: Ví dụ kinh điển là useEffect trong React - thứ mà ngay cả người có kinh nghiệm cũng dễ dùng sai. Thay vì viết rule dặn AI \"hãy cẩn thận khi dùng useEffect\", họ cấm hẳn nó ở tầng product code và chỉ cho phép gói gọn bên trong các API chuẩn của framework.\n\n- *Dùng cấu trúc thư mục làm ranh giới cứng*: Tách riêng electron-renderer và electron-main, dùng dependency analyzer và lint rules chặn đứng mọi pha import chéo gây nghẽn UI thread.\n\n- *Xóa 99% comment trong codebase*: Đây là chi tiết khá hài hước nhưng rất thật. Lauren kể hồi làm ở Cursor, do kiến trúc lai giữa VS Code và React, AI rất hay lạm dụng setTimeout hay requestAnimationFrame để vá lỗi tạm, rồi... tự viết một đoạn comment dài dòng giải thích tại sao đường tắt đó là hợp lý. Kết quả là các Agent sau đọc comment thấy \"có lý\" quá nên copy-paste ra gần 200 bộ đếm giờ khắp app, gây giật lag nặng. Rút kinh nghiệm, sang Grok Bot họ dọn sạch comment (từ hơn 65.000 dòng xuống còn khoảng 1.200 dòng) để tước bỏ \"đường lui\" biện minh của AI, đồng thời chuyển toàn bộ bài học sửa lỗi thành hơn 160 lint rules. Mỗi lần AI làm sai, thay vì nhắc nhở bằng lời, họ viết một lint rule mới với thông báo lỗi chỉ rõ cách sửa tận gốc.\n\n2. **Kỷ nguyên vàng của Verification** — dùng 70% token chỉ để kiểm chứng\n\nKhi mỗi kỹ sư vận hành như một đội quân hàng trăm Agent, việc ngồi đọc từng dòng code diff bằng mắt gần như vô nghĩa. Quy trình code review của team Grok Bot thu gọn lại thành việc kiểm tra các \"bằng chứng nghiệm thu\" (verification artifacts): video chạy thực tế, ảnh chụp màn hình, biểu đồ trạng thái và chứng minh hình thức.\n\nLauren đồng tình với một quan sát khá thú vị trong cộng đồng gần đây: khoảng 70% lượng token tiêu thụ hàng ngày của cô không dùng để sinh code, mà đổ vào khâu verification.\n\nỞ tầng runtime, team tạo sẵn một \"Feature Map\" (bản đồ toàn bộ tính năng dưới góc nhìn người dùng để AI và người có chung từ vựng, không phải đoán mò \"cái nút bên thanh trái\") đi kèm bộ CLI riêng. Nhờ đó, Agent có thể tự build, tự khởi chạy app, tự thao tác qua Chrome DevTools Protocol, chụp ảnh và quay video lại đúng luồng vừa sửa để người review xem.\n\nThú vị hơn là ở tầng formal verification: những công cụ hàn lâm từng bị xem là quá đắt đỏ và khó viết trong các dự án sản phẩm thông thường nay lại trở nên cực kỳ khả thi khi có AI gánh phần nặng nhọc:\n\n- *Dùng TLA+ để kiểm tra mô hình trạng thái* (model checking) cho các luồng phức tạp như đồng bộ thông báo đa thiết bị.\n\n- *Dùng ngôn ngữ chứng minh toán học Lean để kiểm chứng thư viện virtualization tự viết*, đảm bảo không bao giờ xảy ra lỗi giật hay nháy khung hình.\n\n- *Dùng Bombadil để làm property-based testing, tự động fuzz giao diện* người dùng và bắt ra những bug góc khuất mà test thường bỏ sót.\n\n**3. Đừng tự động hóa một vòng lặp tồi tệ**\n\nMột câu chốt rất đáng nhớ của Lauren: \"Nếu vòng lặp viết code cơ bản của bạn còn đẻ ra slop, việc nhân bản nó lên hàng nghìn cloud agent chỉ giúp bạn đốt tiền nhanh hơn để tạo ra nhiều rác hơn.\"\n\nChỉ khi \"inner loop\" (viết code + lint + verification) đã đủ sạch và đáng tin cậy, team mới nối nó ra \"outer loop\" để xây thành một nhà máy phần mềm thực thụ. Hiện tại, mỗi khi cắt một bản release mới của Grok Bot, hệ thống tự động kích hoạt các Cursor Cloud Agents để fuzz toàn bộ bản build như một người dùng thật, tự mở PR vá từng lỗi tìm thấy và tự động merge luôn vào nhánh chính mà không cần con người can thiệp sâu.\n\nNhững con số sau tháng 10 cho thấy cách làm này không chỉ chạy được trên lý thuyết:\n\n- 10.926 PRs được merge, trung bình cứ khoảng 25–28 tiếng lại có một bản release ổn định mới, tỷ lệ revert chỉ vỏn vẹn 0,49%.\n\n- Dù vẫn chạy trên Electron, hiệu năng của Grok Bot không hề phình to mà còn cải thiện rõ rệt so với lúc mới ra mắt: thời gian khởi động lạnh giảm 34%, độ trễ gõ phím giảm 46%, tốc độ chuyển hội thoại nhanh hơn 86% và lượng RAM tiêu thụ khi nhàn rỗi giảm tới 64%.\n\nỞ slide cuối cùng, Lauren gạch chữ \"Mine\" trên tiêu đề bài nói chuyện và sửa thành **\"All Code Is Slop (Except Yours)\"**. Có lẽ đó cũng ",
+   "url": "https://facebook.com/groups/vgu.tech.alumni/permalink/1506837354686107/",
+   "published_at": "2026-11-15T18:41:06+00:00",
+   "reactions": 89,
+   "comments_count": 2,
+   "top_comments": [
+    {
+     "author": "Facebook user",
+     "text": "Link bài nói chuyện gốc: https://www.youtube.com/watch?v=O_zcc6Xl12g",
+     "votes": 0
+    }
+   ]
   }
  ]
 }
