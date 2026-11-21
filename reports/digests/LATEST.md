@@ -1,80 +1,74 @@
 # DIGEST TUẦN — TÍN HIỆU THỊ TRƯỜNG IT CHO LỘ TRÌNH NGHỀ NGHIỆP
 
-- Giai đoạn dữ liệu: 2026-10-26 → 2026-11-01 (7 bản tin ngày)
-- Ngày sinh digest: 2026-11-02
+- Giai đoạn dữ liệu: 2026-11-09 → 2026-11-15 (7 bản tin ngày)
+- Ngày sinh digest: 2026-11-16
 - Nguồn: bản tin định hướng ngành IT hằng ngày (đã lọc theo chủ đề thị trường/hướng đi/sự nghiệp, ưu tiên bình luận của senior/tech lead/PM).
 - Cách đọc: tín hiệu xuất hiện nhiều ngày = xu hướng đáng tin; tín hiệu 1 ngày = tham khảo, chờ xác nhận thêm.
 
 ## A. TÍN HIỆU LẶP LẠI NHIỀU NGÀY (xu hướng)
 
-- (2 ngày) **AI Agent IDEs & Tools:** Claude Code, Antigravity IDE, Gemini AI kết hợp các CLI tool hỗ trợ multi-agent.
+- (6 ngày) Trên thế giới (và ý nghĩa với Việt Nam)
+- (3 ngày) Công nghệ cần học (Phân biệt Xu hướng thật vs Hype)
 
 ## B. TÍN HIỆU ĐÁNG CHÚ Ý KHÁC TRONG TUẦN
 
-- (2026-11-01) **Đ zweig극 hóa thị trường (Polarization):** Có sự mâu thuẫn dữ liệu đáng chú ý. Báo chí VN (VnEconomy) khẳng định *"Nhu cầu tuyển dụng lập trình viên vẫn tăng dù đã có AI"* (Nguồn 18), nhưng thực tế các hãng công nghệ vẫn sa thải: một hãng cắt 200 nhân sự ngay lập tức (Nguồn 9), Microsoft cắt 9.000 người toàn cầu (Nguồn 15), tổng ngành cắt ~200.000 người từ đầu 2026 (Nguồn 14). **Nhận định:** Thị trường VN không miễn dịch với xu hướng toàn cầu, nhưng *nature* của nhu cầu đang đổi: **ít tuyển hơn, đòi hỏi level cao hơn (Senior/AI-ready), Fresher/Junior cực kỳ khó vào cửa.**
-- (2026-11-01) **Big Tech vào VN nâng cao tiêu chuẩn:** Tesla tuyển 5 vị trí đầu tiên tại VN (Nguồn 10) — đây là tín hiệu các tập đoàn sản phẩm (Product company) đưa quy trình tuyển dụng khắt khe (System Design, Depth, Cultural fit) vào VN, thay vì chỉ outsource/theo dự án. Dev VN phải chuẩn bị mức độ phỏng vấn ngang ngửa Global.
-- (2026-11-01) **Layoff không còn là "bão" mà là "khí hậu":** Các bài viết về WARN Act (Nguồn 7, 8, 9) dù luật Mỹ, nhưng phản ánh tâm lý HR/Doanh nghiệp: sa thải đã trở thành công cụ điều chỉnh chi phí điều hành thường quy, kèm theo các rủi ro pháp lý (non-compete, bảo hiểm) mà dev/leader cần hiểu khi ký hợp đồng.
-- (2026-11-01) Trên thế giới (Ý nghĩa với Dev Việt Nam)
-- (2026-11-01) **Phỏng vấn LeetCode đang "chết", System Design & AI Workflow là vua:** Theo **Pragmatic Engineer (G newsletter tiếng Anh uy tín, expert_voice_score cao)** — Anthropic đã xóa hoàn toàn coding interview kiểu LeetCode (Nguồn 13). **Ý nghĩa VN:** Các công ty sản phẩm, outsource high-end tại VN (như Tesla, TikTok, Shopee, các startup AI) sẽ theo nhanh. Hãy chuyển đầu tư thời gian từ grind LeetCode sang **System Design thực chiến + Demo cách dùng AI giải quyết task thật**.
-- (2026-11-01) **Senior/Expert (20+ năm) bị "kẹt" giữa Ageism & AI:** Video phân tích của **Francesco Andreoli (Expert Voice Score 4.5 - Senior/Content Creator chuyên sâu)** chỉ ra: Dev 20 năm kinh nghiệm bị sa thải, phỏng vấn LeetCode khủng khiếp, bị xem là "quá đắt" so với dev junior dùng AI code nhanh hơn (Nguồn 8). **Ý nghĩa VN:** "Làm lâu = an toàn" là sai lầm. Dev VN 30-40 tuổi **bắt buộc** phải "dính tay" vào code/AI tool, không chỉ quản lý, và phải chứng minh năng suất với AI.
-- (2026-11-01) **Restructuring để "đốt tiền" cho AI:** Microsoft cắt 9.000 người (Nguồn 1, 15) + Goldman Sachs cảnh báo sẹo lâu dài (Nguồn 5) cho thấy: Budget dev bị chuyển sang GPU/Infra/LLM Training. **Ý nghĩa VN:** Vị trí "CRUD developer" thuần túy đang biến mất. Dev cần pivot sang **AI Integration, Platform Engineering, hoặc Domain Expertise sâu** (FinTech, HealthTech, Industrial IoT) — nơi AI chưa thay thế được ngữ cảnh business phức tạp.
-- (2026-11-01) **Con đường AI Engineer đang được định hình rõ ràng:** Bài viết Dev.to (Nguồn 3) lộ lộ trình: Foundational ML -> RAG/Agents -> **Deployment/Productionize (Docker, K8s, CI/CD, Evals)** -> Portfolio projects. **Ý nghĩa VN:** Đừng chỉ học prompt engineering. Nhà tuyển VN đang tìm **"AI Engineer có deploy được model/service lên production"**, không phải "AI Researcher".
-- (2026-10-31) **Dịch chuyển cốt lõi: Từ "Viết code" sang "Kiến trúc & Điều phối AI + Hiểu Business".**
-- (2026-10-31) **Thị trường Junior/Fresher "đóng băng", Senior bị ép KPI nhờ AI.**
-- (2026-10-31) **Xu hướng "AI Engineer" thực tế là RAG + Vector DB + Local LLM, không phải train model.**
-- (2026-10-31) **Tesla tuyển dụng tại VN (5 vị trí đầu) báo hiệu nhu cầu Embedded/Automotive/High-performance computing.**
-- (2026-10-31) Trên thế giới (và ý nghĩa với Việt Nam)
-- (2026-10-31) **Anthropic (hãng AI hàng đầu) đã bỏ phỏng vấn LeetCode thuần túy.**
-- (2026-10-31) **Microsoft freiwillige Austritt (voluntary exit) & Goldman Sachs: AI layoff để lại sẹo lâu dài.**
-- (2026-10-31) **Hiring 2026 yêu cầu "Full Stack + Cloud + AI Tooling" làm baseline.**
-- (2026-10-30) **[Vibe Coding Cùng AI Siêu An Toàn và Kiểm Soát với Git - Không Sợ Mất Code/Hỏng Code Khi Dùng AI](https://www.youtube.com/watch?v=r_4pDELxZz8)** (YouTube (Hỏi Dân IT))
-- (2026-10-30) **[Vibe Coding Chuyên Nghiệp Cùng Gemini AI và Antigravity IDE | Series Gemini AI Dành Cho Beginners](https://www.youtube.com/watch?v=34oUbddPlcw)** (YouTube (Hỏi Dân IT))
-- (2026-10-30) **[Dùng Agent Tạo Video Theo Ý Muốn với Google Flow - Sản Xuất Video Hàng Loạt Theo Kịch Bản Bằng AI](https://www.youtube.com/watch?v=144xoqU6hPQ)** (YouTube (Hỏi Dân IT))
-- (2026-10-30) **[No Code | Không thể nào các lập trình viên kiểu này thực sự mất việc vào năm SAU?](https://www.youtube.com/watch?v=gxIKlsOzq70)** (YouTube (Tips Javascript))
-- (2026-10-30) **[Kafka (10): KAFKA 4.0 QUEUES | SHARE GROUPS & CRITICAL NOTES (⭐⭐⭐⭐⭐)](https://www.youtube.com/watch?v=aJ5kLfn8AtI)** (YouTube (Tips Javascript))
-- (2026-10-30) **[Vector Databases - Video này để hiểu sự nâng cấp từ Kỹ sư lập trình đến Kỹ sư AI (AI Engineer).](https://www.youtube.com/watch?v=kRXoK02KJow)** (YouTube (Tips Javascript))
-- (2026-10-30) **[Xin vợ 2 tỷ build siêu máy tính chạy AI và cái kết...](https://www.youtube.com/watch?v=nFj7IlNYZMg)** (YouTube (Tôi Đi Code Dạo))
-- (2026-10-30) **[Hack web Phim Heo Vibe Code trong 5 phút](https://www.youtube.com/watch?v=jDebNc5UTOI)** (YouTube (Tôi Đi Code Dạo))
-- (2026-10-30) **[Lứa lập trình viên làm biếng, ngu và mất dạy nhất trong lịch sử!](https://www.youtube.com/watch?v=U67mf4sRM_Y)** (YouTube (Tôi Đi Code Dạo))
+- (2026-11-15) **Chuyển dịch mạnh mẽ sang "Agentic Engineering" & AI Application Layer**: Các sự kiện cộng đồng lớn như **GDG DevFest Hanoi 2026** (chủ đề "Build, Secure, Scale: Developers and Builders in the Agentic Era") và thảo luận tại nhóm *Forum Machine Learning cơ bản* về VLM (Vision-Language Model) & VLA (Vision-Language-Action) cho thấy nhu cầu thực tế đang dồn vào **xây dựng hệ thống multi-agent, RAG, fine-tune model nhẹ (distillation) chạy on-device** (ví dụ: project OpenDubber dùng Knowledge Distillation giảm model TTS từ 82M → 8.6M params chạy WASM trên browser).
+- (2026-11-15) **Tiêu chuẩn Senior/Middle rõ ràng hóa theo hướng "System Ownership"**: Bài chia sẻ từ cộng đồng **VGU Tech Alumni** (5-7 năm kinh nghiệm) khẳng định Senior không phải code nhanh hơn mà khác ở: **tư duy kiến trúc (scalability, security), chủ động tìm vấn đề gốc, phối hợp cross-func (BA, QA, DevOps), và mentoring**. Điều này khớp với xu hướng toàn cầu: tuyển dụng ít hơn nhưng yêu cầu "bán thành phẩm" cao hơn.
+- (2026-11-15) **Thị trường tuyển dụng "giả象" (phantom hiring)**: Tin tức từ *Vietnam.vn* & *VietNamNet* cho thấy tin tuyển dụng lập trình viên Mỹ tăng ~15% từ 2/2025 dù AI viết code giỏi hơn, nhưng thực tế **headcount thực tế không tăng tương ứng** — nhiều công ty đăng tuyển để "giữ thương hiệu" hoặc chờ budget. Tại VN, hiện tượng tương tự: đăng nhiều, phỏng vấn khắt khe, chốt ít.
+- (2026-11-15) **AI thay đổi bản chất "Entry-level" — Junior bị loại ra khỏi vòng lặp sản xuất code cơ bản**: Video *Microsoft Engineer (Kushal Vijay)* và *The Seasoned CTO* đều chỉ ra: **công ty tạm dừng tuyển fresher, ép team hiện tại "document workflow" để thay bằng AI agent**. Stanford research (trích trong video *My AI Life*) xác nhận: young workers in highly AI-exposed occupations falling behind mainly through **reduced hiring**.
+- (2026-11-15) **Khoảng cách lương New Grad vs Senior giãn cực lớn — "First job is the hardest"**: Median US dev ~$136k nhưng new gradstruggle to get hired; senior roles account for most posting increase (video *HowMuchSalaryUS*, *The Seasoned CTO*).
+- (2026-11-15) **Embedded / Firmware & Hardware-AI là "mỏ vàng" bị bỏ quên**: Bài Dev.to *15 embedded interview questions that trip up strong candidates* nhấn mạnh firmware interview **không phải LeetCode inverted** — cần hiểu memory layout, interrupt, DMA, RTOS, linker script. Kết hợp xu hướng VLA (Vision-Language-Action) cho robot tại nhóm ML VN → **cần dev hiểu cả low-level + AI**.
+- (2026-11-15) Kỹ năng cốt lõi (Must-have)
+- (2026-11-15) Công nghệ cụ thể — Phân biệt Xu hướng thật vs Hype
+- (2026-11-14) **Thiếu dữ liệu thị trường thực tế (layoff, lương, headcount) trong batch này.** Hai bài báo VN chỉ *tóm tắt lại số liệu Mỹ* (tin tuyển dụng dev Mỹ tăng ~15% từ 2/2025 theo Vietnam.vn & VietNamNet). Chưa có báo cáo nào trong dữ liệu cho thấy layoff lớn tại VN, thay đổi lương, hoặc nhu cầu skill cụ thể của các công ty VN (outsource vs product).
+- (2026-11-14) **Định hướng suy diễn:** VN theo chu kỳ Mỹ với độ trễ 6–12 tháng. Nếu Mỹ "posting tăng nhưng hiring thực giảm" (xem phần Quốc tế), công ty outsource VN sẽ thấy *giảm đơn/hạn chế headcount mới* trước. Dev VN **không nên tin vào con số posting** mà phải hỏi trực tiếp recruiter/hiring manager: *"Team hiện có headcount approved hay chỉ đang pool CV?"*.
+- (2026-11-13) **Dẫn chứng:** Video phân tích 149.360 tin tuyển dụng 2021–2026 (Kênh *Học Lập Trình cùng Phát*) chỉ ra ngành gia công chịu tác động mạnh nhất do AI tự động hóa code CRUD/base. Microsoft mở văn phòng mới tại TP.HCM *sau* đợt sa thải (VnExpress) cho thấy Big Tech vẫn đầu tư VN nhưng **chỉ tuyển senior/specialized** (AI, Cloud, Security) thay cho mass hiring junior trước đây.
+- (2026-11-13) **Dữ liệu:** Tin tuyển dụng dev tại Mỹ tăng ~15% từ 2/2025 dù AI viết code (Vietnam.vn), nhưng tại VN, comment thực tế: *"Thực sự hôm nay em bị từ chối ngay trong phỏng vấn... đã rất lâu chưa có việc làm"* (@nicky_s). **Cung junior vượt xa cầu, cầu dịch sang senior/niche.**
+- (2026-11-13) **Dẫn chứng:** Cùng video phân tích VN: nhóm việc làm AI tăng nhanh nhất nhưng chủ yếu Senior/Lead. Tin tức *"AI viết mã hàng loạt nhưng tin tuyển dụng vẫn tăng"* thực chất là tăng ở **vai trò điều phối/hệ thống** (AI Engineer, Platform Engineer), không phải coder thuần.
+- (2026-11-13) Trên thế giới (Ý nghĩa với Dev Việt Nam)
+- (2026-11-13) **Dẫn chứng:** The Seasoned CTO (expert_voice_score 3.0) phân tích: *"Job postings rise while actual hiring numbers shrink... teams authorized for far fewer roles"*.
+- (2026-11-13) **Áp dụng VN:** Nhiều công ty đăng JD để build employer brand/giữ pipeline, không có budget(headcount) thật. **Chiến thuật:** Chỉ apply qua referral/nội bộ, hoặc target công ty vừa raise fund/mở entity mới (như Microsoft HCMC).
+- (2026-11-13) **Dẫn chứng:** HowMuchSalaryUS (expert_voice_score 7.5): Median dev $136k/năm, nhưng *"new grads struggling to get hired"*. Stanford research (video My AI Life): *"Young workers in highly AI-exposed occupations falling behind, mainly through reduced hiring"*.
+- (2026-11-13) **Áp dụng VN:** Mức lương VN đang phân hóa tương tự (Senior 40-80tr, Fresher 8-12tr hoặc unpaid intern). **Không có "thang máy" cho junior nữa – phải leo cầu thang (slope).**
+- (2026-11-13) **Dẫn chứng:** Bài Lemmy (PhD Stats/CS): *"Vibe coding has taken over... few open positions... just pushing a button instead of thinking"*. Dev.to articles về MCP Server/Agent API Access: Xây dựng agent an toàn, quản lý context window, permission boundary là skill mới.
+- (2026-11-13) **Áp dụng VN:** Công ty VN (FPT, VNG, các startup AI) đang tuyển **AI Application Engineer** – người biết *hệ thống* để gắn LLM vào production an toàn, không phải prompt engineer.
+- (2026-11-12) **Thị trường tuyển dụng đang "thanh lọc" chứ không "hết thời"**: Phân tích 149.360 tin tuyển dụng 2021–2026 (kênh *Học Lập Trình cùng Phát*) cho thấy cầu việc làm IT vẫn tăng, nhưng phân cực: **AI/ML, Cloud, DevOps, Data** lên mạnh; **Web/App thuần túy, outsourcing (gia công) truyền thống** bị ép biên. Video *Siêu Kiến Thức* xác nhận: "bong bóng tuyển dụng sau Covid vỡ, lương đi xuống, tiêu chuẩn khắt khe, cung vượt cầu ở fresher/junior".
+- (2026-11-12) **Junior/Fresher gặp "mùa đông" thực sự**: Bình luận của `@nicky_s` (insight_score 1.0) là minh chứng sống động — bị từ chối ngay phỏng vấn, thất nghiệp lâu, áp lực tâm lý lớn. Điều này khớp với dữ liệu globale: job postings giảm 65% so với đỉnh 2022 (*Synthetic Era*), gánh nặng dịch sang khâu review (thời gian review PR tăng 441%).
+- (2026-11-12) **Công ty Việt Nam đang chuyển từ "thuê người viết code" sang "thuê người giải quyết bài toán với AI"**: Chia sẻ EditAtlas (MCP server cho agent dựng video/âm thanh) trên J2TEAM Community cho thấy xu hướng **tooling cho AI agent** đang nổi lên tại VN. Bài Viblo về *retry/timeout/idempotency cho AI agent* khẳng định: khi agent gọi công cụ thay đổi dữ liệu (hoàn tiền, đặt hàng...), kỹ thuật **hệ thống đáng tin cậy** trở thành yêu cầu bắt buộc.
+- (2026-11-12) **AI không giết nghề lập trình, nó di chuyển nút thắt cổ chai**: 40% PR trên GitHub bắt đầu bằng draft của AI, nhưng *developer giàu kinh nghiệm tin AI giúp nhanh 20% — thực tế lại chậm 19%* do phải review nhiều hơn (*Synthetic Era*). **Ý nghĩa VN**: Không cần lo "thay thế", cần lo "review code AI sinh ra" — kỹ năng **đọc hiểu, kiểm chứng, kiến trúc, bảo mật** sẽ đắt giá hơn kỹ năng gõ code nhanh.
+- (2026-11-12) **Sa thải do overhiring & tái cấu trúc, không chỉ do AI**: Meta, Uber, Amazon cắt giảm vì thuê quá nhiều 2020–2022 và ép hiệu suất (*The Signal Tech*). **Ý nghĩa VN**: Các outsourcer VN đang bị khách hàng Mỹ/EU ép giảm team size, yêu cầu density (sản lượng/người) cao hơn — dev phải chứng minh **giá trị business/feature**, không chỉ ticket closed.
 
 ## C. LỜI KHUYÊN / BÌNH LUẬN ĐỊNH HƯỚNG NỔI BẬT
 
-_(ngày 2026-10-27)_
+_(ngày 2026-11-11)_
 
-1. **Bình luận từ `anilgulecha`** (Hacker News - bài *Tech market feels like a data entry job*)
-   - **Trích dẫn nguyên văn:**
-     > "A friend of mine put this to me: Ai can do everything needed for a business currently, outside of anticipating future business needs constantly. Which means the job market will currently benefit those with this skill. Traditionally what EMs/PMs,leaders would do."
-   - **Vì sao đáng đọc:** Cô đọng bản chất sự dịch chuyển của thị trường: khi AI làm được hầu hết tác vụ kỹ thuật, giá trị con người nằm ở khả năng dự báo nhu cầu kinh doanh — kỹ năng của người làm quản lý/lãnh đạo.
+1.  **@charlieJimi** (Video: *"When Work Sucks and AI Doom Won't Shut Up" - exit node*, **Insight Score: 3.5**, Votes: 1)
+    > "Hey Chavdar, definitely.. I am on the same page with you. Looks like the home lab can be turned into a side business upon see interestig and fun use cases!"
+    > **Tại sao đáng đọc**: Tác giả video là **Senior Eng/Manager/Director of AI (Expert Voice 1.5)**. Bình luận này khẳng định tư duy **"Builder Mindset"**: Home lab/Side project không chỉ để học mà là MVP cho side business/tăng visibility. Phù hợp hoàn toàn với lộ trình "Java -> Python/NetSec build tool".
 
-_(ngày 2026-10-27)_
+_(ngày 2026-11-11)_
 
-2. **Bình luận từ `AlexITC`** (Hacker News - bài *Looking for a tech job is a helpless data-entry nightmare*)
-   - **Trích dẫn nguyên văn:**
-     > "I'm sorry for you and everyone else going through this, its madness; besides this you also need to deal with fake jobs, malware in take-home challenges, a pile of incoming messages selling you the 'best' AI job search tool, etc."
-   - **Vì sao đáng đọc:** Cảnh báo thực tế ít ai nói: thị trường tuyển dụng IT hiện có cả tin giả và bài test chứa mã độc — kỹ năng tự bảo vệ mình khi xin việc cũng là một phần của nghề, đặc biệt với người học security.
+2.  **@oussamaelwefi2940** (Video: *"When Work Sucks and AI Doom Won't Shut Up" - exit node*, **Insight Score: 2.0**, Votes: 1)
+    > "Thank you for the video, I now understand that even as a junior I need to have a high level look at things, and learn the system design / architecture more, but I also feel that I need to keep my problem solving skills sharp, what do you think about doing leetcode problems? are they still important? they obviously are if the job I apply for test it in the technical interview, but are there other motivators to do it?"
+    > **Tại sao đáng đọc**: **Junior thực tế đang đau đầu** giữa System Design vs Leetcode. Câu hỏi chạm đúng "nỗi đau" market hiện tại: Leetcode chỉ để pass interview, **System Design/Architecture mới là skill trụ vững**. Trả lời gợi ý: Dùng Leetcode để luyện *problem solving pattern*, nhưng portfolio phải có *System Design docs*.
 
-_(ngày 2026-10-27)_
+_(ngày 2026-11-11)_
 
-3. **Bình luận từ `sdevonoes`** (Hacker News - cùng chủ đề xin việc)
-   - **Trích dẫn nguyên văn:**
-     > "I guess it depends on how your cv/experience looks like? I don't have problems getting interviews (so I guess my cv/experience is relevant to the job… at least I do tailor my cv for each application)."
-   - **Vì sao đáng đọc:** Góc nhìn ngược cân bằng: người tùy biến CV theo từng vị trí vẫn nhận được phỏng vấn đều — vấn đề nằm ở cách tiếp cận, không chỉ ở thị trường.
+3.  **@TranSonPhat (Tác giả video)** (Video: *"Phân tích 149,360 việc làm IT Việt Nam từ 2021-2026" - Học Lập Trình cùng Phát*, **Insight Score: 2.0**, Votes: 2)
+    > "Toàn bộ code phân tích và dữ liệu của video nằm ở đây nha: Trong repo có pipeline xử lý, các notebook phân tích và bộ số liệu tổng hợp theo từng năm (vai trò, cấp bậc, thành phố, hình thức làm việc và công nghệ), các bạn có thể tải về để tự vẽ lại biểu đồ hoặc phân tích thêm nha! Cảm ơn các bạn rất nhiều!"
+    > **Tại sao đáng đọc**: **Data-driven decision making**. Thay vì tin cảm tính "Java chán", "Python hot", dev VN có thể **tự query dữ liệu 149k JD** để ra quyết định: Học gì? Ở đâu? Lương bao nhiêu? Đây là skill "Data Literacy" bắt buộc.
 
----
+_(ngày 2026-11-11)_
 
-_(ngày 2026-10-26)_
+4.  **@nicky_s** (Video: *"Phân tích 149,360 việc làm IT Việt Nam từ 2021-2026" - Học Lập Trình cùng Phát*, **Insight Score: 1.0**, Votes: 3)
+    > "Thực sự hôm nay em bị từ chối ngay trong phỏng vấn, sốc và thất vọng về bản thân thực sự anh ạ. Đã rất lâu rồi chưa có việc làm, sống bám vào bố mẹ xấu hổ quá"
+    > **Tại sao đáng đọc**: **Thực trạng khốc liệt của Junior/Fresher VN 2026**. Không phải số liệu, là con người. Cảnh báo: Market Junior gần như đóng băng. Người mới *bắt buộc* có project thực tế (open source, freelance, side biz) + skill AI/Security để khác biệt.
 
-1. **Bình luận từ `vrighter`** (Hacker News - bài *Apollo says AI has delivered 'zero financial payoff' outside the tech industry*, 74 điểm / 62 bình luận)
-   - **Trích dẫn nguyên văn:**
-     > "It has delivered negative financial payoff here. Everyone is using it, nobody knows how anything works anymore, and I am a caveman for refusing to NOT understand the code I write. And they still have to pay the developers. And they still have to pay for the AI. They pay more for an inferior result."
-   - **Vì sao đáng đọc:** Góc nhìn người trong cuộc tại doanh nghiệp ngoài ngành tech: chi phí tăng gấp đôi (vẫn trả dev + trả thêm AI) trong khi hiểu biết về hệ thống giảm — lời cảnh báo trực diện cho dev nào định phó mặc việc hiểu code cho AI.
+_(ngày 2026-11-11)_
 
-_(ngày 2026-10-26)_
-
-2. **Bình luận từ `asadotzler`** (Hacker News - cùng bài Apollo)
-   - **Trích dẫn nguyên văn:**
-     > "If AI helps with the mundane side of real work, great, but outside of mundane-only work, there generally isn't a conveyor belt of random mundane work backfilling the real work's now-fixed-by-AI mundane bits. Any mundane work that's gone unaddressed for long is unaddressed because management doesn't think it'll benefit the business..."
-   - **Vì sao đáng đọc:** Bóc tách ngộ nhận "AI xử lý việc nhàm chán thì con người tự động làm việc giá trị cao hơn" — việc tồn đọng lâu ngày thường là việc ban lãnh đạo cố tình không ưu tiên vì không tạo giá trị kinh doanh; hiểu điều này là hiểu cách doanh nghiệp ra quyết định.
+5.  **@lethanhhung7549** (Video: *"Phân tích 149,360 việc làm IT Việt Nam từ 2021-2026" - Học Lập Trình cùng Phát*, **Insight Score: 0.0**, Votes: 0)
+    > "em sinh viên. cứ ngỡ devops, cloud lương phải cao hơn backend chứ😅"
+    > **Tại sao đáng đọc**: **Sai lầm nhận định thị trường phổ biến**. Dữ liệu video Phát cho thấy lương trung vị DevOps/Cloud không tự động cao hơn Backend Java/Go senior. Nhắc nhở: **Đừng theo trend tên vị trí, hãy theo trend "bài toán phức tạp + ownership"**.
 
 ---
 
