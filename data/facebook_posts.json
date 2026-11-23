@@ -1,316 +1,257 @@
 {
- "generated_at": "2026-11-19T22:53:40.449818+00:00",
+ "generated_at": "2026-11-23T01:05:32.828521+00:00",
  "items": [
   {
-   "id": "3255669551431809",
-   "group_id": "j2team.community",
-   "group_name": "J2TEAM Community",
-   "title": "Anthropic lập kỷ lục IPO lớn nhất lịch sử, vượt qua SpaceX!",
-   "content": "# Anthropic lập kỷ lục IPO lớn nhất lịch sử, vượt qua SpaceX!\n\nHôm nay (19/11), nhà phát triển Claude chính thức chào sàn Nasdaq với mã **ANT**, định giá **83 USD/cổ phiếu**, đưa giá trị công ty lên **1,5 nghìn tỷ USD** (dự kiến mở cửa quanh 100 USD, tương đương ~1,8 nghìn tỷ USD).\n\nAnthropic huy động **81,3 tỷ USD** từ đợt IPO (có thể lên tới 93,5 tỷ USD nếu tính quyền mua thêm, và hơn **107 tỷ USD** nếu gộp thêm 26 tỷ USD phát hành riêng lẻ), vượt qua màn chào sàn kỷ lục trước đó của SpaceX hồi tháng 6/2026.\n\nHàng loạt nhân viên hiện tại và cựu nhân viên bước vào hàng ngũ triệu phú/tỷ phú USD cổ phiếu; đồng thời cú hích này giúp Nasdaq mở cửa tăng hơn 1% giữa lúc nhóm chip và AI chịu nhiều áp lực.\n\n#j2team_news",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3255669551431809/",
-   "published_at": "2026-11-19T16:17:54+00:00",
-   "reactions": 926,
-   "comments_count": 47,
+   "id": "2601168733641764",
+   "group_id": "vnjug",
+   "group_name": "Vietnam Java User Group",
+   "title": "Trong video này, mình sẽ hướng dẫn các bạn cách kết nối Claude AI (Fable 5.2) với Higgsfield MCP Server để tự động hóa quy trình t",
+   "content": "Trong video này, mình sẽ hướng dẫn các bạn cách kết nối Claude AI (Fable 5.2) với Higgsfield MCP Server để tự động hóa quy trình tạo hình ảnh chất lượng cao trực tiếp cho các dự án.\n\nNếu bạn đang tìm cách tận dụng sức mạnh của Model Context Protocol (MCP) kết hợp với các mô hình tạo ảnh hiện đại để tối ưu hóa workflow lập trình và phát triển sản phẩm, thì đây chính là giải pháp dành cho bạn!\n\nCùng đón xem trên kênh của Devteria nhé. Link bên dưới comment.",
+   "url": "https://facebook.com/groups/vnjug/permalink/2601168733641764/",
+   "published_at": "2026-11-22T11:59:38+00:00",
+   "reactions": 1,
+   "comments_count": 1,
    "top_comments": []
   },
   {
-   "id": "3255551908110240",
+   "id": "3261975280801236",
    "group_id": "j2team.community",
    "group_name": "J2TEAM Community",
-   "title": "Bản đồ chính thức của GTA 6.",
-   "content": "# Bản đồ chính thức của GTA 6.\n\n#j2team_relax",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3255551908110240/",
-   "published_at": "2026-11-19T15:02:58+00:00",
-   "reactions": 1136,
-   "comments_count": 40,
+   "title": "Thấy mấy cuốn sách xưa bìa đẹp font lạ nên đốt token để làm bộ font này. Còn liên tục cập nhật. Miễn phí. Anh/chị/em thiết kế nào ",
+   "content": "Thấy mấy cuốn sách xưa bìa đẹp font lạ nên đốt token để làm bộ font này. Còn liên tục cập nhật. Miễn phí. Anh/chị/em thiết kế nào cần thì cứ lấy nhé. Ai sưu tầm được tạp chí hay bảng hiệu nào có chữ đẹp muốn làm font thì nhắn mình nhé. \n\nLink tải trong comment.\n\n#j2team_share",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3261975280801236/",
+   "published_at": "2026-11-22T15:53:04+00:00",
+   "reactions": 110,
+   "comments_count": 9,
    "top_comments": []
   },
   {
-   "id": "3255192298146201",
+   "id": "3261743587491072",
    "group_id": "j2team.community",
    "group_name": "J2TEAM Community",
-   "title": "Không cần bỏ ra hơn 40$ mà có độ phân giải Retina sắc nét cho màn 2K/4K và tắt hẳn 1 màn hình bất kỳ (BlackOut) như BetterDisplay ",
-   "content": "Không cần bỏ ra hơn 40$ mà có độ phân giải Retina sắc nét cho màn 2K/4K và tắt hẳn 1 màn hình bất kỳ (BlackOut) như BetterDisplay Pro và Lunar Pro, nên mình tự viết luôn S-Display để dùng và chia sẻ lại cho anh em.\n\nGọn nhẹ trên menu bar, làm đúng 2 việc:\n + Flexible HiDPI: Kéo chỉnh kích thước chữ/UI nét như Retina trên màn 2K & 4K (giống Flexible Scaling của BetterDisplay).\n\n+ BlackOut: Tắt hẳn màn hình phụ bằng 1 click hoặc phím tắt, ngắt tín hiệu thật chứ không chỉ kéo tối màn hình (giống BlackOut của Lunar / Disconnect của BetterDisplay).\n\nMiễn phí, mã nguồn mở, bảo mật và quyền riêng tư bảo đảm, không cần kết nối mạng hay đăng nhập gì cả. Hỗ trợ Mac Apple Silicon (M1 trở lên), macOS 14+.\n\nAnh em nào đang xài Mac và dùng 2 màn hình thì tham khảo nhé👇\n#j2team_share",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3255192298146201/",
-   "published_at": "2026-11-19T11:00:59+00:00",
-   "reactions": 302,
+   "title": "Mình xin chia sẻ cho mọi người trang web mã nguồn mở tra cứu thông tin của toàn bộ tập phim của anime **Thám Tử Lừng Danh Conan** ",
+   "content": "Mình xin chia sẻ cho mọi người trang web mã nguồn mở tra cứu thông tin của toàn bộ tập phim của anime **Thám Tử Lừng Danh Conan** do mình xây dựng: **Conan Guide**\n\nNhiều bạn đã ngừng theo dõi truyện từ lâu, muốn cày lại từ đầu mà chỉ muốn xem tập trung vào plot chính, nhưng khổ nỗi hiện tại Conan đã có tới hơn 1200 tập nên các bạn sẽ gặp khó khăn khi tìm kiếm những tập muốn xem. Trang web này sẽ giúp bạn lọc nhanh theo đúng nhu cầu:\n* Phân loại Canon / Filler rõ ràng để dễ dàng bỏ qua các tập không phải chuyển thể từ manga.\n* Lọc theo Plot (Cốt truyện): Chọn xem riêng các tập thuộc cốt truyện chính, tập Tổ chức Áo Đen xuất hiện, hoặc theo tuyến tình cảm của từng cặp đôi.\n* Tìm tập phim theo nhân vật: Hỗ trợ tìm cả tên chính thức lẫn biệt danh (ví dụ: Kid, Sherry, Amuro, Bourbon, Đội thám tử nhí...).\n* Tra cứu đa dạng: Hỗ trợ đối chiếu số tập Nhật Bản / Việt Nam, lọc theo Arc, Số Chap và Số Volume manga.\n* Tích hợp sẵn nút bấm xem trực tiếp qua kênh **YouTube bản quyền của POPS Anime** ngay cạnh tên tập.\n\nTrải nghiệm tại: [https://conanguide.pages.dev/](https://conanguide.pages.dev/)\n\nMã nguồn: [https://github.com/Idealtic/Conan-guide](https://github.com/Idealtic/Conan-guide)\n\nNếu mới dùng lần đầu, bạn có thể xem qua mục Hướng dẫn trên thanh menu để nắm nhanh các cách lọc nhé.\n\nTrong quá trình tổng hợp dữ liệu lớn hơn 1200 tập phim, chắc chắn không thể tránh khỏi có lúc sai sót về thông tin hay cách phân loại, nên mình rất mong nhận được góp ý từ các fan Conan nói riêng và tất cả mọi người nói chung để trang web ngày càng hoàn thiện và chính xác hơn.\n\n#j2team_share #j2team_relax",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3261743587491072/",
+   "published_at": "2026-11-22T13:39:56+00:00",
+   "reactions": 276,
+   "comments_count": 22,
+   "top_comments": [
+    {
+     "author": "Facebook user",
+     "text": "Úi truyện này chưa end hở các bác",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Đỉnh gì đỉnh dữ :')",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Toẹt vời 👏, mình đang xem conan kb tới tập nào rồi kk",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Quá tuyệt luôn em",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "concept hay",
+     "votes": 0
+    }
+   ]
+  },
+  {
+   "id": "3261661087499322",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "Robot phối hợp làm việc theo đội, phân chia nhiệm vụ rõ ràng, hỗ trợ nhau hết mình. Đặc biệt, không có chuyện ghen tị, nói xấu sau",
+   "content": "Robot phối hợp làm việc theo đội, phân chia nhiệm vụ rõ ràng, hỗ trợ nhau hết mình. Đặc biệt, không có chuyện ghen tị, nói xấu sau lưng hay tranh công. Đúng là đội ngũ trong mơ của mọi người sếp \n\nNguồn Video training của:Heave-Ho - University of Southern California\n\n#J2team",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3261661087499322/",
+   "published_at": "2026-11-22T12:51:03+00:00",
+   "reactions": 14,
+   "comments_count": 3,
+   "top_comments": []
+  },
+  {
+   "id": "3256350081363756",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "CẢNH BÁO PHISHING",
+   "content": "CẢNH BÁO PHISHING\nSáng nay em vừa nhận được email cảnh báo tài khoản Claude bị đăng nhập từ thiết bị lạ ở Bắc Kinh, Trung Quốc.\n\nEmail được thiết kế khá giống Claude chính chủ, kèm nút \"Secure your account\" để dụ người dùng đăng nhập.\n\nĐiểm đáng chú ý:\n\n- ✅ Tên miền thật: \"claude.ai\"\n\n- ❌ Tên miền giả: \"claucle.ai\" (thay chữ d bằng cl, nhìn lướt qua rất dễ nhầm).\n\n- 📩 Email gửi từ \"noreply@fcmb.com\" nhưng Reply-To lại là \"no-reply@email.claude.com\".\n\n- ⚠️ Kiểm tra header thấy SPF, DKIM, DMARC đều PASS, nhưng chỉ xác thực tên miền \"fcmb.com\", không phải Anthropic.\n\nAnh em dùng Claude, đặc biệt là Claude Code, nhớ kiểm tra kỹ tên miền trước khi đăng nhập nhé!\n\n#j2team_report",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3256350081363756/",
+   "published_at": "2026-11-20T01:17:24+00:00",
+   "reactions": 830,
    "comments_count": 38,
    "top_comments": []
   },
   {
-   "id": "3254888541509910",
+   "id": "3261561610842603",
    "group_id": "j2team.community",
    "group_name": "J2TEAM Community",
-   "title": "j2team_share",
-   "content": "#j2team_share\n\nBUG NVIDIA DRIVER bản mới trên windows\n\nĐang yên đang lành, hôm nay ngựa ngựa thế nào lại đi update driver card NVIDIA lên bản mới (621.24). Update xong thấy máy cứ lag lag.\n\nTưởng máy dở chứng, khởi động lại. Vẫn thế. Mở task manager lên là thấy luôn là ông NVIDIA Container này đang ghi đĩa liên tục, lại còn đang xài SSD nữa.\n\n Lượn rét đít thì thấy có mấy ông cũng bị và than phiền. Mà hình như không phải ai cũng bị, bác nào đang cài driver mới nhất thì check thử cho an tâm nhé.\n\nGiải pháp tạm thời là disable service đi, hoặc rollback bản gần nhất là hết bị.",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3254888541509910/",
-   "published_at": "2026-11-19T07:01:21+00:00",
-   "reactions": 213,
-   "comments_count": 60,
+   "title": "Google Wallet đã có mặt trên iPhone",
+   "content": "Google Wallet đã có mặt trên iPhone\nTheo Google, dự án Google Wallet to iOS sẽ được hỗ trợ tại Mỹ, giúp cho việc tiếp cận với người dùng iPhone trở nên dễ dàng hơn. Nó sẽ có những chức năng sau:\n\n✅ Thẻ thanh toán, thẻ thành viên\n\n✅ Theo dõi chuyến bay\n\n✅ Theo dõi đơn hàng\n\n✅ Chụp ảnh để thêm thẻ\n\nNhưng ❌ không hỗ trợ chạm thanh toán\n\nSẽ hoạt động từ iOS 17 trở lên và vùng Mỹ\n\n#j2team_share",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3261561610842603/",
+   "published_at": "2026-11-22T11:50:23+00:00",
+   "reactions": 249,
+   "comments_count": 42,
    "top_comments": []
   },
   {
-   "id": "3255128358152595",
+   "id": "3261379440860820",
    "group_id": "j2team.community",
    "group_name": "J2TEAM Community",
-   "title": "LÂU LẮM KHÔNG SHARE GÌ** mà chưa ra đảo :3",
-   "content": "**LÂU LẮM KHÔNG SHARE GÌ** mà chưa ra đảo :3\nNhân ngày quốc tế đàn ông, mình chia sẻ bộ template mình dùng để làm việc với Claude Code cho gọn và an toàn hơn. Đặc biệt khi dùng template này thì mình thấy khi code lâu rất ít khi quên context.\n\nVấn đề mình gặp khi dùng Claude Code lâu: AI viết code nhanh nhưng hay \"báo xong\" khi chưa chạy test, thỉnh thoảng tự format lại cả repo, sửa nhầm file cấu hình, hoặc chạy những lệnh mình không muốn (force push, xóa thư mục...). Viết dặn dò vào prompt thì nó lúc nhớ lúc quên.\n\nNên mình gom lại thành một template, theo các thói quen Boris Cherny (người làm Claude Code) chia sẻ: lập plan trước khi code, cho AI cách tự kiểm tra công việc, và biến rule thành công cụ chứ không chỉ ghi chữ.\n\n**Template có gì:**\n\n- Quy trình qua slash command: /task (lập plan, chờ duyệt, làm từng bước, ghi bằng chứng), /resume (làm tiếp task dở), /learn (Claude làm sai thì ghi thành rule vào CLAUDE.md), /onboard (áp cho project đã có code).\n\n- Hook chặn lệnh nguy hiểm, chạy tự động trước mỗi lệnh: rm -rf ra ngoài project, git push --force, push thẳng main, git reset --hard, đọc file .env, dotnet ef database update, cargo publish, make install... Cũng chặn sửa lockfile, thư mục build, code vendored.\n\n- Một script check.py định nghĩa thế nào là \"xong\": lint + format + build + test. Tự nhận diện Python, .NET, Rust, C++ (CMake). Claude chỉ được báo xong khi script này pass.\n\n**- Project cũ**: có chế độ chỉ kiểm tra file vừa sửa, nên code cũ chưa chuẩn format không làm kẹt Claude, và nó không tự đi format lại cả repo.\n\n- Chạy được trên Windows lẫn Linux, toàn bộ script viết bằng Python thư viện chuẩn, không cần bash hay jq.\n\n**Cách dùng:**\n\npython new_project.py D:\\code\\du-an-moi --stack python\n\npython new_project.py --apply .   (project đang có)\n\npython new_project.py --update .  (nâng cấp harness cũ)\n\n> hook chặn được sai lầm vô ý, không chặn được lệnh cố tình né. Vẫn phải đọc plan và review diff trước khi commit.\n\nAi đang dùng Claude Code cho C#, Rust hay C++ thì test giúp mình, gặp trường hợp hook chặn nhầm hoặc bỏ sót thì comment để mình bổ sung nhé.\n\n**Link Github**: https:// github. com/xfree123/claude-code-template. git\nXoá khoảng trống trong link khi copy.\n#j2team_share #j2team_tips #j2team_ai",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3255128358152595/",
-   "published_at": "2026-11-19T10:10:35+00:00",
-   "reactions": 335,
-   "comments_count": 10,
+   "title": "TESLA FSD V15 BẮT ĐẦU TRIỂN KHAI – NÂNG CẤP TOÀN DIỆN KHẢ NĂNG LÁI XE TỰ ĐỘNG!",
+   "content": "**TESLA FSD V15 BẮT ĐẦU TRIỂN KHAI – NÂNG CẤP TOÀN DIỆN KHẢ NĂNG LÁI XE TỰ ĐỘNG!**\n\nTesla chính thức bắt đầu triển khai FSD v15 với hàng loạt cải tiến đáng chú ý:\n* **An toàn:** Cải thiện khả năng xử lý các tình huống an toàn quan trọng lên tới 25 lần theo Tesla.\n* **Reality View:** Trực quan hóa hành trình, giúp người lái quan sát những gì FSD dự định thực hiện.\n* **Điều hướng thông minh:** Học end-to-end từ sở thích lựa chọn tuyến đường của đội xe.\n* **Nhận diện tốt hơn:** Biển báo, động vật, ổ gà, vật cản và vùng ngập nước.\n* **Lái xe tự nhiên hơn:** Điều chỉnh tốc độ phù hợp tại khu vực trường học, thời tiết xấu và trước camera tốc độ.\n* **Chế độ giá đỡ xe đạp:** Hỗ trợ sử dụng FSD khi xe gắn thêm giá đỡ xe đạp hoặc phụ kiện kéo tương tự.\n\n**Video dưới đây ghi lại Tesla FSD v15 với Reality View khi di chuyển giữa khu vực trung tâm thành phố đông đúc.**\n\nNguồn: Nic Cruz Patane\n\n#j2team_community",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3261379440860820/",
+   "published_at": "2026-11-22T09:55:46+00:00",
+   "reactions": 476,
+   "comments_count": 61,
    "top_comments": [
     {
      "author": "Facebook user",
-     "text": "Thaks bạn",
+     "text": "trong xe chắc gắn 1con 5090 r",
      "votes": 0
     },
     {
      "author": "Facebook user",
-     "text": "Hoặc bạn có thể tham khảo thêm ecc, superpowers. Mình nhận thấy những gì bạn đang gặp thì 2 repo này đã giải quyết triệt để và thêm rất nhiều thứ hay ho khác. Happy coding!",
+     "text": "Công nhận đỉnh thật khớp 90% con đường thật. Chỉ có chưa nhận rõ chữ với hình ảnh chắc vài năm nữa là quét sắc nét hết mọi thứ luôn",
      "votes": 0
     },
     {
      "author": "Facebook user",
-     "text": "xưa cũng như này đc tầm 1 tháng thì prompt xong nó tự hiểu :D",
+     "text": "Sau 6 năm chạy FSD càng thấy update sau chạy kém thông minh hơn update cũ. K còn tuỷ chỉnh tốc độ nữa và toàn tự chọn lane ngoài đi mặc dù mình cố chọn lane trong để đi chill.",
      "votes": 0
     },
     {
      "author": "Facebook user",
-     "text": "😢 lần đầu mình thấy có người dùng Claude theme sáng",
+     "text": "Má đã ngồi im r còn cứ lướt cam góc chuyển động như lúc gta v dc lúc chớ mẹ ra xe",
      "votes": 0
     },
     {
      "author": "Facebook user",
-     "text": "Những vấn đề chủ thớt nêu đang khá cũ. Claude bây giờ đủ thông minh để biết nó đang làm gì rồi.\nBây giờ là thời đại của prompt hướng dẫn, không phải prompt quy tắc.\nVà skill Superpower là đủ cho toàn bộ mớ thớt đang xây dựng rồi",
+     "text": "Chip trong xe này ngang máy chủ hàng trăm triệu chứ ko vừa",
      "votes": 0
     }
    ]
   },
   {
-   "id": "3254966731502091",
+   "id": "3257508201247944",
    "group_id": "j2team.community",
    "group_name": "J2TEAM Community",
-   "title": "Google vừa mở tính năng tạo Hồ sơ trên Tìm kiếm (Google Profile) cho anh em làm sáng tạo nội dung!",
-   "content": "# **Google vừa mở tính năng tạo Hồ sơ trên Tìm kiếm (Google Profile) cho anh em làm sáng tạo nội dung!**\n\nThay vì phải chờ Google tự động tạo Knowledge Panel như trước, giờ đây anh em có thể chủ động đăng ký và xác minh chính chủ để hiển thị hồ sơ cá nhân trực tiếp trên kết quả tìm kiếm Google.\n\n• **Điều kiện xác minh:** Chỉ cần sở hữu ít nhất một kênh mạng xã hội (YouTube, Instagram, TikTok, X...) đạt mốc tối thiểu 10.000 người theo dõi hoặc đăng ký là đủ điều kiện. \n\n• **Gắn link & Gom traffic:** Cho phép chèn trực tiếp các đường link dự án cá nhân, website sản phẩm, hoặc portfolio ngay trên trang hồ sơ (như một dạng bio link chính chủ từ Google). \n\n• **Đồng bộ nền tảng:** Tự động hiển thị tổng lượng follower từ các mạng xã hội đã liên kết và cập nhật các bài viết, video mới nhất của bạn ngay trên Search.\n\nAnh em creator, dev hay builder có kênh đạt mốc 10k follow thì vào claim ngay để làm đẹp thương hiệu cá nhân và kéo thêm traffic tự nhiên nhé\n\n#j2team_share",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3254966731502091/",
-   "published_at": "2026-11-19T08:03:39+00:00",
-   "reactions": 12,
-   "comments_count": 2,
-   "top_comments": []
-  },
-  {
-   "id": "3254862111512553",
-   "group_id": "j2team.community",
-   "group_name": "J2TEAM Community",
-   "title": "Sau app hiển thị thông số pin các thiết bị chuột, phím, tai nghe trên thanh taskbar Windows thì các pháp sư lại tiếp tục cook ra c",
-   "content": "Sau app hiển thị thông số pin các thiết bị chuột, phím, tai nghe trên thanh taskbar Windows thì các pháp sư lại tiếp tục cook ra con app khác hiển thị mức sử dụng CPU, GPU, RAM, VRAM, nhiệt độ CPU, GPU và SSD trên thanh taskbar, đỡ phải bật Task manager. App viết bằng C, chạy siêu nhẹ, file .exe có 113KB 🫨\nMn có thể tải app về qua link ở comment.\n#j2team_community",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3254862111512553/",
-   "published_at": "2026-11-19T06:38:59+00:00",
-   "reactions": 495,
-   "comments_count": 107,
-   "top_comments": []
-  },
-  {
-   "id": "3254515941547170",
-   "group_id": "j2team.community",
-   "group_name": "J2TEAM Community",
-   "title": "j2team_share",
-   "content": "#j2team_share \nSau khi cắn đủ tiền mua domain từ mấy bạn nước ngoài rồi thì mình free cái mình đẫ đăng cách đây 6 tháng thôi.\nMọi người trải nghiệm và cho xin đánh giá với nhé hehe\nhttps://nashubs.duconmang.io.vn\nP.s: hiện AppStore đã được duyệt, còn PlayStore thì mình để apk trên Github nhé  :)",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3254515941547170/",
-   "published_at": "2026-11-19T00:59:25+00:00",
-   "reactions": 168,
-   "comments_count": 25,
-   "top_comments": []
-  },
-  {
-   "id": "3254700624862035",
-   "group_id": "j2team.community",
-   "group_name": "J2TEAM Community",
-   "title": "🤖 Robot hình người đang học cách làm việc nhà!",
-   "content": "🤖 Robot hình người đang học cách làm việc nhà!\nTau Robotics kết hợp AI và điều khiển từ xa để robot thực hiện những công việc đời thường như đổ rác.\n\nThách thức lớn nhất: Robot có thể tự hoạt động bao lâu mà không cần con người hỗ trợ?\n\nBạn có tin tưởng robot làm việc nhà?\n\n#J2team",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3254700624862035/",
-   "published_at": "2026-11-19T04:17:31+00:00",
-   "reactions": 105,
-   "comments_count": 25,
-   "top_comments": []
-  },
-  {
-   "id": "3254606778204753",
-   "group_id": "j2team.community",
-   "group_name": "J2TEAM Community",
-   "title": "Cuối cùng thì đã có GTA 6 🤣",
-   "content": "# Cuối cùng thì đã có GTA 6 🤣\n\n#j2team_relax // ảnh: 9GAG",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3254606778204753/",
-   "published_at": "2026-11-19T02:56:52+00:00",
-   "reactions": 728,
-   "comments_count": 37,
-   "top_comments": []
-  },
-  {
-   "id": "3254565451542219",
-   "group_id": "j2team.community",
-   "group_name": "J2TEAM Community",
-   "title": "Cùng một mô hình AI, chi phí lập trình có thể lệch tới 5 lần tùy harness",
-   "content": "# Cùng một mô hình AI, chi phí lập trình có thể lệch tới 5 lần tùy harness\n\nNghiên cứu FrontierHarness Eval v1.1 của Runta và Baseten (thử nghiệm 22 harness trên 5 mô hình mở, ngốn 83 tỉ token qua hơn 27.000 lượt chạy) vừa chỉ ra những sự thật bất ngờ về chi phí chạy AI coding agent:\n\n* **Harness quyết định biên độ giá:** Mô hình quyết định 92,8% chi phí, nhưng trên cùng một mô hình, harness đắt nhất vẫn tốn gấp 1,8 đến 5 lần harness rẻ nhất. Với DeepSeek V4.1 Flash, Cline CLI tốn gấp 5 lần OpenCode v1 dù tỉ lệ làm xong việc chỉ nhỉnh hơn đôi chút.\n\n* **Thứ hạng đảo lộn khi đổi mô hình**: Trung vị xê dịch tới 11 bậc mỗi khi đổi mô hình. Codex CLI rẻ nhất khi chạy GLM-5.3 nhưng tụt xuống hạng 16/22 với Kimi-K3; DeepSeek Harness Creator đứng đầu với Muse nhưng rớt xuống hạng 21 với GLM-5.3 Flash.\n\n* **Chi nhiều tiền hơn không đồng nghĩa với hiệu quả cao hơn**: Những harness có tỉ lệ hoàn thành cao nhất chỉ xếp hạng 5 đến 20 về chi phí. Với 4/5 mô hình, harness đắt nhất còn làm xong ít tác vụ hơn lựa chọn rẻ nhất.\n\n* **Đốt tiền vào các lượt chạy hỏng**: 52,7% chi phí suy luận rơi vào các lượt chạy thất bại và 11,8% do hết giờ. Chỉ 35,5% ngân sách thực sự đem lại kết quả thành công.\n\n* **Thủ phạm đẩy chi phí**: Không phải kích thước prompt ban đầu hay số lượng công cụ, mà chính là \"số bước tác nhân\" (agent steps). Mỗi bước phụ đều phải gửi lại toàn bộ ngữ cảnh khiến chi phí phình to (Mini-SWE-agent prompt mở đầu chỉ 882 token nhưng ngốn tới 38 bước và xếp hạng 17/22).\n\n* **Thiết kế tối ưu**: Top 5 harness kinh tế nhất dồn 61% đến 93% lượt gọi công cụ vào lệnh shell trực tiếp, hầu như không dùng subagent hay tóm tắt ngữ cảnh phức tạp.\n\nLời khuyên chốt hạ từ tác giả Shilin Zhu: *\"Hãy cắt số bước, đừng chỉ cắt token trong prompt.\"*\n\nNguồn: [https://runta.com/blog/introducing-frontierharness-eval-v1-1/](https://runta.com/blog/introducing-frontierharness-eval-v1-1/)",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3254565451542219/",
-   "published_at": "2026-11-19T02:04:48+00:00",
-   "reactions": 256,
-   "comments_count": 30,
-   "top_comments": [
-    {
-     "author": "Facebook user",
-     "text": "Claude code cli + codex cli là xong chỉ 2 con đó là đủ vì mình kh dùng model tàu",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "gọi deepseek 4.1 flash từ opencode v2, grokbuild và cursor thấy rõ con cursor burn token khủng khiếp và khiến cost per task same same với xài grok 4.7. trong khi đấy opencode v2 thực sự khá tiết kiệm cho ds4.1 (ko biết là đã tốt nhất chưa)",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "Antigravity được thiết kế kỹ phết mà lại bị mang tiếng xấu. Điểm yếu chắc là cache tệ, search tool như đb ko support native multi-agent, với độ sâu customization kém thôi. Chứ experience dạo này cực tốt.\n\nQuả brain lưu memory chuẩn xác vl, gần như ko cần refer context mấy. Có mấy cái internal plugin sát với workflow. Console response cực gọn, dễ inspect. Ko bao giờ thấy chơi A/B testing hay sụt performance.\n\nNói chung là cực kỳ tốt với beginner hoặc dân business/research.",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "Zcode là ngon, điều khiển mạnh luôn",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "từ blog của langchain về harness engineering, t bt sự thật là model tiến hoá theo harness (gpt-codex, gemini-antigravity, ...), vì vậy model hoạt động tốt nhất khi đi kèm với harness nhà trồng (có vài trg hợp như thg qwen 3.8 train bằng opus distill nên claude code rất tốt đối với nó) check terminal bench 4.0 là rõ nhất",
-     "votes": 0
-    }
-   ]
-  },
-  {
-   "id": "3254404718224959",
-   "group_id": "j2team.community",
-   "group_name": "J2TEAM Community",
-   "title": "Ái chà chà!",
-   "content": "Ái chà chà!\nTừ giờ không xác nhận kết bạn là tự mất lời mời nhé, đừng có chảnh 🐕 😆\n\n#j2team #relax",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3254404718224959/",
-   "published_at": "2026-11-18T22:14:09+00:00",
-   "reactions": 594,
-   "comments_count": 57,
-   "top_comments": []
-  },
-  {
-   "id": "3254520771546687",
-   "group_id": "j2team.community",
-   "group_name": "J2TEAM Community",
-   "title": "📣 ĐIỂM TIN BUỔI SÁNG THỨ NĂM (19/11/2026)",
-   "content": "📣 ĐIỂM TIN BUỔI SÁNG THỨ NĂM (19/11/2026)\n\nChào buổi sáng cả nhà J2TEAM! Chúc mọi người một ngày mới làm việc và học tập tràn đầy năng lượng. Dưới đây là những tin tức công nghệ và an ninh mạng nổi bật nhất trên thế giới sáng nay để mọi người cùng cập nhật nhé:\n\n1️⃣ Phát hiện lỗ hổng 10 năm tuổi trên NGINX HTTP/2 cho phép hacker thực thi mã độc không cần xác thực\n\n2️⃣ Cha đẻ AI Claude – Anthropic – rục rịch niêm yết sàn chứng khoán với định giá hơn 1,4 nghìn tỷ USD\n\n3️⃣ Windows Server 2028 chấp nhận đánh đổi tương thích ngược để siết chặt bảo mật mặc định\n\n4️⃣ Google Wallet chính thức cập bến iPhone nhưng bị Apple khóa tính năng thanh toán chạm\n\n5️⃣ Kỹ thuật tấn công chip flash mới vượt rào khóa TPM, bẻ khóa PIN Windows Hello và BitLocker trong vài ngày\n\n6️⃣ Cơn sốt GTA 6 bùng nổ, dân văn phòng phương Tây đồng loạt xin nghỉ phép tạo nên làn sóng \"vắng bóng công sở\"\n\n7️⃣ Ukraine dùng drone chuyển tiếp tín hiệu để vượt rào giới hạn Starlink trong vụ tấn công cầu Kerch\n\n8️⃣ Google đổi tên tác tử AI Spark thành Tasks, mở miễn phí cho người dùng trải nghiệm tự động hóa công việc\n\n9️⃣ Trải nghiệm sớm Ubuntu 27.04: Bước nhảy vọt về hiệu năng đồ họa và tối ưu hệ thống trước ngày ra mắt\n\n🔟 Tin nhắn nội bộ hé lộ nhân viên Meta hoang mang vì trợ lý AI Muse xâm phạm quyền riêng tư quá mức\n\n1️⃣1️⃣ Chính quyền Mỹ xúc tiến xây dựng trung tâm dữ liệu và chip AI chiến lược tại Philippines\n\n1️⃣2️⃣ Bản cập nhật iOS 27.3 mang tới 5 tính năng theo dõi sức khỏe tích hợp AI mới trên Apple Health\n\n#j2team_news #diemtinsang #news",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3254520771546687/",
-   "published_at": "2026-11-19T01:05:42+00:00",
-   "reactions": 156,
-   "comments_count": 5,
-   "top_comments": [
-    {
-     "author": "Facebook user",
-     "text": "Toàn kêu AI dò😂",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "Windows bỏ tương thích ngược cơ á 🗿🗿🗿",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "Ad ơi có thể cho chữ to lên được không ạ 🥲",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "Cho mình hỏi lỗ hỏng với lỗi dạo này xuất hiện nhiều, hay lâu ni vẫn thế mà ít hiện lên truyền thông tin tức vậy ạ ?",
-     "votes": 0
-    }
-   ]
-  },
-  {
-   "id": "1510513554318487",
-   "group_id": "vgu.tech.alumni",
-   "group_name": "VGU Tech Alumni",
-   "title": "[ Khi ai cũng viết code nhanh nhờ AI, anh em kỹ sư cần đứng ở đâu? ]",
-   "content": "# **[ Khi ai cũng viết code nhanh nhờ AI, anh em kỹ sư cần đứng ở đâu? ]**\n\nNguồn: Video \"Ai Cũng Là 10x Engineer | Tuyển Dev Làm Gì? | Quân IT\" - kênh Quân IT\n\nTL;DR: Một team nhỏ 6–7 người dùng AI đúng cách có thể vận hành 5–6 project cùng lúc và tăng productivity lên khoảng 30–40%. Khi AI agent (tác nhân AI) lo được phần lớn chuyện viết code, tạo Pull Request (PR) và chạy test, bài toán cốt lõi của anh em kỹ thuật chuyển sang nâng mức tin cậy từ low trust lên high trust, giữ chặt System Design (thiết kế hệ thống), và chuyển dịch từ *know the how* (biết cách làm) sang *know the what* (biết chọn đúng việc nên làm cho sản phẩm).\n\n============================\n\nMình vừa nghe lại chia sẻ của Quân IT về cách tổ chức team kỹ thuật trong thời điểm AI đang làm thay đổi nhịp làm việc của ngành. Điểm thực tế nhất là giờ gần như không còn tranh cãi chuyện có dùng AI hay không nữa, vì làm thuần thủ công chậm hơn hẳn khi nhiều bên chỉ mất một hai tuần là ra được bản demo. Cái khó nằm ở chỗ làm sao tăng tốc mà không tự tạo ra một núi nợ kỹ thuật khó gỡ.\n\nTrước đây, mấy công cụ AI đời đầu hoặc kiểu vibe coding còn để lại khá nhiều slop (mã kém chất lượng, thiếu chuẩn chỉnh), nhưng tới giai đoạn có những công cụ mạnh hơn như Claude Code thì việc gõ code và mở PR đã nhanh và gọn hơn rất nhiều. Thực ra slop không phải tới thời AI mới có, ngày xưa làm team đông mà commit vội hoặc ôm cục code lớn mới đẩy một lần cũng đầy lỗi tương tự. Vấn đề ở chỗ nếu dùng AI mà cứ bấm đồng ý liên tục, lười đọc luồng chạy thực tế, hệ thống sẽ dễ rơi vào vòng lặp lỗi nối tiếp lỗi, sửa chỗ này hỏng chỗ kia, lệch khỏi root cause (nguyên nhân gốc rễ) và đốt token vô ích.\n\nĐể kéo từ low trust lên high trust, những nguyên tắc kỹ thuật cơ bản vẫn là xương sống. Quy trình trên GitHub với feature branch tách biệt khỏi main branch, xử lý conflict trước khi merge, giữ branch protection và CI/CD (tích hợp và triển khai liên tục) rõ ràng giúp giảm rủi ro khi release. Người trực tiếp merge để deploy là người chịu trách nhiệm cho bản triển khai đó, không thể đổ lỗi cho AI hay công cụ.\n\nSang phần System Design và kiểm thử, nếu không nắm rõ kiến trúc tổng thể, cách chia thành phần, thiết kế database, queue, bot hay job ID thì hệ thống chạy vài năm sẽ rất dễ rơi vào cảnh gặp sự cố mà không ai lần ra luồng xử lý. Khi giao việc cho AI agent, ngoài unit test hay end-to-end test thông thường, cần có môi trường runtime rõ ràng cùng các công cụ như CLI hay MCP (Model Context Protocol - giao thức kết nối ngữ cảnh cho mô hình AI) để agent tạo dữ liệu giả, chạy kiểm tra và xuất ra bằng chứng cụ thể như log, screenshot hoặc video.\n\n## Phần mình thấy đáng suy ngẫm nhất ở video này là câu hỏi: khi AI làm được nhiều việc rồi thì kỹ sư làm gì và tuyển dev để làm gì?\n\nCó những việc AI chưa thay thế được. Đầu tiên là đọc code và bắt đúng root cause. Có bug nằm ở logic đè dữ liệu hoặc luồng xử lý phức tạp mà hỏi AI qua lại mãi vẫn không trúng, lúc đó buộc phải tự đọc code mới xử lý dứt điểm một gốc để giải quyết luôn cả loạt issue ngọn.\n\nTiếp theo là giao tiếp, làm việc trực tiếp với người với người và dám pushback (phản biện có căn cứ). Khi nhiều người cùng dùng AI để phân tích hoặc tìm lỗi, ai cũng có thể đưa ra lập luận qua lại rất dài. Nhưng giữa \"đúng về mặt kỹ thuật/lý thuyết\" và \"phù hợp với sản phẩm ở thời điểm hiện tại\" là hai chuyện khác nhau. Ví dụ như chuyện tách relayer (thành phần trung gian xử lý giao dịch và phí): nếu tách để tránh single point of failure (điểm lỗi đơn lẻ) thì nghe hợp lý trên lý thuyết, nhưng khi sản phẩm mới đang test và lượng user thực chưa lớn, việc tách ra sẽ làm đổi data flow, phải sửa nhiều tầng ứng dụng và tốn thêm chi phí hạ tầng. Chưa kể tách một queue hay worker thiếu tính toán cũng có thể làm ảnh hưởng dây chuyền.\n\nNgày xưa kỹ sư thường thể hiện giá trị qua *know the how* — bóc tách edge case (trường hợp biên) và triển khai chi tiết. Bây giờ khi *how* đã dễ tiếp cận hơn nhiều, giá trị của anh em nằm nhiều hơn ở *know the what*: hiểu sản phẩm đủ sâu để biết cái nào nên làm ngay, cái nào chưa nên làm, và giải thích rõ ràng để team cùng thống nhất hướng đi.\n\n-------------------------\n\nMọi người trong team hiện đang giao cho AI agent làm tới mức nào rồi, và khi gặp đề xuất tối ưu nghe thì chuẩn lý thuyết nhưng chưa chắc hợp giai đoạn sản phẩm, anh em thường trao đổi và phản biện ra sao?\n\n#ShareThisPost #sharing #AIAgent #code #review #softwaredevelopment",
-   "url": "https://facebook.com/groups/vgu.tech.alumni/permalink/1510513554318487/",
-   "published_at": "2026-11-19T16:02:28+00:00",
-   "reactions": 19,
-   "comments_count": 3,
-   "top_comments": [
-    {
-     "author": "Facebook user",
-     "text": "anh Quân này chia sẻ, minh nghe rất cuốn đó admin 😄",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "Full video cho mọi người ai muốn xem chi tiết hơn\nhttps://www.youtube.com/watch?v=tFfRcolHH9I",
-     "votes": 0
-    }
-   ]
-  },
-  {
-   "id": "1510501904319652",
-   "group_id": "vgu.tech.alumni",
-   "group_name": "VGU Tech Alumni",
-   "title": "[ Khi nâng cấp dung lượng mạng lại làm sập cả hệ thống 36 tiếng: Câu chuyện từ sự cố Exchange Online và FAA ]",
-   "content": "# **[ Khi nâng cấp dung lượng mạng lại làm sập cả hệ thống 36 tiếng: Câu chuyện từ sự cố Exchange Online và FAA ]**\n\nNguồn: Video \"Why Microsoft couldn’t fix its own servers for 36 hours...\" - Kênh Fireship\n\nTL;DR: Một đợt nâng cấp dung lượng mạng (network capacity upgrade) vô tình đánh thức một latent bug ở khâu thiết lập kết nối bảo mật, kéo Exchange Online sập gần 36 tiếng, gây thiệt hại ước tính khoảng 7 tỷ USD năng suất toàn cầu và kéo theo hàng loạt dịch vụ Microsoft 365 khác. Vài giờ sau, FAA tại Mỹ cũng phải dừng toàn bộ chuyến bay đi trong khoảng 5 tiếng vì sự cố mạng liên quan đến router, dù hai sự cố không liên quan trực tiếp đến nhau nhưng đều cho thấy một thay đổi hạ tầng nhỏ cũng đủ làm nghẽn cả hệ thống phụ thuộc.\n\n=============================\n\nChắc anh chị em làm vận hành hệ thống lớn đều từng rùng mình khi nghe tin một thay đổi hạ tầng tưởng chừng vô hại lại biến thành cơn ác mộng kéo dài cả ngày trời. Sự cố bắt đầu vào khoảng 11h17 sáng giờ bờ Đông nước Mỹ hôm thứ Năm tuần trước, khi các hộp thư Exchange Online ngừng mở và lan sang hàng loạt dịch vụ khác như Copilot, SharePoint hay Microsoft 365 Admin Center, kéo dài xấp xỉ 36 tiếng.\n\nBan đầu nhiều người đoán do traffic tăng vọt, nhưng thực chất vấn đề nằm ở việc một lượng lớn server đột ngột mất khả năng phản hồi. Ở góc nhìn load balancing, cơ chế health check liên tục ping từng node và rút những node lỗi khỏi pool để bảo vệ hệ thống.\n\nKhi số lượng server rớt cùng lúc trở nên quá lớn, toàn bộ lưu lượng dồn sang phần server còn lại khiến chúng quá tải, trượt health check và tiếp tục bị rút khỏi vòng quay. Cứ thế hiệu ứng domino xảy ra, làm hệ thống càng lúc càng thiếu năng lực xử lý.\n\nĐiểm trớ trêu nằm ở chỗ nguyên nhân gốc rễ lại xuất phát từ một đợt nâng cấp dung lượng mạng. Thay đổi này vô tình phơi bày một latent bug trong luồng thiết lập kết nối bảo mật (secure connections), làm các yêu cầu kết nối dồn ứ cho đến khi cạn kiệt tài nguyên xử lý của server.\n\nNgay cả chiêu bật tắt lại server quen thuộc cũng không cứu được tình hình ngay lập tức. Khi vừa bật lại và nhận traffic trở lại, server lập tức nghẽn vì hàng loạt mail client trên toàn cầu đang xếp hàng chờ kết nối lại cùng lúc, cộng thêm việc Microsoft 365 Admin Center cũng bị ảnh hưởng khiến đội ngũ quản trị mất thêm nhiều lớp công cụ chẩn đoán.\n\nSang chiều thứ Sáu, FAA tại Mỹ tiếp tục ra lệnh tạm dừng toàn bộ chuyến bay khởi hành trong khoảng 5 tiếng, khiến hơn 9.000 chuyến bay bị hủy chỉ trong ngày. Dù phía an ninh và Microsoft khẳng định hai sự cố này không liên quan trực tiếp đến nhau, câu chuyện về router bị quá tải sau khi đổi thiết bị ở điểm từ xa cho thấy cùng một bài toán kiến trúc: một thay đổi trên tầng mạng có thể làm nghẽn những thành phần cốt lõi mà cả hệ thống đang dựa vào.\n\n------------------------\n\nThiệt hại ước tính khoảng 7 tỷ USD năng suất toàn cầu là con số khiến anh chị em làm kiến trúc và vận hành phải suy ngẫm nhiều về cách kiểm thử cấu hình, rollout thay đổi và xử lý thundering herd khi hệ thống phục hồi. Trong hệ thống của mọi người, khi một cụm node gặp sự cố diện rộng, anh chị em thường ưu tiên cơ chế bảo vệ nào trước để tránh hiệu ứng domino lan rộng?\n\n#ShareThisPost #sharing #networking #Microsoft #Microsoft365 #outage #softwaredevelopment",
-   "url": "https://facebook.com/groups/vgu.tech.alumni/permalink/1510501904319652/",
-   "published_at": "2026-11-19T15:47:47+00:00",
-   "reactions": 6,
-   "comments_count": 2,
-   "top_comments": []
-  },
-  {
-   "id": "1510335027669673",
-   "group_id": "vgu.tech.alumni",
-   "group_name": "VGU Tech Alumni",
-   "title": "[ Nghiên cứu từ 300 triệu điểm dữ liệu của Harvard: Tại sao AI giúp viết code nhanh hơn nhưng tổng lượng việc hoàn thành vẫn bằng ",
-   "content": "# **[ Nghiên cứu từ 300 triệu điểm dữ liệu của Harvard: Tại sao AI giúp viết code nhanh hơn nhưng tổng lượng việc hoàn thành vẫn bằng không? ]**\n\nNguồn: Video \"Harvard Just Discovered AI Isn’t Actually Working\" - Kênh YouTube Dylan John \n\nTL;DR:\n* Khảo sát của Harvard trên 718 công ty với 300 triệu điểm dữ liệu trong 5 năm cho thấy các công cụ AI Agent (tác nhân AI) giúp lập trình viên viết nhiều hơn 30% số dòng code, tăng 20% lượng Commit và mở Pull Request nhiều hơn 23%, nhưng số lượng Jira ticket hoàn thành và dự án thực tế bàn giao lại không hề tăng lên.\n* Thời gian tiết kiệm được ở khâu gõ code đã bị đẩy sang các điểm nghẽn khác trong quy trình: thời gian duyệt Pull Request lâu hơn 49%, số lần phải sửa lại code khi Code Review tăng gấp đôi và lượng bình luận góp ý tăng 35%.\n* Các đợt cắt giảm nhân sự gần đây tại nhiều tập đoàn lớn thực chất là dùng cái cớ hiệu suất AI để ép phần nhân sự còn lại gánh thêm việc, trong khi rủi ro từ code do AI sinh ra đang buộc nhiều nơi phải siết chặt quy trình kiểm duyệt thủ công.\n\n=====================\n\nMấy hôm nay mình có xem được một video phân tích rất sát thực tế của Dylan John về chuyện tiền bạc và hiệu suất thực sự của AI trong các công ty công nghệ. Có một con số làm mình phải suy nghĩ mãi: một công ty công nghệ hiện đang đốt hơn 6 triệu USD mỗi tháng chỉ để trả tiền Token (đơn vị xử lý dữ liệu của mô hình ngôn ngữ lớn), tính ra là khoảng 200.000 USD mỗi ngày. Lần đầu tiên trong lịch sử làm phần mềm, các cấp quản lý phải đứng trước bài toán đánh đổi trực tiếp giữa việc chi tiền mua Token hay giữ lại con người.\n\nNếu quay lại khoảng một năm trước, chắc anh chị em còn nhớ làn sóng truyền thông nói rằng nghề lập trình sắp biến mất. Lúc đó nhiều kỹ sư ở Anthropic còn chia sẻ chuyện họ không tự gõ dòng code nào nữa, dù cùng thời điểm báo cáo của MIT chỉ ra tới 95% dự án thử nghiệm AI trong doanh nghiệp đều thất bại.\n\nĐúng lúc đó, tổ chức nghiên cứu METR đã công bố một thử nghiệm đối chứng ngẫu nhiên trên 16 lập trình viên với 246 tác vụ thực tế. Kết quả làm cả giới công nghệ bất ngờ: những người dùng AI thực chất làm việc chậm hơn 19% so với khi tự code, dù bản thân các kỹ sư tham gia lại luôn có cảm giác mình đang làm nhanh hơn rất nhiều.\n\nTất nhiên là giới kỹ sư không phục kết quả này vì sau đó một loạt mô hình mới như Claude 3.7, GPT-5 rồi Opus 4.5 ra đời, đặc biệt là đợt cuối năm khi công cụ Claude Code tạo nên cơn sốt thực sự. Thậm chí ở Thung lũng Silicon còn rộ lên trào lưu làm bảng xếp hạng Leaderboard xem kỹ sư nào tiêu thụ nhiều Token nhất ở Meta, Microsoft hay Uber. Jensen Huang còn từng phát biểu rằng ông sẽ rất lo ngại nếu một kỹ sư lương 500.000 USD mỗi năm mà không xài hết ít nhất 250.000 USD tiền Token.\n\nKhi METR cố gắng làm lại nghiên cứu lần thứ hai với 47 lập trình viên mới để kiểm chứng lại, họ gặp phải một hiện tượng rất thú vị là Selection Bias (sai lệch chọn mẫu). Những kỹ sư đang dùng AI hiệu quả nhất thẳng thừng từ chối tham gia nhóm làm việc không có AI, kể cả khi bị trừ 100 USD tiền thù lao. Cuối cùng METR phải bỏ cuộc và thừa nhận rằng AI có vẻ đã giúp lập trình viên thao tác nhanh hơn, vì chẳng ai chịu quay lại làm việc tay không nữa.\n\n## Vậy câu hỏi lớn nhất là AI có thực sự giúp toàn bộ quy trình phát triển phần mềm nhanh hơn không?\n\nĐể trả lời câu hỏi này, nhóm nghiên cứu tại Harvard đã đi sâu vào dữ liệu vận hành thực tế của 718 công ty thông qua nền tảng phân tích nội bộ. Họ theo dõi toàn bộ luồng công việc từ khâu lên kế hoạch trên Jira, lịch sử Commit trên GitHub, quá trình mở Pull Request, Deployment cho đến cả lịch họp trên Calendar với tổng cộng 300 triệu điểm dữ liệu xuyên suốt 5 năm liên tiếp.\n\nỞ khâu viết code thuần túy, dữ liệu của Harvard khẳng định chắc chắn là AI giúp làm nhanh hơn. Tại các công ty áp dụng AI Agent như Claude Code, Cursor hay Codex, lượng dòng code viết ra tăng 30%, số lần Commit tăng 20% và tần suất mở Pull Request tăng 23%. Bản thân nhiều anh chị em làm nghề lâu năm cũng thấy rõ chỉ cần một câu Prompt là vài phút sau đã có hàng ngàn dòng code kèm đủ Unit Test, tài liệu đặc tả và Pull Request.\n\nNhưng điểm đắt giá nhất trong nghiên cứu của Harvard là họ không dừng lại ở lúc mở Pull Request mà theo dõi code đó đi tới tận lúc bàn giao xong sản phẩm. Khi nhìn vào phân bổ thời gian thực tế của một kỹ sư phần mềm, việc gõ code chỉ chiếm khoảng 42% thời gian, trong khi 18,6% dành cho Code Review và tới 39,5% thời gian nằm ở các cuộc họp đồng bộ, viết tài liệu và trao đổi nghiệp vụ.\n\nKết quả cuối cùng của Harvard chỉ ra rằng tổng lượng sản phẩm bàn giao hoàn toàn không thay đổi. Số lượng Jira ticket hoàn thành không tăng, số dự án về đích không nhiều hơn và độ lớn của các tác vụ cũng giữ nguyên.\n\nVậy toàn bộ thời gian tiết kiệm được nhờ AI gõ code hộ đã trôi đi đâu? Câu trả lời là nó không biến mất mà dịch chuyển sang phần thượng nguồn và hạ nguồn của quy trình phát triển:\n* Thời gian chờ duyệt xong một Pull Request bị kéo dài thêm 49%.\n* Thời gian phải chỉnh sửa lại code trong quá trình Code Review tăng gấp đôi so với trước khi có AI.\n* Người duyệt code phải để lại số lượng bình luận góp ý nhiều hơn 35%.\n\nKhi một kỹ sư có thể sinh ra hàng ngàn dòng code chỉ trong vài phút, gánh nặng kiểm tra, chạy QA, căn chỉnh nghiệp vụ với đội Product hay chờ bộ phận pháp lý phê duyệt lập tức trở thành cổ chai. Code được tạo ra rất nhanh nhưng vẫn cần con người đọc hiểu, xác thực và chịu trách nhiệm.\n\nNghiêm trọng hơn là câu chuyện chất lượng và độ an toàn của hệ thống. Hồi tháng 3 vừa qua, hệ thống của Amazon từng bị sập suốt 6 tiếng đồng hồ khiến khách hàng không thể thanh toán hay xem trang sản phẩm, làm mất khoảng 6,3 triệu đơn hàng với thiệt hại hàng trăm triệu USD chỉ trong một ngày. Khi điều tra Root Cause (nguyên nhân gốc rễ), Amazon phát hiện sự cố xuất phát từ một thay đổi code có sự hỗ trợ của GenAI.\n\nHậu quả là Amazon phải lập tức kích hoạt chiến dịch siết lại an toàn code trong 90 ngày và chủ động đưa thêm lực cản vào quy trình. Toàn bộ code có dùng AI của các kỹ sư cấp dưới bắt buộc phải có ch",
-   "url": "https://facebook.com/groups/vgu.tech.alumni/permalink/1510335027669673/",
-   "published_at": "2026-11-19T12:37:05+00:00",
-   "reactions": 85,
-   "comments_count": 2,
-   "top_comments": [
-    {
-     "author": "Facebook user",
-     "text": "đó là Amazon, có mấy Amazon, thực tế chung của ngành thì không phải vậy",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "Video chi tiết cho bạn nào lười đọc \nhttps://www.youtube.com/watch?v=xWk9MP4ed-4",
-     "votes": 0
-    }
-   ]
-  },
-  {
-   "id": "1510216131014896",
-   "group_id": "vgu.tech.alumni",
-   "group_name": "VGU Tech Alumni",
-   "title": "Free #AWS #Voucher #Level #Associate #Practitioner #Only2Slot",
-   "content": "#Free #AWS #Voucher #Level #Associate #Practitioner #Only2Slot\nHi admin, nhờ admin cho phép mình đăng post này để tặng voucher free cho các bạn cần nhé ạ. cam ớn admin nhìu.",
-   "url": "https://facebook.com/groups/vgu.tech.alumni/permalink/1510216131014896/",
-   "published_at": "2026-11-19T09:53:39+00:00",
-   "reactions": 9,
+   "title": "Chào mọi người, mình xin share web học tiếng Đức tự xây – Torcaedu",
+   "content": "Chào mọi người, mình xin share web học tiếng Đức tự xây – Torcaedu\n\n**Một số tính năng hiện có:**\n* Luyện dịch câu từ tiếng Việt sang tiếng Đức theo cấp độ.\n* Đọc báo tiếng Đức hằng ngày.\n* Hơn 10.000 từ vựng chia theo chủ đề từ A1–B2.\n* Luyện đề TELC A1–B2 (mình thi TELC nên hiện chưa có đề Goethe), có phòng thu âm để luyện nói.\n* Random đề nói để mọi người tự luyện tập.\n* Chấm và sửa thư bằng AI (tính năng trả phí).\n* Mini game học từ vựng, có thể dùng bộ từ đã lưu hoặc bộ từ có sẵn.\n\nHiện tại, các tính năng ôn luyện cơ bản đều miễn phí ạ\n\n🔗 **Link:** [https://torcaedu.com/](https://torcaedu.com/)\n\nMọi người ghé trải nghiệm và cho em xin chút đánh giá, góp ý để cải thiện web nhé\n\nCảm ơn admin đã duyệt bài\n\n#j2team_share",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3257508201247944/",
+   "published_at": "2026-11-20T13:47:12+00:00",
+   "reactions": 30,
    "comments_count": 0,
    "top_comments": []
   },
   {
-   "id": "1509964064373436",
-   "group_id": "vgu.tech.alumni",
-   "group_name": "VGU Tech Alumni",
-   "title": "🚀 2026 đang dần khép lại — nhưng hành trình mới của bạn sắp bắt đầu cùng BIO Core!",
-   "content": "**🚀 2026 đang dần khép lại — nhưng hành trình mới của bạn sắp bắt đầu cùng BIO Core!**\n\nBioTuring chính thức mở đơn ứng tuyển chương trình BIO Core 2026 – Systems Infrastructure Engineer, dành cho những kỹ sư mong muốn trực tiếp xây dựng và làm chủ hạ tầng Cloud & HPC (High Performance Computing) phục vụ các ứng dụng AI tiên tiến trong lĩnh vực sinh học, đồng thời định hướng chiến lược kỹ thuật nhằm khai thác sức mạnh tính toán quy mô lớn để góp phần tìm ra phương pháp điều trị bệnh.\n\nBạn sẽ làm gì? Trực tiếp xây dựng, vận hành và tối ưu hạ tầng cloud & HPC — từ tự động hóa, OpenStack, Ceph, mạng hiệu năng cao đến server bare-metal — để hệ thống luôn ổn định, bảo mật và sẵn sàng mở rộng. Chi tiết công việc xem tại website\n\n🧬 BioTuring đang tìm kiếm ai?\n* Có kiến thức nền tảng vững chắc về Linux và kiến trúc máy tính; hiểu biết về TCP/IP, DNS, routing và InfiniBand.\n* Có khả năng lập trình Python hoặc Bash, với tư duy ưu tiên tự động hóa trong công việc.\n* Đã từng có kinh nghiệm thực hành với Docker hoặc máy ảo (VM).\n* Có hiểu biết về SSH keys và firewall.\n* Điểm cộng: Có kinh nghiệm với OpenStack, Ceph, Ansible hoặc từng đóng góp cho các dự án mã nguồn mở, CVE hay bug bounty.\n* Tốt nghiệp hoặc có nền tảng chuyên môn thuộc các ngành Khoa học Máy tính, Hệ thống, Hạ tầng hoặc Kỹ thuật Điện.\n* Chào đón ứng viên ở mọi cấp độ, từ sinh viên, Cử nhân, Thạc sĩ, Tiến sĩ đến các kỹ sư tự học.\n* Mở rộng cơ hội cho cả ứng viên trong nước và quốc tế (hỗ trợ giấy phép lao động và chi phí chuyển nơi sinh sống ban đầu).\n\n💡 Bạn sẽ nhận được gì?\n* Mức lương khởi điểm từ 25 triệu VNĐ/tháng trong 5 tháng đầu đào tạo chuyên sâu, và được điều chỉnh khi lên vị trí nhân viên chính thức (FTE).\n* Được coaching 1:1 cùng các Tiến sĩ có kinh nghiệm thực tiễn trong ngành; trực tiếp quản lý và xây dựng hạ tầng tính toán tiên tiến, phục vụ nghiên cứu sinh học và tìm kiếm giải pháp điều trị bệnh.\n* Được công ty tài trợ chi phí tham gia các hội thảo quốc tế.\n* Hỗ trợ giấy phép lao động và chi phí hỗ trợ di chuyển/chỗ ở cho ứng viên quốc tế/người Việt về nước.\n\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \n\nThông tin chương trình: [[https://bioturing.com/blog/bio-core-2026-systems-infrastructure-engineer/](https://bioturing.com/blog/bio-core-2026-systems-infrastructure-engineer/)](https://bioturing.com/blog/bio-core-2026-systems-infrastructure-engineer/)\n\nỨng tuyển tại: [[https://bioturing.com/careers/system-engineer-bio-core-2026/](https://bioturing.com/careers/system-engineer-bio-core-2026/)](https://bioturing.com/careers/system-engineer-bio-core-2026/)\n\nThời hạn ứng tuyển: 30/11/2026\n\nĐịa điểm làm việc: Hồ Chí Minh - Hà Nội\n\nLiên hệ: careers@bioturing.com\n\n#BIOCore2026 #BioTuring #SystemsInfrastructure #HPC #CloudInfrastructure",
-   "url": "https://facebook.com/groups/vgu.tech.alumni/permalink/1509964064373436/",
-   "published_at": "2026-11-19T03:19:12+00:00",
-   "reactions": 6,
+   "id": "3259895174342580",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "Mê nhạc TFT mùa 19 quá nên mình ngồi dựng lại thuật toán mix nhạc của mùa 19 để mọi người có thể tự trải nghiệm =)))",
+   "content": "Mê nhạc TFT mùa 19 quá nên mình ngồi dựng lại thuật toán mix nhạc của mùa 19 để mọi người có thể tự trải nghiệm =)))\n\nMọi người vào thử phối nhạc rồi share xem đội hình nào có bộ phối nhạc hay nha\n\nhttps://remix.carrotday.work\n\n#j2team_share",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3259895174342580/",
+   "published_at": "2026-11-21T16:24:53+00:00",
+   "reactions": 8,
    "comments_count": 0,
    "top_comments": []
+  },
+  {
+   "id": "3260648977600533",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "📣 ĐIỂM TIN BUỔI SÁNG CHỦ NHẬT (22/11/2026)",
+   "content": "📣 ĐIỂM TIN BUỔI SÁNG CHỦ NHẬT (22/11/2026)\n\nChào buổi sáng cả nhà J2TEAM! Chúc mọi người một ngày mới làm việc và học tập tràn đầy năng lượng. Dưới đây là những tin tức công nghệ và an ninh mạng nổi bật nhất trên thế giới sáng nay để mọi người cùng cập nhật nhé:\n\n1️⃣ Anthropic chính thức lên sàn Nasdaq: Cuộc giằng co giữa sứ mệnh an toàn AI và áp lực cổ đông\n\n2️⃣ Nvidia báo cáo doanh thu tăng vọt, xác nhận dừng bán chip AI H200 tại thị trường Trung Quốc\n\n3️⃣ Đánh giá Xiaomi 18 Pro và Pro Max: Phần cứng xuất sắc nhưng màn hình phụ chỉ hợp chụp selfie\n\n4️⃣ Microsoft bắt đầu tự động nâng cấp Windows 11 26H2 cho các máy tính cá nhân\n\n5️⃣ Google lột xác giao diện camera trên ứng dụng Gemini cho Android với hiệu ứng vuốt mượt mà\n\n6️⃣ Rò rỉ \"Moment Effects\": Samsung chuẩn bị mang Dynamic Island lên dòng Galaxy S27\n\n7️⃣ Lộ trình iPhone 2027: iPhone 18 bản thường ra mắt mùa xuân với chip A20 và modem C2\n\n8️⃣ Apple bị kiện đòi bồi thường 162 triệu USD tại Ấn Độ vì tính năng chạm chia sẻ danh bạ NameDrop\n\n9️⃣ Pond: Bản phân phối Arch Linux mới gây ấn tượng nhờ trải nghiệm giao diện độc đáo\n\n🔟 Dân độ PC dùng máy thổi hơi nhà phao làm mát laptop gaming, giảm tới 35°C và tăng 19% FPS\n\n1️⃣1️⃣ Tàu vũ trụ Hera trở lại cặp tiểu hành tinh từng bị NASA đâm thử nghiệm để bảo vệ Trái Đất\n\n1️⃣2️⃣ FBI và Bộ Nông nghiệp Mỹ (USDA) bị tin tặc xâm nhập hệ thống dữ liệu trọng yếu\n\n#j2team_news #diemtinsang #news",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3260648977600533/",
+   "published_at": "2026-11-22T01:50:18+00:00",
+   "reactions": 132,
+   "comments_count": 0,
+   "top_comments": []
+  },
+  {
+   "id": "3260600097605421",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "Một vật phẩm mới đã được phát hiện trong GTA 6, giúp người chơi có thể di chuyển đến một chiều không gian khác 🤯",
+   "content": "# Một vật phẩm mới đã được phát hiện trong GTA 6, giúp người chơi có thể di chuyển đến một chiều không gian khác 🤯\n\n#j2team_relax // video: EhsanSenpai111",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3260600097605421/",
+   "published_at": "2026-11-22T01:17:11+00:00",
+   "reactions": 2831,
+   "comments_count": 145,
+   "top_comments": []
+  },
+  {
+   "id": "2704483193342404",
+   "group_id": "machinelearningcoban",
+   "group_name": "Forum Machine Learning cơ bản",
+   "title": "Chào mọi người, mình là Hỷ, hiện đang là AI Engineer tại RevveAI.",
+   "content": "Chào mọi người, mình là Hỷ, hiện đang là AI Engineer tại RevveAI.\n\nTrong khoảng 1–2 tháng gần đây, model hynt/F5-TTS-Vietnamese-ViVoice nhận được khá nhiều sự quan tâm từ cộng đồng Voice Research, với hơn 𝟓𝟎.𝟎𝟎𝟎 lượt tải chỉ trong tháng này.\n\nĐây là model TTS tiếng Việt được phát triển dựa trên kiến trúc F5-TTS và huấn luyện trên 𝟏.𝟎𝟎𝟎 giờ dữ liệu tiếng Việt công khai.\n\nTrước sự quan tâm và đón nhận từ cộng đồng, hôm nay mình quyết định chia sẻ thêm một checkpoint mới, cũng sử dụng kiến trúc F5-TTS nhưng được huấn luyện trên quy mô 𝟔.𝟎𝟎𝟎 giờ dữ liệu tiếng Việt công khai.\n\nMình hy vọng checkpoint này sẽ mang đến thêm một lựa chọn hữu ích cho cộng đồng Voice Research. Cảm ơn mọi người đã đọc bài viết !\n\n🤗 Model: https://huggingface.co/hynt/F5-TTS-Vietnamese-ViVoice\n\n🎧 Demo: https://huggingface.co/spaces/hynt/F5-TTS-Vietnamese-100h",
+   "url": "https://facebook.com/groups/machinelearningcoban/permalink/2704483193342404/",
+   "published_at": "2026-11-22T11:14:09+00:00",
+   "reactions": 615,
+   "comments_count": 39,
+   "top_comments": [
+    {
+     "author": "Facebook user",
+     "text": "Tuyệt vời quá anh ơi 🙌",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "hi bạn, mình cũng đang làm TTS nghiên cứu. 1000h tiếng việt này bro chạy trên GPU thuê hết hay local fine-tune nhỉ",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "em có con i5 4th có chạy được ko ạ 🥹",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Có sử dụng free j k",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Mình đang dùng F5 nha. Dùng ngon ngang Omnivoice 😂",
+     "votes": 0
+    }
+   ]
+  },
+  {
+   "id": "2704351963355527",
+   "group_id": "machinelearningcoban",
+   "group_name": "Forum Machine Learning cơ bản",
+   "title": "Không biết trong forum mình có nhiều ACE đi sâu về mảng digital signal processing (DSP) không, mình xin giao lưu và học hỏi thêm n",
+   "content": "Không biết trong forum mình có nhiều ACE đi sâu về mảng digital signal processing (DSP) không, mình xin giao lưu và học hỏi thêm nhé.\n\nCá nhân mình đang nghiên cứu mảng DSP trong wearable/earable và gặp khá nhiều thử thách trong việc khử nhiễu artifacts. Các phép biến đổi họ Fourier thoạt nghe thì hay nhưng cũng đuối sức khi phải xử lý biosignal. Nếu anh em cũng đã và đang xử lý biosignal thì mình muốn được học hỏi các kỹ thuật anh em dùng để lọc nhiễu hiệu quả.\n\nP/s: Trong quá trình nghiên cứu mình cũng tạo ra các video giải thích bản chất toán học vừa để cho mình nhớ, vừa muốn chia sẻ đến cộng đồng, anh em thảo luận thêm ở comment nha. Mới ra tập đầu tiên về Fourier Transform :D",
+   "url": "https://facebook.com/groups/machinelearningcoban/permalink/2704351963355527/",
+   "published_at": "2026-11-22T08:38:52+00:00",
+   "reactions": 200,
+   "comments_count": 25,
+   "top_comments": []
+  },
+  {
+   "id": "1513442527358923",
+   "group_id": "vgu.tech.alumni",
+   "group_name": "VGU Tech Alumni",
+   "title": "[ Thời loạn AI là cơ hội vàng để Junior/Fresher bứt phá thay vì bỏ ngành ]",
+   "content": "# **[ Thời loạn AI là cơ hội vàng để Junior/Fresher bứt phá thay vì bỏ ngành ]**\n\nNguồn: Video \"Thời loạn AI là cơ hội | Junior dev đừng bỏ ngành\" - Kênh YouTube Quân IT\n\nTL;DR:\n* Ngành tech đang trong giai đoạn biến động mạnh vì AI, nhưng lịch sử cho thấy chính thời kỳ loạn lạc mới là cơ hội tốt nhất để người mới thu hẹp khoảng cách với lớp đi trước.\n* Khoảng cách 10-15 năm kinh nghiệm code truyền thống đang bị co lại còn khoảng 6 tháng đến 1 năm khi tất cả cùng phải học lại từ đầu về AI Agent, MCP hay Fine-tuning.\n* Junior nên bỏ tâm lý nạn nhân (victim mentality), tập trung vừa học nền tảng vừa build sản phẩm chạy thực tế bằng AI rồi đào sâu nguyên lý sau.\n\n=============================\n\nDạo này lướt quanh các hội nhóm tech, mình thấy rất nhiều bạn trẻ mang tâm lý bi quan, thậm chí khuyên nhau bỏ ngành vì nghĩ AI sắp lấy hết việc của Fresher và Junior. Nghe chia sẻ từ anh Quân IT (một người đã làm nghề 20 năm), mình thấy có nhiều góc nhìn rất thực tế đáng để anh em suy ngẫm.\n\nTrong lịch sử xã hội, khi trật tự đã ổn định, người ở vị trí thấp rất khó nhảy vọt vì lớp đi trước đã ngồi chắc ghế và nắm hết luật chơi. Muốn đổi đời hoặc thăng tiến nhanh (move up), người ta thường chỉ có vài cách như kết hôn với tầng lớp cao hơn, di cư sang vùng đất mới chưa định hình luật chơi, hoặc chờ đợi một thời kỳ loạn lạc làm xáo trộn toàn bộ cấu trúc cũ.\n\nLàn sóng AI hiện tại chính là một cuộc \"reset game\" như vậy trong ngành phần mềm. Ở thời bình, một bạn Fresher dù giỏi đến đâu cũng phải cày cuốc 5-7 năm mới mong lên được Tech Lead vì hệ thống và quy trình đã vận hành trơn tru dưới tay các Senior. Nhưng khi AI xuất hiện, chính những người làm nghề lâu năm lại là nhóm phải lo lắng nhiều nhất nếu họ bám chặt vào tư duy cũ.\n\nNhìn lại lịch sử ngành lập trình, sự thay đổi công cụ là chuyện diễn ra liên tục. Từ thời lập trình Assembly hay gõ từng thẻ HTML trên Notepad, rồi đến lúc IDE có Auto-complete, sau đó là sự ra đời của Google và Stack Overflow giúp giảm thời gian debug một lỗi từ 4 tiếng xuống còn vài giây. Ở mỗi giai đoạn, những người ngồi than vãn công cụ mới làm mất giá trị của mình đều bị bỏ lại, còn người chịu thích nghi thì đi tiếp.\n\nViệc đổ lỗi cho AI lấy mất cơ hội thực chất là một dạng tâm lý nạn nhân (victim mentality), và nó rất nguy hiểm vì khiến mình đứng yên một chỗ. Khi xác định vấn đề nằm ở kỹ năng của bản thân thì mình mới chủ động nâng cấp được.\n\nThực tế hiện nay, khi nhắc đến những khái niệm mới như AI Agent, MCP (Model Context Protocol), Skill hay Fine-tuning, gần như ai cũng phải học lại từ vạch xuất phát. Kinh nghiệm 10-15 năm tích lũy trước đây không còn tạo ra bức tường thành quá lớn nữa, mà chỉ giúp người đi trước có lợi thế về tư duy hệ thống (system mindset) khoảng 6 tháng đến 1 năm so với người mới.\n\nThậm chí, nhiều CEO và người trực tiếp phỏng vấn hiện nay lại ưu tiên tuyển các bạn trẻ nhanh nhạy, biết setup workflow làm việc với AI hơn là những người cứng nhắc, khăng khăng phải code tay hoàn toàn theo lối mòn cũ. Cánh cửa cho các bạn trẻ chịu vọc vạch đang mở rất rộng.\n\nCách học hiệu quả nhất cho anh em Junior giai đoạn này giống như học chơi đàn guitar: hãy dùng AI để build cho sản phẩm chạy được trước nhằm tạo cảm hứng, sau đó mới quay lại đào sâu nhạc lý là các kiến thức nền tảng về mạng, database và kiến trúc hệ thống. Tầm 1 năm tập trung cao độ theo cách này là đủ để tạo ra sự khác biệt lớn.\n\n--------------------\n\nAnh chị em đang làm tech thấy sao về góc nhìn này, team mọi người dạo này tuyển dụng hay áp dụng AI workflow vào quy trình dev thực tế như thế nào rồi?\n\n#sharing #ShareThisPost #softwareengineer #softwaredevelopment #CareerDevelopment #advice",
+   "url": "https://facebook.com/groups/vgu.tech.alumni/permalink/1513442527358923/",
+   "published_at": "2026-11-22T14:12:56+00:00",
+   "reactions": 435,
+   "comments_count": 50,
+   "top_comments": [
+    {
+     "author": "Facebook user",
+     "text": "Cười ẻ vô mõm",
+     "votes": 0
+    }
+   ]
   }
  ]
 }
