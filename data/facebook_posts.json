@@ -1,257 +1,287 @@
 {
- "generated_at": "2026-11-23T01:05:32.828521+00:00",
+ "generated_at": "2026-11-24T22:53:52.322026+00:00",
  "items": [
   {
-   "id": "2601168733641764",
+   "id": "2603672693391368",
    "group_id": "vnjug",
    "group_name": "Vietnam Java User Group",
-   "title": "Trong video này, mình sẽ hướng dẫn các bạn cách kết nối Claude AI (Fable 5.2) với Higgsfield MCP Server để tự động hóa quy trình t",
-   "content": "Trong video này, mình sẽ hướng dẫn các bạn cách kết nối Claude AI (Fable 5.2) với Higgsfield MCP Server để tự động hóa quy trình tạo hình ảnh chất lượng cao trực tiếp cho các dự án.\n\nNếu bạn đang tìm cách tận dụng sức mạnh của Model Context Protocol (MCP) kết hợp với các mô hình tạo ảnh hiện đại để tối ưu hóa workflow lập trình và phát triển sản phẩm, thì đây chính là giải pháp dành cho bạn!\n\nCùng đón xem trên kênh của Devteria nhé. Link bên dưới comment.",
-   "url": "https://facebook.com/groups/vnjug/permalink/2601168733641764/",
-   "published_at": "2026-11-22T11:59:38+00:00",
-   "reactions": 1,
+   "title": "🤖 **Làm Human-in-the-Loop cho AI Agent — Tool call đang chờ duyệt sống sót qua App Restart",
+   "content": "🤖 **Làm Human-in-the-Loop cho AI Agent — Tool call đang chờ duyệt sống sót qua App Restart**\n\nMột AI Agent ngân hàng có thể tự tra cứu vì sao khoản thanh toán thất bại. Trong bản demo của Spring, muốn thu lại tiền ngay thì Agent phải chờ một người duyệt (Human-in-the-Loop).\n\nSau câu hỏi \"Bạn có đồng ý không?\", bài toán đau đầu nhất chính là quãng **CHỜ ĐỢI** câu trả lời.\n\n⏳ Người duyệt trả lời sau vài phút, vài tiếng...\n🔄 Request duyệt rơi vào một instance server khác (scale ngang)...\n💥 Hoặc thậm chí ứng dụng bị restart giữa chừng!\n\nTrong bài blog của Spring, **Christian Tzolov** đã chỉ cách xử lý bài toán này gọn gàng với **Spring AI 2.1** và **Spring AI Session Extensions (v0.11.0)**.\n\n**1️⃣ Đánh dấu Tool cần duyệt cực gọn trong Spring AI 2.1**\n\nSpring AI 2.1 giữ sẵn vòng lặp tool cho bạn và cung cấp ba cách cấu hình những tool cần người duyệt.\n\n* Gắn thẳng @Tool(requiresConfirmation = true) trên method.\n* Khai báo property spring.ai.tools.confirmation.tools=... (cực tiện cho MCP tools hoặc tool từ bên thứ 3).\n* Dùng bean ToolCallConfirmationPolicy nếu muốn kiểm tra điều kiện động theo tham số, chẳng hạn khi giao dịch vượt một ngưỡng mới cần duyệt.\n\n👉 Nếu trong cùng một phản hồi của model có lệnh cần duyệt thì toàn bộ các lệnh trong phản hồi đó đều dừng lại chờ quyết định và chưa chạy.\n\n**2️⃣ Tool call đang chờ nằm ở đâu?**\n\nKhi cần người duyệt, Spring AI trả về một ChatResponse bình thường chứa các lệnh đang chờ. Để chạy tiếp sau đó, ứng dụng cần dùng lại prompt gốc cùng với phản hồi tạm dừng này.\n\n**3️⃣ \"Park & Resume\" qua nhiều process với Session Extensions**\n\nBản demo lưu lịch sử hội thoại xuống database qua JDBC bằng Spring AI Session API, đồng thời dùng TurnAdvisors từ thư viện cộng đồng để ghi thêm lượt đang chờ duyệt.\n\n* **Process A** — Nhận yêu cầu từ khách → model đề nghị chạy tool cần duyệt → hệ thống ghi lại lượt chờ kèm câu hỏi xác nhận vào database, rồi process có thể tắt hẳn.\n* **Process B** — Một JVM mới chỉ cần sessionId là tìm lại được câu hỏi đang chờ để hiển thị cho người duyệt. Tool chỉ chạy nếu được duyệt, sau đó agent dựa trên quyết định này để trả lời nốt cho khách.\n\n**⚠️ Một vài lưu ý thực chiến cực hay từ bài viết**\n\n* **Bảo mật** — Luôn dùng lại phản hồi tạm dừng đã lưu phía server để tránh bị chỉnh sửa tham số tool, đồng thời tự kiểm tra quyền của người duyệt trước khi tiếp nhận quyết định.\n* **Chống chạy trùng** — Turn advisor ghi nhận quyết định trước khi gọi tool, nên nếu gửi lại cùng quyết định cho lượt đã resume thì yêu cầu đó sẽ bị từ chối.\n* **Khi khách nhắn tin mới** — Nếu khách nhắn tin mới trong lúc đang chờ duyệt, hệ thống tự đóng câu hỏi cũ bằng trạng thái từ chối (deny) để lịch sử hội thoại luôn hợp lệ với LLM.\n\nAnh em nào đang build AI Agent bằng Java hay Spring Boot cho các hệ thống thực tế như fintech, vận hành hay CSKH có thể tham khảo ngay kiến trúc Park & Resume này nhé.\n\n#VietnamJavaUserGroup #VietnamJUG #Java #JavaCommunity #SpringAI #SpringBoot #AIAgent #HumanInTheLoop #ToolCalling",
+   "url": "https://facebook.com/groups/vnjug/permalink/2603672693391368/",
+   "published_at": "2026-11-24T15:41:03+00:00",
+   "reactions": 3,
    "comments_count": 1,
    "top_comments": []
   },
   {
-   "id": "3261975280801236",
+   "id": "3264705227194908",
    "group_id": "j2team.community",
    "group_name": "J2TEAM Community",
-   "title": "Thấy mấy cuốn sách xưa bìa đẹp font lạ nên đốt token để làm bộ font này. Còn liên tục cập nhật. Miễn phí. Anh/chị/em thiết kế nào ",
-   "content": "Thấy mấy cuốn sách xưa bìa đẹp font lạ nên đốt token để làm bộ font này. Còn liên tục cập nhật. Miễn phí. Anh/chị/em thiết kế nào cần thì cứ lấy nhé. Ai sưu tầm được tạp chí hay bảng hiệu nào có chữ đẹp muốn làm font thì nhắn mình nhé. \n\nLink tải trong comment.\n\n#j2team_share",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3261975280801236/",
-   "published_at": "2026-11-22T15:53:04+00:00",
-   "reactions": 110,
-   "comments_count": 9,
-   "top_comments": []
-  },
-  {
-   "id": "3261743587491072",
-   "group_id": "j2team.community",
-   "group_name": "J2TEAM Community",
-   "title": "Mình xin chia sẻ cho mọi người trang web mã nguồn mở tra cứu thông tin của toàn bộ tập phim của anime **Thám Tử Lừng Danh Conan** ",
-   "content": "Mình xin chia sẻ cho mọi người trang web mã nguồn mở tra cứu thông tin của toàn bộ tập phim của anime **Thám Tử Lừng Danh Conan** do mình xây dựng: **Conan Guide**\n\nNhiều bạn đã ngừng theo dõi truyện từ lâu, muốn cày lại từ đầu mà chỉ muốn xem tập trung vào plot chính, nhưng khổ nỗi hiện tại Conan đã có tới hơn 1200 tập nên các bạn sẽ gặp khó khăn khi tìm kiếm những tập muốn xem. Trang web này sẽ giúp bạn lọc nhanh theo đúng nhu cầu:\n* Phân loại Canon / Filler rõ ràng để dễ dàng bỏ qua các tập không phải chuyển thể từ manga.\n* Lọc theo Plot (Cốt truyện): Chọn xem riêng các tập thuộc cốt truyện chính, tập Tổ chức Áo Đen xuất hiện, hoặc theo tuyến tình cảm của từng cặp đôi.\n* Tìm tập phim theo nhân vật: Hỗ trợ tìm cả tên chính thức lẫn biệt danh (ví dụ: Kid, Sherry, Amuro, Bourbon, Đội thám tử nhí...).\n* Tra cứu đa dạng: Hỗ trợ đối chiếu số tập Nhật Bản / Việt Nam, lọc theo Arc, Số Chap và Số Volume manga.\n* Tích hợp sẵn nút bấm xem trực tiếp qua kênh **YouTube bản quyền của POPS Anime** ngay cạnh tên tập.\n\nTrải nghiệm tại: [https://conanguide.pages.dev/](https://conanguide.pages.dev/)\n\nMã nguồn: [https://github.com/Idealtic/Conan-guide](https://github.com/Idealtic/Conan-guide)\n\nNếu mới dùng lần đầu, bạn có thể xem qua mục Hướng dẫn trên thanh menu để nắm nhanh các cách lọc nhé.\n\nTrong quá trình tổng hợp dữ liệu lớn hơn 1200 tập phim, chắc chắn không thể tránh khỏi có lúc sai sót về thông tin hay cách phân loại, nên mình rất mong nhận được góp ý từ các fan Conan nói riêng và tất cả mọi người nói chung để trang web ngày càng hoàn thiện và chính xác hơn.\n\n#j2team_share #j2team_relax",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3261743587491072/",
-   "published_at": "2026-11-22T13:39:56+00:00",
-   "reactions": 276,
-   "comments_count": 22,
-   "top_comments": [
-    {
-     "author": "Facebook user",
-     "text": "Úi truyện này chưa end hở các bác",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "Đỉnh gì đỉnh dữ :')",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "Toẹt vời 👏, mình đang xem conan kb tới tập nào rồi kk",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "Quá tuyệt luôn em",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "concept hay",
-     "votes": 0
-    }
-   ]
-  },
-  {
-   "id": "3261661087499322",
-   "group_id": "j2team.community",
-   "group_name": "J2TEAM Community",
-   "title": "Robot phối hợp làm việc theo đội, phân chia nhiệm vụ rõ ràng, hỗ trợ nhau hết mình. Đặc biệt, không có chuyện ghen tị, nói xấu sau",
-   "content": "Robot phối hợp làm việc theo đội, phân chia nhiệm vụ rõ ràng, hỗ trợ nhau hết mình. Đặc biệt, không có chuyện ghen tị, nói xấu sau lưng hay tranh công. Đúng là đội ngũ trong mơ của mọi người sếp \n\nNguồn Video training của:Heave-Ho - University of Southern California\n\n#J2team",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3261661087499322/",
-   "published_at": "2026-11-22T12:51:03+00:00",
-   "reactions": 14,
+   "title": "j2team_share #j2team_relax",
+   "content": "#j2team_share #j2team_relax\nMấy hôm nay AI Twitter đang combat cực căng vụ AI vừa hỗ trợ chứng minh xong Giả thuyết Riemann.\n* Elon Musk & Alexandr Wang: \"Siêu trí tuệ tới rồi!\"\n* Giáo sư Yann LeCun: \"Chưa đâu, bao giờ tụi nó biết lái xe tự hành cấp 5 như thanh niên 17 tuổi tập 20 tiếng thì hẵng nói chuyện.\"\n\nLửa cho bác nào cần: [https://x.com/elonmusk/status/2124464633490850164](https://x.com/elonmusk/status/2124464633490850164)\n\nVideo tóm tắt 👇",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3264705227194908/",
+   "published_at": "2026-11-24T14:52:09+00:00",
+   "reactions": 37,
    "comments_count": 3,
    "top_comments": []
   },
   {
-   "id": "3256350081363756",
+   "id": "3262059400792824",
    "group_id": "j2team.community",
    "group_name": "J2TEAM Community",
-   "title": "CẢNH BÁO PHISHING",
-   "content": "CẢNH BÁO PHISHING\nSáng nay em vừa nhận được email cảnh báo tài khoản Claude bị đăng nhập từ thiết bị lạ ở Bắc Kinh, Trung Quốc.\n\nEmail được thiết kế khá giống Claude chính chủ, kèm nút \"Secure your account\" để dụ người dùng đăng nhập.\n\nĐiểm đáng chú ý:\n\n- ✅ Tên miền thật: \"claude.ai\"\n\n- ❌ Tên miền giả: \"claucle.ai\" (thay chữ d bằng cl, nhìn lướt qua rất dễ nhầm).\n\n- 📩 Email gửi từ \"noreply@fcmb.com\" nhưng Reply-To lại là \"no-reply@email.claude.com\".\n\n- ⚠️ Kiểm tra header thấy SPF, DKIM, DMARC đều PASS, nhưng chỉ xác thực tên miền \"fcmb.com\", không phải Anthropic.\n\nAnh em dùng Claude, đặc biệt là Claude Code, nhớ kiểm tra kỹ tên miền trước khi đăng nhập nhé!\n\n#j2team_report",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3256350081363756/",
-   "published_at": "2026-11-20T01:17:24+00:00",
-   "reactions": 830,
-   "comments_count": 38,
-   "top_comments": []
-  },
-  {
-   "id": "3261561610842603",
-   "group_id": "j2team.community",
-   "group_name": "J2TEAM Community",
-   "title": "Google Wallet đã có mặt trên iPhone",
-   "content": "Google Wallet đã có mặt trên iPhone\nTheo Google, dự án Google Wallet to iOS sẽ được hỗ trợ tại Mỹ, giúp cho việc tiếp cận với người dùng iPhone trở nên dễ dàng hơn. Nó sẽ có những chức năng sau:\n\n✅ Thẻ thanh toán, thẻ thành viên\n\n✅ Theo dõi chuyến bay\n\n✅ Theo dõi đơn hàng\n\n✅ Chụp ảnh để thêm thẻ\n\nNhưng ❌ không hỗ trợ chạm thanh toán\n\nSẽ hoạt động từ iOS 17 trở lên và vùng Mỹ\n\n#j2team_share",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3261561610842603/",
-   "published_at": "2026-11-22T11:50:23+00:00",
-   "reactions": 249,
-   "comments_count": 42,
-   "top_comments": []
-  },
-  {
-   "id": "3261379440860820",
-   "group_id": "j2team.community",
-   "group_name": "J2TEAM Community",
-   "title": "TESLA FSD V15 BẮT ĐẦU TRIỂN KHAI – NÂNG CẤP TOÀN DIỆN KHẢ NĂNG LÁI XE TỰ ĐỘNG!",
-   "content": "**TESLA FSD V15 BẮT ĐẦU TRIỂN KHAI – NÂNG CẤP TOÀN DIỆN KHẢ NĂNG LÁI XE TỰ ĐỘNG!**\n\nTesla chính thức bắt đầu triển khai FSD v15 với hàng loạt cải tiến đáng chú ý:\n* **An toàn:** Cải thiện khả năng xử lý các tình huống an toàn quan trọng lên tới 25 lần theo Tesla.\n* **Reality View:** Trực quan hóa hành trình, giúp người lái quan sát những gì FSD dự định thực hiện.\n* **Điều hướng thông minh:** Học end-to-end từ sở thích lựa chọn tuyến đường của đội xe.\n* **Nhận diện tốt hơn:** Biển báo, động vật, ổ gà, vật cản và vùng ngập nước.\n* **Lái xe tự nhiên hơn:** Điều chỉnh tốc độ phù hợp tại khu vực trường học, thời tiết xấu và trước camera tốc độ.\n* **Chế độ giá đỡ xe đạp:** Hỗ trợ sử dụng FSD khi xe gắn thêm giá đỡ xe đạp hoặc phụ kiện kéo tương tự.\n\n**Video dưới đây ghi lại Tesla FSD v15 với Reality View khi di chuyển giữa khu vực trung tâm thành phố đông đúc.**\n\nNguồn: Nic Cruz Patane\n\n#j2team_community",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3261379440860820/",
-   "published_at": "2026-11-22T09:55:46+00:00",
-   "reactions": 476,
-   "comments_count": 61,
+   "title": "Chào anh em J2Team, mình chia sẻ project cá nhân: VSLearn, web học từ vựng ngôn ngữ ký hiệu Tiếng Việt. Dùng thử tại: vslearn. duc",
+   "content": "Chào anh em J2Team, mình chia sẻ project cá nhân: VSLearn, web học từ vựng ngôn ngữ ký hiệu Tiếng Việt. Dùng thử tại: vslearn. duckvhuynh .space\n\nCách học: chọn chủ đề, xem video mẫu rồi làm lại ký hiệu trước webcam. Máy chấm theo thang 100, nói bằng tiếng Việt chỗ bạn lệch nhiều nhất, và phát lại bộ xương của bạn chồng lên bản mẫu. Ngoài ra có lộ trình theo chặng, ôn tập ngắt quãng (FSRS), bài kiểm tra và từ điển khoảng 3.250 từ, tách theo ba miền Bắc, Trung, Nam.\n\nCách mình làm:\n\n- Dữ liệu: crawl khoảng 4.300 mục của từ điển QIPEDC (đã được QIPEDC đồng ý), dùng MediaPipe trích điểm mốc rồi chuẩn hoá về 59 điểm × 48 khung, lấy vai làm gốc và cắt đúng đoạn đang ký. Ghép thêm VieSign-10K để mỗi từ có mẫu của nhiều người ký.\n\n- Mô hình: lấy SL-GCN huấn luyện sẵn của OpenHands (AI4Bharat), train thêm bằng PyTorch, đổi từ phân loại sang so khớp embedding 256 chiều với ArcFace, rồi xuất ra ONNX.\n\n- Chấm điểm: so embedding của bạn với kho mẫu, cộng thêm DTW để so theo thời gian. Với người ký lạ, kho nhiều người ký chính xác hơn khoảng 3 lần so với chỉ dùng một video mẫu, mà không phải train lại. Ngưỡng đạt được hiệu chỉnh trên các lượt làm thật.\n\n- Web: MediaPipe và ONNX Runtime Web chạy trong Web Worker, encoder ưu tiên WebGPU, máy không hỗ trợ thì chạy WASM đa luồng. Tiến độ lưu trong IndexedDB\n\nHạn chế hiện tại: ngưỡng mới hiệu chỉnh trên ít người, các ký hiệu na ná nhau vẫn dễ nhầm, nên điểm chỉ để tham khảo khi luyện. Anh em nào biết ngôn ngữ ký hiệu hoặc từng làm pose/sign recognition thì góp ý giúp mình với\n\nP/s: mình không khiếm khuyết nhưng có lần mình thấy một trường hợp đã khiến mình muốn làm gì đó có thể giúp cho các bạn trong cộng đồng\n\n#j2team_share",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3262059400792824/",
+   "published_at": "2026-11-22T16:44:26+00:00",
+   "reactions": 20,
+   "comments_count": 3,
    "top_comments": [
     {
      "author": "Facebook user",
-     "text": "trong xe chắc gắn 1con 5090 r",
+     "text": "ồ gần đây có bộ VieSign-10k tiện hẳn. trước mình làm với bộ VSL400, 400 glosses, 3 góc quay, 26 signers. Mình cũng làm pipeline giống bạn, chỉ khác model là dùng Spoter và 1 phần kiến trúc st-gcn + late fusion, đạt acc 90%. cũng thử làm demo đơn giản với react thì thấy chạy cũng khá mượt, mình làm chủ yếu là VSLR, hi vọng sau này sẽ có bộ data về CVSL thì làm sẽ cải thiện được không chỉ từ đơn lẻ mà cả câu hoàn chỉnh khá nhiều.",
      "votes": 0
     },
     {
      "author": "Facebook user",
-     "text": "Công nhận đỉnh thật khớp 90% con đường thật. Chỉ có chưa nhận rõ chữ với hình ảnh chắc vài năm nữa là quét sắc nét hết mọi thứ luôn",
+     "text": "tốt e",
      "votes": 0
     },
     {
      "author": "Facebook user",
-     "text": "Sau 6 năm chạy FSD càng thấy update sau chạy kém thông minh hơn update cũ. K còn tuỷ chỉnh tốc độ nữa và toàn tự chọn lane ngoài đi mặc dù mình cố chọn lane trong để đi chill.",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "Má đã ngồi im r còn cứ lướt cam góc chuyển động như lúc gta v dc lúc chớ mẹ ra xe",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "Chip trong xe này ngang máy chủ hàng trăm triệu chứ ko vừa",
+     "text": "Hay quá bạn",
      "votes": 0
     }
    ]
   },
   {
-   "id": "3257508201247944",
+   "id": "3264290930569671",
    "group_id": "j2team.community",
    "group_name": "J2TEAM Community",
-   "title": "Chào mọi người, mình xin share web học tiếng Đức tự xây – Torcaedu",
-   "content": "Chào mọi người, mình xin share web học tiếng Đức tự xây – Torcaedu\n\n**Một số tính năng hiện có:**\n* Luyện dịch câu từ tiếng Việt sang tiếng Đức theo cấp độ.\n* Đọc báo tiếng Đức hằng ngày.\n* Hơn 10.000 từ vựng chia theo chủ đề từ A1–B2.\n* Luyện đề TELC A1–B2 (mình thi TELC nên hiện chưa có đề Goethe), có phòng thu âm để luyện nói.\n* Random đề nói để mọi người tự luyện tập.\n* Chấm và sửa thư bằng AI (tính năng trả phí).\n* Mini game học từ vựng, có thể dùng bộ từ đã lưu hoặc bộ từ có sẵn.\n\nHiện tại, các tính năng ôn luyện cơ bản đều miễn phí ạ\n\n🔗 **Link:** [https://torcaedu.com/](https://torcaedu.com/)\n\nMọi người ghé trải nghiệm và cho em xin chút đánh giá, góp ý để cải thiện web nhé\n\nCảm ơn admin đã duyệt bài\n\n#j2team_share",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3257508201247944/",
-   "published_at": "2026-11-20T13:47:12+00:00",
-   "reactions": 30,
-   "comments_count": 0,
-   "top_comments": []
-  },
-  {
-   "id": "3259895174342580",
-   "group_id": "j2team.community",
-   "group_name": "J2TEAM Community",
-   "title": "Mê nhạc TFT mùa 19 quá nên mình ngồi dựng lại thuật toán mix nhạc của mùa 19 để mọi người có thể tự trải nghiệm =)))",
-   "content": "Mê nhạc TFT mùa 19 quá nên mình ngồi dựng lại thuật toán mix nhạc của mùa 19 để mọi người có thể tự trải nghiệm =)))\n\nMọi người vào thử phối nhạc rồi share xem đội hình nào có bộ phối nhạc hay nha\n\nhttps://remix.carrotday.work\n\n#j2team_share",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3259895174342580/",
-   "published_at": "2026-11-21T16:24:53+00:00",
-   "reactions": 8,
-   "comments_count": 0,
-   "top_comments": []
-  },
-  {
-   "id": "3260648977600533",
-   "group_id": "j2team.community",
-   "group_name": "J2TEAM Community",
-   "title": "📣 ĐIỂM TIN BUỔI SÁNG CHỦ NHẬT (22/11/2026)",
-   "content": "📣 ĐIỂM TIN BUỔI SÁNG CHỦ NHẬT (22/11/2026)\n\nChào buổi sáng cả nhà J2TEAM! Chúc mọi người một ngày mới làm việc và học tập tràn đầy năng lượng. Dưới đây là những tin tức công nghệ và an ninh mạng nổi bật nhất trên thế giới sáng nay để mọi người cùng cập nhật nhé:\n\n1️⃣ Anthropic chính thức lên sàn Nasdaq: Cuộc giằng co giữa sứ mệnh an toàn AI và áp lực cổ đông\n\n2️⃣ Nvidia báo cáo doanh thu tăng vọt, xác nhận dừng bán chip AI H200 tại thị trường Trung Quốc\n\n3️⃣ Đánh giá Xiaomi 18 Pro và Pro Max: Phần cứng xuất sắc nhưng màn hình phụ chỉ hợp chụp selfie\n\n4️⃣ Microsoft bắt đầu tự động nâng cấp Windows 11 26H2 cho các máy tính cá nhân\n\n5️⃣ Google lột xác giao diện camera trên ứng dụng Gemini cho Android với hiệu ứng vuốt mượt mà\n\n6️⃣ Rò rỉ \"Moment Effects\": Samsung chuẩn bị mang Dynamic Island lên dòng Galaxy S27\n\n7️⃣ Lộ trình iPhone 2027: iPhone 18 bản thường ra mắt mùa xuân với chip A20 và modem C2\n\n8️⃣ Apple bị kiện đòi bồi thường 162 triệu USD tại Ấn Độ vì tính năng chạm chia sẻ danh bạ NameDrop\n\n9️⃣ Pond: Bản phân phối Arch Linux mới gây ấn tượng nhờ trải nghiệm giao diện độc đáo\n\n🔟 Dân độ PC dùng máy thổi hơi nhà phao làm mát laptop gaming, giảm tới 35°C và tăng 19% FPS\n\n1️⃣1️⃣ Tàu vũ trụ Hera trở lại cặp tiểu hành tinh từng bị NASA đâm thử nghiệm để bảo vệ Trái Đất\n\n1️⃣2️⃣ FBI và Bộ Nông nghiệp Mỹ (USDA) bị tin tặc xâm nhập hệ thống dữ liệu trọng yếu\n\n#j2team_news #diemtinsang #news",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3260648977600533/",
-   "published_at": "2026-11-22T01:50:18+00:00",
-   "reactions": 132,
-   "comments_count": 0,
-   "top_comments": []
-  },
-  {
-   "id": "3260600097605421",
-   "group_id": "j2team.community",
-   "group_name": "J2TEAM Community",
-   "title": "Một vật phẩm mới đã được phát hiện trong GTA 6, giúp người chơi có thể di chuyển đến một chiều không gian khác 🤯",
-   "content": "# Một vật phẩm mới đã được phát hiện trong GTA 6, giúp người chơi có thể di chuyển đến một chiều không gian khác 🤯\n\n#j2team_relax // video: EhsanSenpai111",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3260600097605421/",
-   "published_at": "2026-11-22T01:17:11+00:00",
-   "reactions": 2831,
-   "comments_count": 145,
-   "top_comments": []
-  },
-  {
-   "id": "2704483193342404",
-   "group_id": "machinelearningcoban",
-   "group_name": "Forum Machine Learning cơ bản",
-   "title": "Chào mọi người, mình là Hỷ, hiện đang là AI Engineer tại RevveAI.",
-   "content": "Chào mọi người, mình là Hỷ, hiện đang là AI Engineer tại RevveAI.\n\nTrong khoảng 1–2 tháng gần đây, model hynt/F5-TTS-Vietnamese-ViVoice nhận được khá nhiều sự quan tâm từ cộng đồng Voice Research, với hơn 𝟓𝟎.𝟎𝟎𝟎 lượt tải chỉ trong tháng này.\n\nĐây là model TTS tiếng Việt được phát triển dựa trên kiến trúc F5-TTS và huấn luyện trên 𝟏.𝟎𝟎𝟎 giờ dữ liệu tiếng Việt công khai.\n\nTrước sự quan tâm và đón nhận từ cộng đồng, hôm nay mình quyết định chia sẻ thêm một checkpoint mới, cũng sử dụng kiến trúc F5-TTS nhưng được huấn luyện trên quy mô 𝟔.𝟎𝟎𝟎 giờ dữ liệu tiếng Việt công khai.\n\nMình hy vọng checkpoint này sẽ mang đến thêm một lựa chọn hữu ích cho cộng đồng Voice Research. Cảm ơn mọi người đã đọc bài viết !\n\n🤗 Model: https://huggingface.co/hynt/F5-TTS-Vietnamese-ViVoice\n\n🎧 Demo: https://huggingface.co/spaces/hynt/F5-TTS-Vietnamese-100h",
-   "url": "https://facebook.com/groups/machinelearningcoban/permalink/2704483193342404/",
-   "published_at": "2026-11-22T11:14:09+00:00",
-   "reactions": 615,
-   "comments_count": 39,
+   "title": "CẢNH BÁO BẢO MẬT MINECRAFT JAVA",
+   "content": "# **CẢNH BÁO BẢO MẬT MINECRAFT JAVA**\n\nMột thử nghiệm bảo mật trên MC 26.3 (Windows x64) cho thấy kẻ xấu có thể lợi dụng gói tài nguyên máy chủ (resource-pack) để chạy chương trình trực tiếp trên máy tính của người chơi. **Cách thức hoạt động:**\n1. Kẻ tấn công tạo 1 gói tài nguyên chứa nhiều font chữ TrueType được chỉnh sửa đặc biệt.\n2. Người chơi vào máy chủ và chấp nhận tải gói tài nguyên theo yêu cầu máy chủ. Sau khi gói tài nguyên được tải, máy chủ lần lượt gửi những ký tự được chuẩn bị sẵn qua Action bar.\n3. Minecraft sử dụng FreeType để xử lý font chữ. Một lỗi trong quá trình này bị lợi dụng để can thiệp vào bộ nhớ của trò chơi.\n4. Kẻ tấn công tận dụng lỗi đó để điều khiển chương trình và thực thi lệnh trên Windows. Trong thử nghiệm, Calculator được mở lên, sau đó Minecraft tự thoát.\n\nKhông cần cài thêm mod hay tiện ích nào, không cần quyền quản trị viên trên máy chủ. Repository sử dụng 144 biến thể font chữ và gửi các ký tự theo một trình tự cố định nhằm tăng khả năng khai thác thành công. Anh em nên cẩn thận khi tải gói tài nguyên từ những máy chủ không rõ nguồn gốc nhé!\n \n\nNguồn: [[https://github.com/bikini/minecraft2shell](https://github.com/bikini/minecraft2shell)](https://github.com/bikini/minecraft2shell)\n\n#j2team_report",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3264290930569671/",
+   "published_at": "2026-11-24T07:58:41+00:00",
+   "reactions": 808,
+   "comments_count": 48,
    "top_comments": [
     {
      "author": "Facebook user",
-     "text": "Tuyệt vời quá anh ơi 🙌",
+     "text": "@[100066998076287:2048:Đạt Hà] vcl",
      "votes": 0
     },
     {
      "author": "Facebook user",
-     "text": "hi bạn, mình cũng đang làm TTS nghiên cứu. 1000h tiếng việt này bro chạy trên GPU thuê hết hay local fine-tune nhỉ",
+     "text": "Cho xin link nhạc đi bác",
      "votes": 0
     },
     {
      "author": "Facebook user",
-     "text": "em có con i5 4th có chạy được ko ạ 🥹",
+     "text": "@[100051442876397:2048:Đặng Thái Bình] ảo tht",
      "votes": 0
     },
     {
      "author": "Facebook user",
-     "text": "Có sử dụng free j k",
+     "text": "May ghê mấy nay chuyển qua pe chs r🐧",
      "votes": 0
     },
     {
      "author": "Facebook user",
-     "text": "Mình đang dùng F5 nha. Dùng ngon ngang Omnivoice 😂",
+     "text": "May thế vẫn đang lặn ở pb cũ chơi mod",
      "votes": 0
     }
    ]
   },
   {
-   "id": "2704351963355527",
-   "group_id": "machinelearningcoban",
-   "group_name": "Forum Machine Learning cơ bản",
-   "title": "Không biết trong forum mình có nhiều ACE đi sâu về mảng digital signal processing (DSP) không, mình xin giao lưu và học hỏi thêm n",
-   "content": "Không biết trong forum mình có nhiều ACE đi sâu về mảng digital signal processing (DSP) không, mình xin giao lưu và học hỏi thêm nhé.\n\nCá nhân mình đang nghiên cứu mảng DSP trong wearable/earable và gặp khá nhiều thử thách trong việc khử nhiễu artifacts. Các phép biến đổi họ Fourier thoạt nghe thì hay nhưng cũng đuối sức khi phải xử lý biosignal. Nếu anh em cũng đã và đang xử lý biosignal thì mình muốn được học hỏi các kỹ thuật anh em dùng để lọc nhiễu hiệu quả.\n\nP/s: Trong quá trình nghiên cứu mình cũng tạo ra các video giải thích bản chất toán học vừa để cho mình nhớ, vừa muốn chia sẻ đến cộng đồng, anh em thảo luận thêm ở comment nha. Mới ra tập đầu tiên về Fourier Transform :D",
-   "url": "https://facebook.com/groups/machinelearningcoban/permalink/2704351963355527/",
-   "published_at": "2026-11-22T08:38:52+00:00",
-   "reactions": 200,
-   "comments_count": 25,
+   "id": "3263545333977564",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "Mình tình cờ biết đến Deskland, một ứng dụng hình nền động khá thú vị. Mình rất thích ý tưởng của dự án, nhưng khi sử dụng thì thấ",
+   "content": "Mình tình cờ biết đến Deskland, một ứng dụng hình nền động khá thú vị. Mình rất thích ý tưởng của dự án, nhưng khi sử dụng thì thấy ứng dụng còn hơi nặng và chưa hỗ trợ tốt việc dùng nhiều màn hình.\n\nThế là mình fork mã nguồn về chỉnh sửa, ban đầu chỉ định tối ưu lại và bổ sung hỗ trợ đa màn hình. Nhưng càng làm càng nảy ra nhiều ý tưởng, từ Dock, Start Menu, Stage Manager, spotlight đến các tiện ích hệ thống và công cụ chụp, quay màn hình. Gom nhiều thứ mình hay dùng về 1 chỗ cho dễ quản lý mà không cần cài nhiều phần mềm khác nhau.\n\nSau một thời gian phát triển, mình đã đưa dự án đến phiên bản **TLauncher 1.0.0** và quyết định chia sẻ lên GitHub để mọi người cùng trải nghiệm.\n\nHình nền dựng bằng Rust/Win32 và OpenGL. Trên driver tương thích, TLauncher đưa khung từ GPU lên desktop qua D3D11/DirectComposition; GDI là đường dự phòng. Nhịp nền thường khoảng **30 FPS** và có thể tăng ngắn khi tương tác. Màn bị che ngừng nhận khung mới; khi tất cả bị che hoặc khi khóa máy, hình nền tạm dừng dựng. WebView2 dùng khi mở Cài đặt; công cụ chụp và quay chạy theo yêu cầu.\n* GitHub: [[https://github.com/tuanngbc/TLauncher](https://l.facebook.com/l.php?u=https%3A%2F%2Fgithub.com%2Ftuanngbc%2FTLauncher%3Ffbclid%3DIwZXh0bgNhZW0CMTAAcGRvZgVicmlkETE0MkxTZk9mdkRyamYxSVB3c3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABH4NyPhv4WoBFjvJ_BUzhLK2v4ZtS8D9072bkwv1s9Tj67PfivqXGGY4eukw4_aem_Y915nthUNNYlAPvd7cHCsg&h=AUDZ3bJnP0ZoWpR06ty3Hyq7ZC8rOSzjqMCH0kjFlAxtEr3bM0q8paXcu6gY4J3cGZjHTeCj8JIgL5lfZTXFF7tT9gDB2vEHDXo5OapxpDY_1EtTyP2fRPh6u05Zuo298NiW&__tn__=-UK-R&c[0]=AUD1IG6Jbb8Qyse_JU815-YxTP4u4Nit3qd3cdY0h-yndJNTo_jpvNz35AGovYRdCgPEU2Ok24b_gmvZRRqo-pzMJw2eRYFuVhMk6ooAxzmFKLV4bR_A-IAoqSuKddVXwDNHzLqUJqXHEvOVfYOA-Txgd-xDIzotjCph9vrr70Perb8)](https://l.facebook.com/l.php?u=https%3A%2F%2Fgithub.com%2Ftuanngbc%2FTLauncher%3Ffbclid%3DIwZXh0bgNhZW0CMTAAcGRvZgVicmlkETE0MkxTZk9mdkRyamYxSVB3c3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHxGe8VoWP1ea6NdooM_YiyIBYmhJVTWGJWPunSGB1PYWqWxGNesXpZUmdPLO_aem_Oaygt-dTx8WUnHChPxTo-A&h=AUDZ3bJnP0ZoWpR06ty3Hyq7ZC8rOSzjqMCH0kjFlAxtEr3bM0q8paXcu6gY4J3cGZjHTeCj8JIgL5lfZTXFF7tT9gDB2vEHDXo5OapxpDY_1EtTyP2fRPh6u05Zuo298NiW&__tn__=-UK-R&c[0]=AUD1IG6Jbb8Qyse_JU815-YxTP4u4Nit3qd3cdY0h-yndJNTo_jpvNz35AGovYRdCgPEU2Ok24b_gmvZRRqo-pzMJw2eRYFuVhMk6ooAxzmFKLV4bR_A-IAoqSuKddVXwDNHzLqUJqXHEvOVfYOA-Txgd-xDIzotjCph9vrr70Perb8)\n* Tải về: https://github.com/tuanngbc/TLauncher/releases/tag/v1.0.0\n\nMình chủ yếu thử nghiệm trên Windows 11 với hệ thống hai màn hình, chưa có điều kiện kiểm tra trên nhiều phiên bản Windows, độ phân giải và cấu hình phần cứng khác nhau. Vì vậy, nếu mọi người dùng thử và gặp lỗi, hoặc có ý tưởng cải thiện giao diện, tính năng thì rất mong nhận được góp ý để mình tiếp tục hoàn thiện.\n\nHy vọng mọi người sẽ thích dự án này!\n\nBài là AI viết, code cũng là codex làm đấy.\n\n#j2team_share",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3263545333977564/",
+   "published_at": "2026-11-23T16:52:09+00:00",
+   "reactions": 21,
+   "comments_count": 4,
+   "top_comments": [
+    {
+     "author": "Facebook user",
+     "text": "Em mới update lên v1.0.2 thêm spotlight full màn hình 🫡",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "E thì cook nó thành cái newtab trình duyệt :V",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Không liên quan lắm, nhưng mà bác chọn quả tên trùng với quả launcher minecraft cr*ck kẹp virus 🐧",
+     "votes": 0
+    }
+   ]
+  },
+  {
+   "id": "3264087817256649",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "📣 ĐIỂM TIN BUỔI TRƯA THỨ BA (24/11/2026)",
+   "content": "📣 ĐIỂM TIN BUỔI TRƯA THỨ BA (24/11/2026) \n\nCHÚC MỪNG NGÀY VĂN HÓA VIỆT NAM 24/11\n\nChào buổi trưa cả nhà J2TEAM! Chúc mọi người một ngày tràn đầy năng lượng. Dưới đây là những tin tức công nghệ và an ninh mạng nổi bật nhất trên thế giới sáng nay để mọi người cùng cập nhật nhé!\n\n#j2team_news #diemtinsang #news",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3264087817256649/",
+   "published_at": "2026-11-24T04:00:23+00:00",
+   "reactions": 63,
+   "comments_count": 0,
    "top_comments": []
   },
   {
-   "id": "1513442527358923",
+   "id": "2706760219781368",
+   "group_id": "machinelearningcoban",
+   "group_name": "Forum Machine Learning cơ bản",
+   "title": "",
+   "content": "",
+   "url": "https://facebook.com/groups/machinelearningcoban/permalink/2706760219781368/",
+   "published_at": "2026-11-24T11:15:18+00:00",
+   "reactions": 1,
+   "comments_count": 0,
+   "top_comments": []
+  },
+  {
+   "id": "2706575056466551",
+   "group_id": "machinelearningcoban",
+   "group_name": "Forum Machine Learning cơ bản",
+   "title": "clone giọng nói nên dùng lib gì các bác",
+   "content": "clone giọng nói nên dùng lib gì các bác",
+   "url": "https://facebook.com/groups/machinelearningcoban/permalink/2706575056466551/",
+   "published_at": "2026-11-24T07:27:07+00:00",
+   "reactions": 3,
+   "comments_count": 3,
+   "top_comments": []
+  },
+  {
+   "id": "2706646669792723",
+   "group_id": "machinelearningcoban",
+   "group_name": "Forum Machine Learning cơ bản",
+   "title": "Máy local GPU yếu nhưng Kaggle API chỉ cho đẩy notebook chạy batch, không mở được terminal trực tiếp cho AI Agent.",
+   "content": "Máy local GPU yếu nhưng Kaggle API chỉ cho đẩy notebook chạy batch, không mở được terminal trực tiếp cho AI Agent.\n\nMình viết kaggle-shell-mcp để giữ phiên Kaggle Dual T4 (30 GB VRAM) chạy nền tối đa 12h và nối thẳng vào AI Agent qua MCP, không cần VPN hay ngrok.\n\n- Tự gọi lệnh terminal có giữ trạng thái và môi trường.\n\n- Đồng bộ code, chạy job train nền, đọc log và tự chốt checkpoint trước mốc 12h.\n\n- Hỗ trợ tự động tắt để tiết kiệm quota.\n\nGitHub: https://github.com/NguyenQuocDat06-AI/kaggle-shell-mcp\n\nMình rất mong nhận được một Star và các góp ý / PR từ mọi người để hoàn thiện thêm.",
+   "url": "https://facebook.com/groups/machinelearningcoban/permalink/2706646669792723/",
+   "published_at": "2026-11-24T08:58:50+00:00",
+   "reactions": 219,
+   "comments_count": 11,
+   "top_comments": []
+  },
+  {
+   "id": "2706551673135556",
+   "group_id": "machinelearningcoban",
+   "group_name": "Forum Machine Learning cơ bản",
+   "title": "Chào cả nhà buổi chiều.",
+   "content": "Chào cả nhà buổi chiều.\n\nEm muốn được giải đáp vấn đề về clone giọng có cảm xúc tốt và chi phí hợp lý hiện tại ra sao?\n\nHiện tại em đang chạy local trên card 3080 12gb gồm vieneu và Omnivoice thì chất lượng voice đầu ra đang khá tệ đc 0.5 - 0.6 so với voice gốc. Cảm xúc thì hầu như ko có.\n\nEm đang muốn tìm 1 giải pháp khác có phí hoặc local tốt hơn nếu có thể đc từ 0.7-0.8 voice gốc thì quá tốt. Nếu có thêm cảm xúc hoặc nhấn nhá 1 xíu thì lại quá okie. \nMục đích làm video ngắn từ 1-2phút\n\nSố giọng cần clone tầm 7-10 giọng cho đội Sale",
+   "url": "https://facebook.com/groups/machinelearningcoban/permalink/2706551673135556/",
+   "published_at": "2026-11-24T06:55:30+00:00",
+   "reactions": 7,
+   "comments_count": 5,
+   "top_comments": []
+  },
+  {
+   "id": "2705887939868596",
+   "group_id": "machinelearningcoban",
+   "group_name": "Forum Machine Learning cơ bản",
+   "title": "mng ơi zalo AI challenge đóng cổng nộp priavte ch ạ em kh thấy chỗ submit",
+   "content": "mng ơi zalo AI challenge đóng cổng nộp priavte ch ạ em kh thấy chỗ submit",
+   "url": "https://facebook.com/groups/machinelearningcoban/permalink/2705887939868596/",
+   "published_at": "2026-11-23T16:02:51+00:00",
+   "reactions": 6,
+   "comments_count": 1,
+   "top_comments": []
+  },
+  {
+   "id": "1515548543814988",
    "group_id": "vgu.tech.alumni",
    "group_name": "VGU Tech Alumni",
-   "title": "[ Thời loạn AI là cơ hội vàng để Junior/Fresher bứt phá thay vì bỏ ngành ]",
-   "content": "# **[ Thời loạn AI là cơ hội vàng để Junior/Fresher bứt phá thay vì bỏ ngành ]**\n\nNguồn: Video \"Thời loạn AI là cơ hội | Junior dev đừng bỏ ngành\" - Kênh YouTube Quân IT\n\nTL;DR:\n* Ngành tech đang trong giai đoạn biến động mạnh vì AI, nhưng lịch sử cho thấy chính thời kỳ loạn lạc mới là cơ hội tốt nhất để người mới thu hẹp khoảng cách với lớp đi trước.\n* Khoảng cách 10-15 năm kinh nghiệm code truyền thống đang bị co lại còn khoảng 6 tháng đến 1 năm khi tất cả cùng phải học lại từ đầu về AI Agent, MCP hay Fine-tuning.\n* Junior nên bỏ tâm lý nạn nhân (victim mentality), tập trung vừa học nền tảng vừa build sản phẩm chạy thực tế bằng AI rồi đào sâu nguyên lý sau.\n\n=============================\n\nDạo này lướt quanh các hội nhóm tech, mình thấy rất nhiều bạn trẻ mang tâm lý bi quan, thậm chí khuyên nhau bỏ ngành vì nghĩ AI sắp lấy hết việc của Fresher và Junior. Nghe chia sẻ từ anh Quân IT (một người đã làm nghề 20 năm), mình thấy có nhiều góc nhìn rất thực tế đáng để anh em suy ngẫm.\n\nTrong lịch sử xã hội, khi trật tự đã ổn định, người ở vị trí thấp rất khó nhảy vọt vì lớp đi trước đã ngồi chắc ghế và nắm hết luật chơi. Muốn đổi đời hoặc thăng tiến nhanh (move up), người ta thường chỉ có vài cách như kết hôn với tầng lớp cao hơn, di cư sang vùng đất mới chưa định hình luật chơi, hoặc chờ đợi một thời kỳ loạn lạc làm xáo trộn toàn bộ cấu trúc cũ.\n\nLàn sóng AI hiện tại chính là một cuộc \"reset game\" như vậy trong ngành phần mềm. Ở thời bình, một bạn Fresher dù giỏi đến đâu cũng phải cày cuốc 5-7 năm mới mong lên được Tech Lead vì hệ thống và quy trình đã vận hành trơn tru dưới tay các Senior. Nhưng khi AI xuất hiện, chính những người làm nghề lâu năm lại là nhóm phải lo lắng nhiều nhất nếu họ bám chặt vào tư duy cũ.\n\nNhìn lại lịch sử ngành lập trình, sự thay đổi công cụ là chuyện diễn ra liên tục. Từ thời lập trình Assembly hay gõ từng thẻ HTML trên Notepad, rồi đến lúc IDE có Auto-complete, sau đó là sự ra đời của Google và Stack Overflow giúp giảm thời gian debug một lỗi từ 4 tiếng xuống còn vài giây. Ở mỗi giai đoạn, những người ngồi than vãn công cụ mới làm mất giá trị của mình đều bị bỏ lại, còn người chịu thích nghi thì đi tiếp.\n\nViệc đổ lỗi cho AI lấy mất cơ hội thực chất là một dạng tâm lý nạn nhân (victim mentality), và nó rất nguy hiểm vì khiến mình đứng yên một chỗ. Khi xác định vấn đề nằm ở kỹ năng của bản thân thì mình mới chủ động nâng cấp được.\n\nThực tế hiện nay, khi nhắc đến những khái niệm mới như AI Agent, MCP (Model Context Protocol), Skill hay Fine-tuning, gần như ai cũng phải học lại từ vạch xuất phát. Kinh nghiệm 10-15 năm tích lũy trước đây không còn tạo ra bức tường thành quá lớn nữa, mà chỉ giúp người đi trước có lợi thế về tư duy hệ thống (system mindset) khoảng 6 tháng đến 1 năm so với người mới.\n\nThậm chí, nhiều CEO và người trực tiếp phỏng vấn hiện nay lại ưu tiên tuyển các bạn trẻ nhanh nhạy, biết setup workflow làm việc với AI hơn là những người cứng nhắc, khăng khăng phải code tay hoàn toàn theo lối mòn cũ. Cánh cửa cho các bạn trẻ chịu vọc vạch đang mở rất rộng.\n\nCách học hiệu quả nhất cho anh em Junior giai đoạn này giống như học chơi đàn guitar: hãy dùng AI để build cho sản phẩm chạy được trước nhằm tạo cảm hứng, sau đó mới quay lại đào sâu nhạc lý là các kiến thức nền tảng về mạng, database và kiến trúc hệ thống. Tầm 1 năm tập trung cao độ theo cách này là đủ để tạo ra sự khác biệt lớn.\n\n--------------------\n\nAnh chị em đang làm tech thấy sao về góc nhìn này, team mọi người dạo này tuyển dụng hay áp dụng AI workflow vào quy trình dev thực tế như thế nào rồi?\n\n#sharing #ShareThisPost #softwareengineer #softwaredevelopment #CareerDevelopment #advice",
-   "url": "https://facebook.com/groups/vgu.tech.alumni/permalink/1513442527358923/",
-   "published_at": "2026-11-22T14:12:56+00:00",
-   "reactions": 435,
-   "comments_count": 50,
+   "title": "[ 12 Nguyên Tắc Xây Dựng \"Software Factory\" (Nhà Máy Phần Mềm) Dùng AI Mà Không Đẻ Ra Code Rác ]",
+   "content": "# **[ 12 Nguyên Tắc Xây Dựng \"Software Factory\" (Nhà Máy Phần Mềm) Dùng AI Mà Không Đẻ Ra Code Rác ]**\n\nNguồn: Bài nói chuyện của Dex Horthy (Factory, cựu CEO Human Layer) tại sự kiện AI Engineer\n\n**TL;DR:**\n\nDữ liệu từ benchmark Slop Code Bench cho thấy ngay cả các model mạnh nhất hiện nay cũng chỉ đạt khoảng 16% khi phải duy trì và phát triển một codebase qua nhiều giai đoạn.\n\nDex Horthy chỉ ra rằng vận hành một Agentic Software Factory thực chất vẫn là áp dụng kỷ luật Software Engineering truyền thống thay vì thả rông cho AI tự chạy.\n\nMuốn AI tăng năng suất mà không làm phình to nợ kỹ thuật, kỹ sư bắt buộc phải thiết lập cơ chế kiểm soát chất lượng tự động và giữ quyền kiểm duyệt ở các quyết định cốt lõi.\n\n==========================\n\nGần đây cộng đồng dev bàn tán rất nhiều về khái niệm Software Factory, nơi hàng loạt Coding Agent tự động nhận task, viết code và đẩy Pull Request liên tục. Tuy nhiên, số liệu thực tế lại đang gióng lên hồi chuông cảnh báo.\n\nTrên bộ đánh giá mới mang tên Slop Code Bench do Đại học Wisconsin công bố, các model hàng đầu hiện nay như GPT 5.5 hay Astra chỉ đạt mức điểm loanh quanh 15% đến 16.3%. Một nghiên cứu khác từ Faros cũng ghi nhận có tới 30% lượng PR được merge mà không qua review, kéo theo số lượng bug trên mỗi lập trình viên và sự cố trên môi trường Production tăng vọt.\n\nĐiểm yếu chí mạng của các model hiện tại là chúng rất giỏi giải quyết các bài toán độc lập từ con số không, nhưng lại cực kỳ tệ trong việc bảo trì và tiến hóa một codebase theo thời gian. Nếu bạn chỉ nhồi feature mới vào hệ thống một cách mù quáng, AI sẽ liên tục đắp thêm code chắp vá thay vì tái cấu trúc (Refactor) các lớp trừu tượng cũ, làm độ phức tạp (Cyclomatic Complexity) của hệ thống phình to chỉ sau vài tháng.\n\nĐể biến quy trình làm việc với AI thành một dây chuyền thực thụ mà không biến repo thành bãi rác, Dex Horthy đúc kết lại 12 nguyên tắc thực chiến xoay quanh cách chúng ta điều phối công việc:\n\nĐầu tiên là thiết kế nhịp điệu giữa **Forward Pressure** (áp lực đầu vào) và **Back Pressure** (áp lực phản hồi đầu ra). Forward Pressure là cách bạn tự động đẩy việc vào cho Agent, chẳng hạn như route thẳng feature request từ tracker hoặc tự động tạo PR sửa lỗi ngay khi hệ thống báo incident lúc 3 giờ sáng. Ngược lại, Back Pressure là bộ lọc chặn đứng code kém chất lượng trước khi tới tay con người, bao gồm hệ thống CI/CD chặt chẽ, static linter, các bài test tự động và cả Agentic Code Review để model tự sửa lỗi cho nhau.\n\nTiếp theo, đừng bao giờ bỏ qua bước **Plan trước khi build**. Dù tốc độ sinh code của AI tính bằng phút, chi phí đập đi làm lại khi thiết kế sai Database Schema hoặc kiến trúc tổng thể vẫn rất đắt đỏ. Bạn không cần tranh luận với AI xem cái nút bấm màu gì, nhưng với những phần có mức độ đau đớn cao khi thay đổi về sau, hãy chốt bản thiết kế kỹ thuật thật kỹ trước khi cho Agent chạy.\n\nTrong quá trình review và kiểm thử, hãy chuyển sang **Align Visually** và trao công cụ test thực tế cho Agent. Con người đọc text rất chậm nhưng xử lý hình ảnh cực nhanh, nên thay vì ngồi đọc hàng nghìn dòng diff khô khan, hãy yêu cầu AI xuất ra sơ đồ, bảng biểu hoặc giao diện mockup trực quan. Đồng thời, hãy cấp cho Agent quyền chạy trình duyệt, gọi curl hoặc chụp ảnh màn hình để nó tự kiểm chứng kết quả chạy thực tế thay vì chỉ đoán mò qua unit test.\n\nĐể chặn đứng các thói quen viết code rườm rà đặc trưng của LLM, hãy đưa các bộ quy tắc chống \"slop\" thẳng vào **Linter** trong repo, tương tự như bộ rule Anti-Slop của Dylan Mey tại Cloudflare hay các rule kiểm soát độ phức tạp hàm từ Slop Code Bench. Kết hợp thêm **Feature Flags** như PostHog hay LaunchDarkly để Agent có thể tự thử nghiệm tính năng mới trên tập user nhỏ và đo lường hiệu quả thực tế trước khi mở rộng.\n\nCuối cùng, hãy gom toàn bộ ngữ cảnh vào một **Unified Forge**. Thay vì để các đoạn chat với AI, tài liệu thiết kế trên Notion hay Google Docs nằm rời rạc khiến đồng nghiệp phải copy-paste qua lại trên Slack, hãy tập trung mọi quyết định và lịch sử thiết kế về cùng một mối để cả người lẫn Agent đều hiểu rõ lý do đằng sau từng dòng code.\n\nBên cạnh câu chuyện kỹ thuật, Dex Horthy cùng nhiều kỹ sư từ OpenAI, xAI cũng giới thiệu bản **Anti-Slop Manifesto** (slopmanifesto.com). Thông điệp cốt lõi rất thẳng thắn: Slop xảy ra khi người tạo ra nội dung hoặc code tốn ít công sức hơn rất nhiều so với thời gian người đọc hoặc người review phải bỏ ra để dọn dẹp nó. Chi phí tạo một PR 1.000 dòng giờ gần như bằng không, nhưng chi phí review vẫn giữ nguyên, và rác trong codebase hay tài liệu nội bộ sẽ tự nhân bản khi các Agent đời sau lại đọc chính đống rác đó để học theo.\n\nAI chỉ khuếch đại tư duy của người dùng chứ không thể thay thế năng lực phán đoán kỹ thuật. Dùng AI để vibe coding một bản prototype nhanh thì hoàn toàn ổn, nhưng với những hệ thống cần sống khỏe qua nhiều năm, trách nhiệm cuối cùng với chất lượng sản phẩm vẫn nằm ở người kỹ sư bấm nút merge.\n\n----------------------------\n\nTeam của anh chị em hiện tại đã áp dụng CI/CD hay bộ rule linter nào riêng để chặn AI sinh code rườm rà chưa, hay vẫn đang phải căng mắt review tay từng PR?\n\n#ShareThisPost #sharing #AIDevelopment #review #codereview #SoftwareEngineering #softwaredevelopment",
+   "url": "https://facebook.com/groups/vgu.tech.alumni/permalink/1515548543814988/",
+   "published_at": "2026-11-24T15:01:12+00:00",
+   "reactions": 77,
+   "comments_count": 1,
    "top_comments": [
     {
      "author": "Facebook user",
-     "text": "Cười ẻ vô mõm",
+     "text": "Mọi người ai lười đọc post thì có thể vào xem clip full ở đây nha (tầm 20p)\nhttps://www.youtube.com/watch?v=-NFMsM2y0Vk",
      "votes": 0
     }
    ]
+  },
+  {
+   "id": "1515536430482866",
+   "group_id": "vgu.tech.alumni",
+   "group_name": "VGU Tech Alumni",
+   "title": "[ GitRanks: Thước đo thực chất xem tài khoản GitHub của bạn đang đứng ở đâu trên bản đồ mã nguồn mở ]",
+   "content": "# **[ GitRanks: Thước đo thực chất xem tài khoản GitHub của bạn đang đứng ở đâu trên bản đồ mã nguồn mở ]**\n\nTL;DR:\n* GitRanks là nền tảng phân tích và xếp hạng dữ liệu công khai trên GitHub cho cả lập trình viên (Developer), kho mã nguồn (Repository) và tổ chức (Organization).\n* Thay vì chỉ đếm số commit xanh lè dễ bị \"cày\" ảo, hệ thống chia bảng xếp hạng theo 3 tiêu chí thực chất: tổng số Star của repo cá nhân, tổng số Star của các repo bên ngoài mà bạn từng có Pull Request được merge, và số lượng Follower.\n* Bạn có thể tra cứu thứ hạng của mình trên phạm vi toàn cầu, tại Việt Nam, theo từng ngôn ngữ lập trình và lấy các huy hiệu động (README badges) gắn thẳng vào trang cá nhân GitHub.\n\n===================\n\nNhiều anh chị em làm nghề lâu năm đều biết cái bẫy của biểu đồ đóng góp (contribution graph) trên GitHub. Chỉ cần viết một đoạn script tự động đẩy commit mỗi ngày là ô vuông xanh rì cả năm, nhưng giá trị thực tế mang lại cho cộng đồng thì gần như bằng không.\n\nVừa rồi mình có lướt qua GitRanks và thấy cách tiếp cận của trang này khá thực tế cho dân kỹ thuật. Nó bỏ qua số lượng commit đơn thuần mà chỉ dùng dữ liệu công khai (public data) để đo lường mức độ ảnh hưởng thực sự qua 3 bảng xếp hạng độc lập:\n\n* **Stars:** Tính tổng số sao trên các Repository mà bạn trực tiếp sở hữu (yêu cầu tối thiểu 5 stars để bắt đầu lên bảng).\n* **Contributions:** Cái này rất hay cho ai hay đi vá lỗi hoặc thêm tính năng cho thư viện bên ngoài. Hệ thống sẽ cộng tổng số sao của những repo người khác mà bạn từng gửi Pull Request và được duyệt gộp (merged PR) vào nhánh chính.\n* **Followers:** Tính theo lượng người theo dõi tài khoản GitHub của bạn (tối thiểu 5 followers).\n\nĐiểm tiện lợi là mọi bảng xếp hạng đều cho phép lọc theo từng quốc gia (có cả Việt Nam) và từng ngôn ngữ lập trình cụ thể. Mỗi tài khoản sau khi phân tích sẽ được phân hạng (Tier) từ Rookie đến Legend, còn các dự án mã nguồn mở thì xếp từ Stardust lên đến Supernova. Nhìn vào đây bạn sẽ biết ngay trong cộng đồng Java, Go hay TypeScript ở Việt Nam, tài khoản của mình đang nằm ở phân khúc nào và tăng giảm ra sao theo từng tháng.\n\nNgoài phần soi thông số cá nhân, trang này còn có vài tính năng phụ trợ khá gọn cho dân làm open source:\n\n* **README Badges:** Công cụ tạo huy hiệu dạng ảnh động (SVG/PNG) tự động cập nhật thứ hạng và tự đổi màu theo giao diện sáng/tối (Light/Dark theme) của người xem để bạn nhúng vào file README.md.\n* **GitRanks Contribute:** Một tính năng mới đang chạy Beta giúp quét các issue đang mở ở những repo uy tín, khớp với kỹ năng của bạn để AI hỗ trợ viết nháp bản vá, sau đó bạn tự review diff và quyết định có mở Pull Request bằng tài khoản của mình hay không.\n\nDữ liệu trên trang được cập nhật tự động theo chu kỳ khoảng 2 đến 4 ngày một lần, hoặc bạn có thể đăng nhập bằng GitHub để tự làm mới (refresh) profile của mình mỗi ngày một lần.\n\n--------------------\n\nMọi người thử gõ username GitHub của mình lên kiểm tra xem đang ở Tier nào rồi nhé. Anh chị em nào hay đóng góp cho mã nguồn mở thì thấy cách tính điểm qua merged PR của trang này đã phản ánh đúng công sức bỏ ra chưa?\n\n#ShareThisPost #sharing #github #ranking",
+   "url": "https://facebook.com/groups/vgu.tech.alumni/permalink/1515536430482866/",
+   "published_at": "2026-11-24T14:47:51+00:00",
+   "reactions": 10,
+   "comments_count": 1,
+   "top_comments": []
+  },
+  {
+   "id": "1515392543830588",
+   "group_id": "vgu.tech.alumni",
+   "group_name": "VGU Tech Alumni",
+   "title": "[ AI chứng minh được bài toán thế kỷ nhưng chính tác giả cũng không hiểu hết 17 triệu dòng code: Góc nhìn thẳng thắn từ GS. Ngô Bả",
+   "content": "# **[ AI chứng minh được bài toán thế kỷ nhưng chính tác giả cũng không hiểu hết 17 triệu dòng code: Góc nhìn thẳng thắn từ GS. Ngô Bảo Châu ]**\n\nNguồn: Trò chuyện giữa GS. Ngô Bảo Châu và GS. Trần Vĩnh Hưng (Kênh YouTube Hung Vinh Tran - #toan0mau)\n\nTL;DR:\n* Levent Alpöge cùng Anthropic vừa công bố chứng minh Giả thuyết Riemann (Riemann Hypothesis) bằng AI với hơn **17.000.000** dòng lệnh Lean, được máy móc kiểm chứng là đúng nhưng chính tác giả cũng chưa thể hiểu hết toàn bộ chứng minh. Đoạn code được diễn giải bằng văn bản với khoảng **250.000** trang\n* GS. Ngô Bảo Châu nhận định đây là bước ngoặt làm thay đổi cục diện nghiên cứu, nhưng cảnh báo việc tạo ra những lời giải mà con người không hiểu sẽ biến toán học thành \"nghĩa trang khủng long\" thay vì một hệ sinh thái tiếp tục phát triển.\n* Hệ thống đánh giá truyền thống (đếm bài báo, xét duyệt qua tạp chí) đang lỗi thời khi AI làm được quá nhanh, buộc giới học thuật và kỹ thuật phải quay lại với phỏng vấn, vấn đáp trực tiếp và đặt giá trị hiểu biết của con người làm thước đo cao nhất.\n\n===========================\n\nMấy hôm nay cộng đồng khoa học và anh chị em làm công nghệ đang xôn xao vụ Levent Alpöge kết hợp cùng Anthropic công bố giải được Giả thuyết Riemann (Riemann Hypothesis) và Giả thuyết Riemann mở rộng. Đây là một trong những bài toán thế kỷ hóc búa nhất lịch sử, đi kèm bản chứng minh dài hơn 250.000 trang với hàng trăm nghìn dòng code kiểm chứng trên ngôn ngữ hình thức Lean (Formal Verification).\n\nĐiều thú vị là ngay sau tin chấn động này, GS. Trần Vĩnh Hưng đã có buổi trò chuyện rất thẳng thắn với GS. Ngô Bảo Châu. Đứng ở góc độ người làm kỹ thuật phần mềm, mình thấy những trăn trở của giáo sư về chuyện \"AI chạy quá nhanh còn con người chưa kịp hiểu\" lại cực kỳ giống với tình cảnh anh em developer chúng ta đang đối mặt hàng ngày.\n\nCái nghịch lý đầu tiên mà GS. Ngô Bảo Châu chỉ ra là khái niệm \"đã chứng minh xong\". Trước đây, một định lý muốn được công nhận phải đi qua 3 tầng: người làm ra phải hiểu, cộng đồng hiểu, rồi mới dùng máy móc kiểm chứng lại các bước tính toán quá phức tạp. Giờ thì quy trình bị đảo ngược hoàn toàn.\n\nTrình biên dịch Lean xác nhận logic của 250.000 dòng lệnh kia là đúng, nhưng ngay cả người đặt câu lệnh (prompt) tạo ra nó cũng không thể đọc và hiểu hết toàn bộ ý tưởng bên trong. Giáo sư ví von rất hình tượng rằng nếu cứ để máy móc càn quét các bài toán mở theo kiểu đó, khu vườn toán học sẽ biến thành một \"nghĩa trang khủng long\". Khi một định lý bị đánh gục nhưng con người không rút ra được tư duy mới hay sự thấu hiểu sâu sắc, nó chỉ là một cái xác chết nằm đó chứ không hóa thành dinh dưỡng để nuôi sống các nhánh nghiên cứu tiếp theo.\n\nTuy nhiên, giáo sư không hề bi quan hay bài xích AI. Ông nhìn nhận công cụ này giống như một phòng thí nghiệm khổng lồ giúp \"dân chủ hóa\" (democratization) việc nghiên cứu. Trước đây, nhiều người có ý tưởng hay nhưng bị kẹt lại vì sức tính toán trên giấy nháp có hạn, hoặc không đủ khả năng nhẩm một chứng minh dài hàng trăm trang trong đầu.\n\nGiờ đây, AI giúp tra cứu chéo tài liệu, kiểm tra nhanh các mệnh đề trung gian (intermediate propositions) và thử nghiệm trên các dữ liệu đa biến phức tạp chỉ trong vài phút. Nhưng GS. Ngô Bảo Châu cũng chia sẻ một quan điểm làm nghề rất đáng suy ngẫm: ông sẽ chỉ dùng AI để thử nghiệm và tìm tài liệu, còn đến bước chứng minh cốt lõi cuối cùng thì nhất định tự làm. Bởi nếu giao luôn phần thú vị nhất cho máy, mình vừa tự đánh mất niềm vui khám phá, vừa không còn thực sự làm chủ công trình của chính mình.\n\nMột điểm chạm khác cực kỳ thực tế với dân kỹ thuật là sự sụp đổ của các thước đo đánh giá cũ. Khi một người có thể dùng AI xuất bản hàng trăm bài báo mà bản thân không hiểu sâu, việc tuyển dụng hay đánh giá năng lực dựa trên số lượng paper hay cái mác tạp chí lớn không còn ý nghĩa.\n\nTheo giáo sư, giải pháp duy nhất là phải quay về với giao tiếp giữa người với người và thi vấn đáp (oral defense) một cách nghiêm khắc. Giống như cách phỏng vấn kỹ sư hiện nay, thay vì nhìn CV liệt kê hàng tá công nghệ hay repo đẹp, người phỏng vấn phải hỏi xoáy trực tiếp vào bản chất, đặt các câu hỏi phản biện kín để xem ứng viên có thực sự làm chủ kiến thức hay chỉ đang mượn sức mạnh của LLM.\n\nSau cùng, nỗi lo lớn nhất của GS. Ngô Bảo Châu không phải là AI sẽ thay thế con người, mà là sự phân mảnh cộng đồng (sub-communities). Khi công cụ giúp mỗi nhóm nhỏ tự tạo ra một hệ giá trị riêng và chỉ quanh quẩn khen ngợi lẫn nhau, người trẻ sẽ mất đi cơ hội cọ xát với những chuẩn mực đỉnh cao thực sự và ngừng phát triển.\n\nNhìn từ câu chuyện toán học sang ngành phần mềm của anh chị em mình cũng vậy. Code sinh ra ngày càng nhiều, tốc độ ship feature ngày càng nhanh, nhưng giữ được người kỹ sư trong vòng kiểm soát (human-in-the-loop) và hiểu tận gốc rễ hệ thống mới là thứ giúp mình không bị đào thải.\n\n---------------------\n\nTrong team của mọi người dạo này, cách phỏng vấn hay review code có thay đổi gì để phân biệt giữa người thực sự hiểu hệ thống với người chỉ biết copy-paste từ AI không?\n\n#ShareThisPost #sharing #Ngobaochau #AIGenerated #mathematics",
+   "url": "https://facebook.com/groups/vgu.tech.alumni/permalink/1515392543830588/",
+   "published_at": "2026-11-24T11:59:08+00:00",
+   "reactions": 443,
+   "comments_count": 32,
+   "top_comments": [
+    {
+     "author": "Facebook user",
+     "text": "Khong hieu noi bo thoi gian ra de giai cac bai toan nhu vay co ung dung gi duoc cho cuoc son hay de tu suong la minh gioi hon nguoi khac.",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Đúng thế",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Chả sao cả, hồi Einstein đưa ra thuyết tương đối hẹp, hầu hết các nhà khoa học chả hiểu gì",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Ai sub phát giả thuyết đó là gì",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "17tr dòng code ko phải 250k",
+     "votes": 0
+    }
+   ]
+  },
+  {
+   "id": "1514592230577286",
+   "group_id": "vgu.tech.alumni",
+   "group_name": "VGU Tech Alumni",
+   "title": "Ông trùm áo da Jensen Huang chính thức trở lại ghế nóng NVIDIA chỉ sau 11 ngày từ chức — và Elon Musk lập tức lên tiếng: “Sai lầm ",
+   "content": "Ông trùm áo da Jensen Huang chính thức trở lại ghế nóng NVIDIA chỉ sau 11 ngày từ chức — và Elon Musk lập tức lên tiếng: “Sai lầm đã được sửa chữa!”\n\nĐúng như dự đoán của giới công nghệ mấy ngày qua, hội đồng quản trị NVIDIA vừa bỏ phiếu nhất trí khôi phục toàn bộ chức vụ CEO, Chủ tịch và giám đốc cho Jensen Huang ngay lập tức.\n\nChuyện là 11 ngày trước, ông Huang bất ngờ rời ghế nóng giữa lùm xùm liên quan đến vấn đề cá nhân. Nhưng chỉ hơn một tuần thiếu vắng người cầm lái, nội bộ rối ren còn đối thủ thì mừng thầm. Sau khi rà soát và xác nhận vụ việc hoàn toàn không ảnh hưởng gì tới an ninh quốc gia, NVIDIA quyết định \"quay xe\" mời tướng cũ về lại vị trí số một.\n\nTrên mạng xã hội X, Elon Musk — người bạn thân thiết và cũng là đối tác chiến lược của ông Huang — lập tức đăng hai dòng ngắn gọn mà đầy sức nặng: “It is done” (Mọi chuyện đã xong) và “The mistake has been corrected” (Sai lầm đã được sửa chữa). Còn cộng đồng mạng thì được phen cười nghiêng ngả, chế meme ầm ầm cảnh NVIDIA phải \"trải thảm đỏ rước lãnh đạo về\" vì không ai gánh nổi cái ghế tỷ đô này.\n\nNhìn cú quay xe thần tốc của NVIDIA mới thấy một sự thật trần trụi trong kinh doanh: Có những vị trí tưởng là thay ai cũng được, nhưng khi người đứng đầu bước ra khỏi cửa rồi mới biết... không có họ thì cả cỗ máy đứng khựng lại!\n\nTheo anh em, pha \"đi rồi lại về\" sau 11 ngày này sẽ giúp NVIDIA lấy lại phong độ hủy diệt, hay vết rạn nứt vừa rồi vẫn để lại dư chấn?\n\n#JensenHuang #Nvidia #ElonMusk #CongNgheAI #KinhDoanh #GocNhin",
+   "url": "https://facebook.com/groups/vgu.tech.alumni/permalink/1514592230577286/",
+   "published_at": "2026-11-23T16:30:05+00:00",
+   "reactions": 0,
+   "comments_count": 0,
+   "top_comments": []
+  },
+  {
+   "id": "1515157623854080",
+   "group_id": "vgu.tech.alumni",
+   "group_name": "VGU Tech Alumni",
+   "title": "",
+   "content": "",
+   "url": "https://facebook.com/groups/vgu.tech.alumni/permalink/1515157623854080/",
+   "published_at": "2026-11-24T06:37:56+00:00",
+   "reactions": 1,
+   "comments_count": 0,
+   "top_comments": []
   }
  ]
 }
