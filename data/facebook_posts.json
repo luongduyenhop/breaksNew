@@ -1,287 +1,330 @@
 {
- "generated_at": "2026-11-24T22:53:52.322026+00:00",
+ "generated_at": "2026-11-25T22:53:44.584715+00:00",
  "items": [
   {
-   "id": "2603672693391368",
+   "id": "2604302626661708",
    "group_id": "vnjug",
    "group_name": "Vietnam Java User Group",
-   "title": "🤖 **Làm Human-in-the-Loop cho AI Agent — Tool call đang chờ duyệt sống sót qua App Restart",
-   "content": "🤖 **Làm Human-in-the-Loop cho AI Agent — Tool call đang chờ duyệt sống sót qua App Restart**\n\nMột AI Agent ngân hàng có thể tự tra cứu vì sao khoản thanh toán thất bại. Trong bản demo của Spring, muốn thu lại tiền ngay thì Agent phải chờ một người duyệt (Human-in-the-Loop).\n\nSau câu hỏi \"Bạn có đồng ý không?\", bài toán đau đầu nhất chính là quãng **CHỜ ĐỢI** câu trả lời.\n\n⏳ Người duyệt trả lời sau vài phút, vài tiếng...\n🔄 Request duyệt rơi vào một instance server khác (scale ngang)...\n💥 Hoặc thậm chí ứng dụng bị restart giữa chừng!\n\nTrong bài blog của Spring, **Christian Tzolov** đã chỉ cách xử lý bài toán này gọn gàng với **Spring AI 2.1** và **Spring AI Session Extensions (v0.11.0)**.\n\n**1️⃣ Đánh dấu Tool cần duyệt cực gọn trong Spring AI 2.1**\n\nSpring AI 2.1 giữ sẵn vòng lặp tool cho bạn và cung cấp ba cách cấu hình những tool cần người duyệt.\n\n* Gắn thẳng @Tool(requiresConfirmation = true) trên method.\n* Khai báo property spring.ai.tools.confirmation.tools=... (cực tiện cho MCP tools hoặc tool từ bên thứ 3).\n* Dùng bean ToolCallConfirmationPolicy nếu muốn kiểm tra điều kiện động theo tham số, chẳng hạn khi giao dịch vượt một ngưỡng mới cần duyệt.\n\n👉 Nếu trong cùng một phản hồi của model có lệnh cần duyệt thì toàn bộ các lệnh trong phản hồi đó đều dừng lại chờ quyết định và chưa chạy.\n\n**2️⃣ Tool call đang chờ nằm ở đâu?**\n\nKhi cần người duyệt, Spring AI trả về một ChatResponse bình thường chứa các lệnh đang chờ. Để chạy tiếp sau đó, ứng dụng cần dùng lại prompt gốc cùng với phản hồi tạm dừng này.\n\n**3️⃣ \"Park & Resume\" qua nhiều process với Session Extensions**\n\nBản demo lưu lịch sử hội thoại xuống database qua JDBC bằng Spring AI Session API, đồng thời dùng TurnAdvisors từ thư viện cộng đồng để ghi thêm lượt đang chờ duyệt.\n\n* **Process A** — Nhận yêu cầu từ khách → model đề nghị chạy tool cần duyệt → hệ thống ghi lại lượt chờ kèm câu hỏi xác nhận vào database, rồi process có thể tắt hẳn.\n* **Process B** — Một JVM mới chỉ cần sessionId là tìm lại được câu hỏi đang chờ để hiển thị cho người duyệt. Tool chỉ chạy nếu được duyệt, sau đó agent dựa trên quyết định này để trả lời nốt cho khách.\n\n**⚠️ Một vài lưu ý thực chiến cực hay từ bài viết**\n\n* **Bảo mật** — Luôn dùng lại phản hồi tạm dừng đã lưu phía server để tránh bị chỉnh sửa tham số tool, đồng thời tự kiểm tra quyền của người duyệt trước khi tiếp nhận quyết định.\n* **Chống chạy trùng** — Turn advisor ghi nhận quyết định trước khi gọi tool, nên nếu gửi lại cùng quyết định cho lượt đã resume thì yêu cầu đó sẽ bị từ chối.\n* **Khi khách nhắn tin mới** — Nếu khách nhắn tin mới trong lúc đang chờ duyệt, hệ thống tự đóng câu hỏi cũ bằng trạng thái từ chối (deny) để lịch sử hội thoại luôn hợp lệ với LLM.\n\nAnh em nào đang build AI Agent bằng Java hay Spring Boot cho các hệ thống thực tế như fintech, vận hành hay CSKH có thể tham khảo ngay kiến trúc Park & Resume này nhé.\n\n#VietnamJavaUserGroup #VietnamJUG #Java #JavaCommunity #SpringAI #SpringBoot #AIAgent #HumanInTheLoop #ToolCalling",
-   "url": "https://facebook.com/groups/vnjug/permalink/2603672693391368/",
-   "published_at": "2026-11-24T15:41:03+00:00",
-   "reactions": 3,
+   "title": "AI Software Factory – Tự động hóa từ GitHub Issue đến Pull Request trên Kubernetes",
+   "content": "**AI Software Factory – Tự động hóa từ GitHub Issue đến Pull Request trên Kubernetes**\n\nLàm thế nào để tự động hóa quy trình từ một **issue mới** trên GitHub đến khi có **pull request** hoàn chỉnh — tự lập kế hoạch, viết code, chạy build/test và mở PR — với toàn bộ phần **inference chạy ngay trong cluster** Kubernetes/OpenShift?\n\nRepo **piomin/ai-software-factory** của Piotr Mińkowski kết hợp Tekton Pipelines/Triggers, vLLM và OpenCode. Phần inference sử dụng model chạy nội bộ trên GPU nodes (mặc định là **Qwen3.8 Flash**, có manifest riêng cho **Qwen3 Coder**), trong khi thông tin issue, comment, nhánh code và PR vẫn trao đổi trực tiếp với GitHub. Coding agent mặc định là **OpenCode chạy trong image có sẵn JDK và Maven**, còn Claude Code chỉ được cung cấp dưới dạng image tùy chọn.\n\n**Các luồng xử lý chính**\n\n* **issue-agent** – Khi mở issue mới, agent đăng checklist kế hoạch, triển khai trên nhánh mới, chạy kiểm chứng rồi mở PR.\n* **issue-comment-agent** – Khi có comment bắt đầu bằng @ai trên issue đang mở, hệ thống trả lời nếu là câu hỏi, hoặc lập kế hoạch và chỉ mở PR mới khi có thay đổi code.\n* **pr-comment-agent** – Khi PR đang mở có review hoặc review comment, agent đọc ngữ cảnh hội thoại để trả lời câu hỏi hoặc sàng lọc góp ý, và chỉ push commit lên nhánh PR hiện tại khi có thay đổi.\n* **Luồng requirements** – Một **CronJob** quét mỗi giờ. Pipeline **requirements-agent** chỉ phân tích khi issue mới hoặc requirements thay đổi, còn khi dependency đã đóng thì tạo các task đủ điều kiện, mặc định tối đa **3 task issue đang mở** cho mỗi requirements issue.\n\n**Kiểm soát truy cập, build và chất lượng**\n\n* **Lọc webhook & cấp quyền theo bước** – Tekton Triggers xác thực webhook và chỉ chấp nhận sự kiện từ tài khoản OWNER, MEMBER hoặc COLLABORATOR (có ngoại lệ cho tài khoản GitHub App với các task issue). Bước prepare lấy token từ GitHub App để clone repo, plan chỉ nhận token ngắn hạn để comment, bước agent không giữ GitHub credentials (cấu hình OpenCode chặn lệnh commit và push ở bước viết code), còn publish lấy token mới để đẩy code và thao tác PR. Tên PipelineRun cố định giúp ngăn webhook redelivery tạo run trùng khi run cũ vẫn còn tồn tại.\n* **Verify & draft PR** – Khi có thay đổi code, bước verify mặc định chạy mvn -B -ntp verify nếu repo có pom.xml (có thể thay bằng lệnh khác) và gửi phần cuối log để agent tự sửa nếu lỗi. Riêng với các **pipeline mở PR mới**, nếu verify vẫn lỗi sau giới hạn thử lại, hệ thống tạo **draft PR**, không bật auto-merge và comment kèm phần cuối build log.\n* **Auto-merge có điều kiện** – Pipeline thử bật auto-merge ở các PR mới đủ điều kiện. Nếu repo yêu cầu approval và status checks trong branch protection, GitHub sẽ chờ đủ điều kiện trước khi merge.\n\nAnh em quan tâm có thể tìm repo công khai **piomin/ai-software-factory** để xem chi tiết cấu hình Tekton/vLLM, hoặc xem thử lịch sử PR và plan comment tại repo **piomin/ai-software-factory-showcase**.\n\n#VietnamJavaUserGroup #VietnamJUG #Java #JavaCommunity #Kubernetes #Tekton #vLLM #AIAgents #Maven",
+   "url": "https://facebook.com/groups/vnjug/permalink/2604302626661708/",
+   "published_at": "2026-11-25T05:19:12+00:00",
+   "reactions": 37,
+   "comments_count": 3,
+   "top_comments": [
+    {
+     "author": "Facebook user",
+     "text": "Another day. Another promax post from bro 🫡",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "AI Software Factory on Kubernetes / OpenShift: https://github.com/piomin/ai-software-factory",
+     "votes": 0
+    }
+   ]
+  },
+  {
+   "id": "3266405937024837",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "1Password bị hack",
+   "content": "# **1Password bị hack**\n* Kẻ tấn công đã lấy được một số thông tin khách hàng, bao gồm tên và địa chỉ email đăng nhập\n* Dữ liệu vault data và key không bị ảnh hưởng\n\n#j2team_news",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3266405937024837/",
+   "published_at": "2026-11-25T20:05:23+00:00",
+   "reactions": 36,
+   "comments_count": 6,
+   "top_comments": []
+  },
+  {
+   "id": "3265736313758466",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "Tiktok Bulk Downloader: Tải hàng loạt ảnh, video của người dùng Tiktok bằng 1 click.",
+   "content": "# **Tiktok Bulk Downloader: Tải hàng loạt ảnh, video của người dùng Tiktok bằng 1 click.**\n\n**Chào mọi người, em lên bài này để chia sẻ cho mọi người con desktop app do em mới tạo ra, hỗ trợ người dùng tải ảnh, video trên Tiktok.**\n\n💡 Các tính năng chính của app:\n* Tải hàng loạt ảnh, video của một trang cá nhân Tiktok ở chế độ công khai\n* Hỗ trợ custom thư mục tải xuống, cấu hình tên file, số lượng tải đồng thời\n* Hỗ trợ lọc theo ID, Mô tả, Content type (video/photo), ngày tạo\n* Hỗ trợ sắp xếp theo lượt likes, comments, views\n* Phân trang linh hoạt giúp tải xuống video theo số lượng nhất định\n* Hỗ trợ tải theo nhiều URL cùng 1 lúc\n* Hỗ trợ tải video gán giỏ hàng Tiktok shop\n* Tốc độ tải được tối ưu hóa\n* Chế độ light/dark mode, đa ngôn ngữ, tự động check bản cập nhật mới\n\n💡 Thông tin chi tiết: [https://j2c.cc/0f9a29e9](https://j2c.cc/0f9a29e9)\n\n⬇️ Link cài đặt:\n* Window: [[https://j2c.cc/8886fd49](https://j2c.cc/8886fd49)](https://j2c.cc/8886fd49)\n* Linux: [[https://j2c.cc/6cab62de](https://j2c.cc/6cab62de)](https://j2c.cc/6cab62de)\n* MacOS: Hiện chưa được hỗ trợ ạ\n\nMong ad duyệt giúp em ạ. Em cảm ơn. ❤️❤️❤️\n\n#j2team_share",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3265736313758466/",
+   "published_at": "2026-11-25T09:37:19+00:00",
+   "reactions": 32,
+   "comments_count": 3,
+   "top_comments": [
+    {
+     "author": "Facebook user",
+     "text": "bản extension đang ngon mà sếp 😭",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Hóng tele bulk :)",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Tool quá đỉnh ❤️",
+     "votes": 0
+    }
+   ]
+  },
+  {
+   "id": "3265901543741943",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "Docker chính thức thay đổi nhận diện thương hiệu (Rebrand) vào ngày 19/11",
+   "content": "Docker chính thức thay đổi nhận diện thương hiệu (Rebrand) vào ngày 19/11\n\n#J2team_news",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3265901543741943/",
+   "published_at": "2026-11-25T12:11:42+00:00",
+   "reactions": 74,
+   "comments_count": 6,
+   "top_comments": []
+  },
+  {
+   "id": "3265897507075680",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "[Update] Bộ font Sách Xưa",
+   "content": "[Update] Bộ font Sách Xưa\n\nMình đốt token tiếp nên từ 20 lên 45 font rồi, anh/chị/em nào cần thì cứ tải nhé 😁\n\nLink tải trong ảnh và comment.\n\n#j2team_share",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3265897507075680/",
+   "published_at": "2026-11-25T12:07:54+00:00",
+   "reactions": 75,
    "comments_count": 1,
    "top_comments": []
   },
   {
-   "id": "3264705227194908",
+   "id": "3260435934288504",
    "group_id": "j2team.community",
    "group_name": "J2TEAM Community",
-   "title": "j2team_share #j2team_relax",
-   "content": "#j2team_share #j2team_relax\nMấy hôm nay AI Twitter đang combat cực căng vụ AI vừa hỗ trợ chứng minh xong Giả thuyết Riemann.\n* Elon Musk & Alexandr Wang: \"Siêu trí tuệ tới rồi!\"\n* Giáo sư Yann LeCun: \"Chưa đâu, bao giờ tụi nó biết lái xe tự hành cấp 5 như thanh niên 17 tuổi tập 20 tiếng thì hẵng nói chuyện.\"\n\nLửa cho bác nào cần: [https://x.com/elonmusk/status/2124464633490850164](https://x.com/elonmusk/status/2124464633490850164)\n\nVideo tóm tắt 👇",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3264705227194908/",
-   "published_at": "2026-11-24T14:52:09+00:00",
-   "reactions": 37,
-   "comments_count": 3,
-   "top_comments": []
-  },
-  {
-   "id": "3262059400792824",
-   "group_id": "j2team.community",
-   "group_name": "J2TEAM Community",
-   "title": "Chào anh em J2Team, mình chia sẻ project cá nhân: VSLearn, web học từ vựng ngôn ngữ ký hiệu Tiếng Việt. Dùng thử tại: vslearn. duc",
-   "content": "Chào anh em J2Team, mình chia sẻ project cá nhân: VSLearn, web học từ vựng ngôn ngữ ký hiệu Tiếng Việt. Dùng thử tại: vslearn. duckvhuynh .space\n\nCách học: chọn chủ đề, xem video mẫu rồi làm lại ký hiệu trước webcam. Máy chấm theo thang 100, nói bằng tiếng Việt chỗ bạn lệch nhiều nhất, và phát lại bộ xương của bạn chồng lên bản mẫu. Ngoài ra có lộ trình theo chặng, ôn tập ngắt quãng (FSRS), bài kiểm tra và từ điển khoảng 3.250 từ, tách theo ba miền Bắc, Trung, Nam.\n\nCách mình làm:\n\n- Dữ liệu: crawl khoảng 4.300 mục của từ điển QIPEDC (đã được QIPEDC đồng ý), dùng MediaPipe trích điểm mốc rồi chuẩn hoá về 59 điểm × 48 khung, lấy vai làm gốc và cắt đúng đoạn đang ký. Ghép thêm VieSign-10K để mỗi từ có mẫu của nhiều người ký.\n\n- Mô hình: lấy SL-GCN huấn luyện sẵn của OpenHands (AI4Bharat), train thêm bằng PyTorch, đổi từ phân loại sang so khớp embedding 256 chiều với ArcFace, rồi xuất ra ONNX.\n\n- Chấm điểm: so embedding của bạn với kho mẫu, cộng thêm DTW để so theo thời gian. Với người ký lạ, kho nhiều người ký chính xác hơn khoảng 3 lần so với chỉ dùng một video mẫu, mà không phải train lại. Ngưỡng đạt được hiệu chỉnh trên các lượt làm thật.\n\n- Web: MediaPipe và ONNX Runtime Web chạy trong Web Worker, encoder ưu tiên WebGPU, máy không hỗ trợ thì chạy WASM đa luồng. Tiến độ lưu trong IndexedDB\n\nHạn chế hiện tại: ngưỡng mới hiệu chỉnh trên ít người, các ký hiệu na ná nhau vẫn dễ nhầm, nên điểm chỉ để tham khảo khi luyện. Anh em nào biết ngôn ngữ ký hiệu hoặc từng làm pose/sign recognition thì góp ý giúp mình với\n\nP/s: mình không khiếm khuyết nhưng có lần mình thấy một trường hợp đã khiến mình muốn làm gì đó có thể giúp cho các bạn trong cộng đồng\n\n#j2team_share",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3262059400792824/",
-   "published_at": "2026-11-22T16:44:26+00:00",
-   "reactions": 20,
-   "comments_count": 3,
-   "top_comments": [
-    {
-     "author": "Facebook user",
-     "text": "ồ gần đây có bộ VieSign-10k tiện hẳn. trước mình làm với bộ VSL400, 400 glosses, 3 góc quay, 26 signers. Mình cũng làm pipeline giống bạn, chỉ khác model là dùng Spoter và 1 phần kiến trúc st-gcn + late fusion, đạt acc 90%. cũng thử làm demo đơn giản với react thì thấy chạy cũng khá mượt, mình làm chủ yếu là VSLR, hi vọng sau này sẽ có bộ data về CVSL thì làm sẽ cải thiện được không chỉ từ đơn lẻ mà cả câu hoàn chỉnh khá nhiều.",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "tốt e",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "Hay quá bạn",
-     "votes": 0
-    }
-   ]
-  },
-  {
-   "id": "3264290930569671",
-   "group_id": "j2team.community",
-   "group_name": "J2TEAM Community",
-   "title": "CẢNH BÁO BẢO MẬT MINECRAFT JAVA",
-   "content": "# **CẢNH BÁO BẢO MẬT MINECRAFT JAVA**\n\nMột thử nghiệm bảo mật trên MC 26.3 (Windows x64) cho thấy kẻ xấu có thể lợi dụng gói tài nguyên máy chủ (resource-pack) để chạy chương trình trực tiếp trên máy tính của người chơi. **Cách thức hoạt động:**\n1. Kẻ tấn công tạo 1 gói tài nguyên chứa nhiều font chữ TrueType được chỉnh sửa đặc biệt.\n2. Người chơi vào máy chủ và chấp nhận tải gói tài nguyên theo yêu cầu máy chủ. Sau khi gói tài nguyên được tải, máy chủ lần lượt gửi những ký tự được chuẩn bị sẵn qua Action bar.\n3. Minecraft sử dụng FreeType để xử lý font chữ. Một lỗi trong quá trình này bị lợi dụng để can thiệp vào bộ nhớ của trò chơi.\n4. Kẻ tấn công tận dụng lỗi đó để điều khiển chương trình và thực thi lệnh trên Windows. Trong thử nghiệm, Calculator được mở lên, sau đó Minecraft tự thoát.\n\nKhông cần cài thêm mod hay tiện ích nào, không cần quyền quản trị viên trên máy chủ. Repository sử dụng 144 biến thể font chữ và gửi các ký tự theo một trình tự cố định nhằm tăng khả năng khai thác thành công. Anh em nên cẩn thận khi tải gói tài nguyên từ những máy chủ không rõ nguồn gốc nhé!\n \n\nNguồn: [[https://github.com/bikini/minecraft2shell](https://github.com/bikini/minecraft2shell)](https://github.com/bikini/minecraft2shell)\n\n#j2team_report",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3264290930569671/",
-   "published_at": "2026-11-24T07:58:41+00:00",
-   "reactions": 808,
-   "comments_count": 48,
-   "top_comments": [
-    {
-     "author": "Facebook user",
-     "text": "@[100066998076287:2048:Đạt Hà] vcl",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "Cho xin link nhạc đi bác",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "@[100051442876397:2048:Đặng Thái Bình] ảo tht",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "May ghê mấy nay chuyển qua pe chs r🐧",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "May thế vẫn đang lặn ở pb cũ chơi mod",
-     "votes": 0
-    }
-   ]
-  },
-  {
-   "id": "3263545333977564",
-   "group_id": "j2team.community",
-   "group_name": "J2TEAM Community",
-   "title": "Mình tình cờ biết đến Deskland, một ứng dụng hình nền động khá thú vị. Mình rất thích ý tưởng của dự án, nhưng khi sử dụng thì thấ",
-   "content": "Mình tình cờ biết đến Deskland, một ứng dụng hình nền động khá thú vị. Mình rất thích ý tưởng của dự án, nhưng khi sử dụng thì thấy ứng dụng còn hơi nặng và chưa hỗ trợ tốt việc dùng nhiều màn hình.\n\nThế là mình fork mã nguồn về chỉnh sửa, ban đầu chỉ định tối ưu lại và bổ sung hỗ trợ đa màn hình. Nhưng càng làm càng nảy ra nhiều ý tưởng, từ Dock, Start Menu, Stage Manager, spotlight đến các tiện ích hệ thống và công cụ chụp, quay màn hình. Gom nhiều thứ mình hay dùng về 1 chỗ cho dễ quản lý mà không cần cài nhiều phần mềm khác nhau.\n\nSau một thời gian phát triển, mình đã đưa dự án đến phiên bản **TLauncher 1.0.0** và quyết định chia sẻ lên GitHub để mọi người cùng trải nghiệm.\n\nHình nền dựng bằng Rust/Win32 và OpenGL. Trên driver tương thích, TLauncher đưa khung từ GPU lên desktop qua D3D11/DirectComposition; GDI là đường dự phòng. Nhịp nền thường khoảng **30 FPS** và có thể tăng ngắn khi tương tác. Màn bị che ngừng nhận khung mới; khi tất cả bị che hoặc khi khóa máy, hình nền tạm dừng dựng. WebView2 dùng khi mở Cài đặt; công cụ chụp và quay chạy theo yêu cầu.\n* GitHub: [[https://github.com/tuanngbc/TLauncher](https://l.facebook.com/l.php?u=https%3A%2F%2Fgithub.com%2Ftuanngbc%2FTLauncher%3Ffbclid%3DIwZXh0bgNhZW0CMTAAcGRvZgVicmlkETE0MkxTZk9mdkRyamYxSVB3c3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABH4NyPhv4WoBFjvJ_BUzhLK2v4ZtS8D9072bkwv1s9Tj67PfivqXGGY4eukw4_aem_Y915nthUNNYlAPvd7cHCsg&h=AUDZ3bJnP0ZoWpR06ty3Hyq7ZC8rOSzjqMCH0kjFlAxtEr3bM0q8paXcu6gY4J3cGZjHTeCj8JIgL5lfZTXFF7tT9gDB2vEHDXo5OapxpDY_1EtTyP2fRPh6u05Zuo298NiW&__tn__=-UK-R&c[0]=AUD1IG6Jbb8Qyse_JU815-YxTP4u4Nit3qd3cdY0h-yndJNTo_jpvNz35AGovYRdCgPEU2Ok24b_gmvZRRqo-pzMJw2eRYFuVhMk6ooAxzmFKLV4bR_A-IAoqSuKddVXwDNHzLqUJqXHEvOVfYOA-Txgd-xDIzotjCph9vrr70Perb8)](https://l.facebook.com/l.php?u=https%3A%2F%2Fgithub.com%2Ftuanngbc%2FTLauncher%3Ffbclid%3DIwZXh0bgNhZW0CMTAAcGRvZgVicmlkETE0MkxTZk9mdkRyamYxSVB3c3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHxGe8VoWP1ea6NdooM_YiyIBYmhJVTWGJWPunSGB1PYWqWxGNesXpZUmdPLO_aem_Oaygt-dTx8WUnHChPxTo-A&h=AUDZ3bJnP0ZoWpR06ty3Hyq7ZC8rOSzjqMCH0kjFlAxtEr3bM0q8paXcu6gY4J3cGZjHTeCj8JIgL5lfZTXFF7tT9gDB2vEHDXo5OapxpDY_1EtTyP2fRPh6u05Zuo298NiW&__tn__=-UK-R&c[0]=AUD1IG6Jbb8Qyse_JU815-YxTP4u4Nit3qd3cdY0h-yndJNTo_jpvNz35AGovYRdCgPEU2Ok24b_gmvZRRqo-pzMJw2eRYFuVhMk6ooAxzmFKLV4bR_A-IAoqSuKddVXwDNHzLqUJqXHEvOVfYOA-Txgd-xDIzotjCph9vrr70Perb8)\n* Tải về: https://github.com/tuanngbc/TLauncher/releases/tag/v1.0.0\n\nMình chủ yếu thử nghiệm trên Windows 11 với hệ thống hai màn hình, chưa có điều kiện kiểm tra trên nhiều phiên bản Windows, độ phân giải và cấu hình phần cứng khác nhau. Vì vậy, nếu mọi người dùng thử và gặp lỗi, hoặc có ý tưởng cải thiện giao diện, tính năng thì rất mong nhận được góp ý để mình tiếp tục hoàn thiện.\n\nHy vọng mọi người sẽ thích dự án này!\n\nBài là AI viết, code cũng là codex làm đấy.\n\n#j2team_share",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3263545333977564/",
-   "published_at": "2026-11-23T16:52:09+00:00",
-   "reactions": 21,
-   "comments_count": 4,
-   "top_comments": [
-    {
-     "author": "Facebook user",
-     "text": "Em mới update lên v1.0.2 thêm spotlight full màn hình 🫡",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "E thì cook nó thành cái newtab trình duyệt :V",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "Không liên quan lắm, nhưng mà bác chọn quả tên trùng với quả launcher minecraft cr*ck kẹp virus 🐧",
-     "votes": 0
-    }
-   ]
-  },
-  {
-   "id": "3264087817256649",
-   "group_id": "j2team.community",
-   "group_name": "J2TEAM Community",
-   "title": "📣 ĐIỂM TIN BUỔI TRƯA THỨ BA (24/11/2026)",
-   "content": "📣 ĐIỂM TIN BUỔI TRƯA THỨ BA (24/11/2026) \n\nCHÚC MỪNG NGÀY VĂN HÓA VIỆT NAM 24/11\n\nChào buổi trưa cả nhà J2TEAM! Chúc mọi người một ngày tràn đầy năng lượng. Dưới đây là những tin tức công nghệ và an ninh mạng nổi bật nhất trên thế giới sáng nay để mọi người cùng cập nhật nhé!\n\n#j2team_news #diemtinsang #news",
-   "url": "https://facebook.com/groups/j2team.community/permalink/3264087817256649/",
-   "published_at": "2026-11-24T04:00:23+00:00",
+   "title": "🏸 Nhóm quen hôm nay sủi, còn mình vẫn muốn đánh cầu thì sao?",
+   "content": "# 🏸 Nhóm quen hôm nay sủi, còn mình vẫn muốn đánh cầu thì sao?\n\nChắc nhiều người cũng từng gặp cảnh này: muốn tìm một nhóm đánh cầu gần nhà để tham gia ké một buổi mà chẳng biết tìm ở đâu. Lịch đánh thì nằm rải rác khắp các hội nhóm Facebook. Nhóm gần nhà thì đánh quá sớm, nhóm chơi đúng giờ mình rảnh thì lại xa tít mù.\n\nThế nên ChoiCau.vn ra đời!\n\nMình làm ChoiCau.vn để bạn dễ tìm được hội đánh cùng mà không phải lội Facebook cả buổi.\n\nMuốn đánh sau 7 giờ tối? Chọn khu vực quanh bạn, xem nhóm nào đang có lịch. Có cả thông tin trình độ, phí sân mỗi buổi và địa điểm để bạn cân nhắc trước khi liên hệ.\n\nKhông cần quen biết từ trước, không cần có nhóm cố định. Cứ tìm được nhóm hợp giờ, hợp trình là có kèo thôi! 😁\n\nAi đang tính xách vợt đi tối nay, thử xem quanh nhà có nhóm nào đánh cùng nhé 🏸\n\n[https://choicau.vn/tim](https://choicau.vn/tim)\n\n#j2team_share",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3260435934288504/",
+   "published_at": "2026-11-21T22:52:41+00:00",
    "reactions": 63,
-   "comments_count": 0,
+   "comments_count": 8,
+   "top_comments": [
+    {
+     "author": "Facebook user",
+     "text": "@[100015078618256:2048:Duy Nguyễn]",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Bác kéo data facebook vào k?",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "hay ta, cho một like",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Có app cho bóng bàn ko ạ?",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Công đức vô lượng 🙌",
+     "votes": 0
+    }
+   ]
+  },
+  {
+   "id": "3265804983751599",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "Microsoft PC Manager - Hàng chính chủ miễn phí của Microsoft mà dọn rác hiệu quả anh em ạ",
+   "content": "**Microsoft PC Manager - Hàng chính chủ miễn phí của Microsoft mà dọn rác hiệu quả anh em ạ**\n\nApp tự động báo cáo khi ổ cứng đầy file rác và scan chi tiết từng mục để dọn dẹp cực nhanh, không cần cài thêm mấy phần mềm bên thứ ba nặng máy\n\n• **Dọn sạch cache hệ thống và trình duyệt:** Như máy mình vừa quét phát hiện tới 65.5GB file rác. Riêng phần Recommended items đã giải phóng ngay được gần 26GB từ cache của Edge (17.1GB), Chrome (804MB) và file tạm hệ thống\n\n• **Bóc tách dung lượng rác theo từng phần mềm:** Bảng thống kê soi rất kỹ bộ nhớ đệm của từng app dev hay dùng như Node.js (19.4GB), CapCut (2.9GB), VSCode (2.5GB), NVIDIA (2GB), Python (1.8GB)... giúp anh em dễ dàng chọn lọc và dọn dẹp an toàn mà không sợ xóa nhầm dữ liệu quan trọng.\n\nAnh em dùng Windows 10/11 có thể tìm và tải trực tiếp trên Microsoft Store nhé\n\n#j2team_share",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3265804983751599/",
+   "published_at": "2026-11-25T10:46:23+00:00",
+   "reactions": 666,
+   "comments_count": 45,
+   "top_comments": [
+    {
+     "author": "Facebook user",
+     "text": "Dọn đc con copilot k bác",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Mình vừa quét được 20GB ở ổ C, cũng nhờ PC Manager xong, bác ạ.",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Thanks bác share",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "…… chấm kk",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Trc em xài thấy cũng oke lắm nhưng mà từ đợt nó thêm cái AI và xong nó chậm với em cứ cảm giác nó ăn ram thế nào ấy.",
+     "votes": 0
+    }
+   ]
+  },
+  {
+   "id": "3265830470415717",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "j2team_relax",
+   "content": "#j2team_relax",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3265830470415717/",
+   "published_at": "2026-11-25T11:08:47+00:00",
+   "reactions": 2575,
+   "comments_count": 37,
    "top_comments": []
   },
   {
-   "id": "2706760219781368",
-   "group_id": "machinelearningcoban",
-   "group_name": "Forum Machine Learning cơ bản",
-   "title": "",
-   "content": "",
-   "url": "https://facebook.com/groups/machinelearningcoban/permalink/2706760219781368/",
-   "published_at": "2026-11-24T11:15:18+00:00",
-   "reactions": 1,
-   "comments_count": 0,
+   "id": "3265748113757286",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "Tăng cường trải nghiệm lướt web với Browse Assist.",
+   "content": "# Tăng cường trải nghiệm lướt web với Browse Assist.\n\nChào các bác, trong quá trình lướt web mỗi ngày thì ai cũng chắc hẳn sẽ cài những tiện ích nhỏ lẻ để tối ưu trải nghiệm sử dụng. Cho đến khi bản thân em nhận ra mình đã cài quá nhiều tiện ích nhỏ lẻ, thì em nghĩ rằng mình nên gom chúng lại làm một. Từ đấy, Browse Assist ra đời, hoàn toàn mã nguồn mở và miễn phí, có mặt trên cả Chrome, Edge và Firefox.\n\nBrowse Assist được triển khai theo triết lý \"Powertoy for web\", giúp tăng cường trải nghiệm duyệt web của các bác với hơn 10 công cụ khác nhau. Bao gồm:\n* **Siêu kéo thả:** Kéo thả một cụm văn bản, liên kết hay ảnh theo 4 hướng để thực hiện thao tác được thiết lập nhanh chóng.\n* **Cuộn trang nhanh:** Thêm nút cuộn lên đầu trang/xuống cuối trang vào mọi trang web, có tùy chỉnh tự động tắt trên các trang đã thiết lập sẵn nút **Scroll to top **(dành cho bác nào lười bấm Ctrl+PgUp/PgDown).\n* **Điều khiển Video:** Sử dụng con lăn chuột với các phím Ctrl, Alt, Shift để điều khiển tốc độ và âm lượng trên phần lớn thẻ video, hỗ trợ cả tua video, chuyển frame và Picture-in-Picture.\n* **Xem trước ảnh:** Hỗ trợ nhấn Shift + di chuột vào ảnh để xem trước ảnh với chất lượng gốc, hữu ích trong trường hợp thẻ img trên trang đang hiển thị ở chất lượng gốc nhưng bị crop lại.\n* **Trung tâm nhanh:** Truy cập nhanh chức năng thông qua 1 nút mở ra menu trung tâm nằm ngay cạnh màn hình.\n* Và những công cụ khác như mở khóa chuột phải, chọn màu (hiện chỉ hỗ trợ Chromium), cuộn chuột mượt có quán tính,... đang chờ các bác trải nghiệm.\n\nĐể tùy chỉnh trải nghiệm sử dụng và điều khiển lên tối đa, các bác có thể dời vị trí các nút nổi trên màn hình trong quá trình sử dụng (thông qua nhấn chuột phải hoặc giữ chuột phải), tùy chỉnh độ đậm nhạt, hình dáng nút. Thiết lập **Site-rule** giúp tự động vô hiệu hóa các công cụ trên một hoặc nhiều trang cụ thể nếu chức năng bị xung đột với trang web. Nếu có tính năng nào không làm hài lòng các bác, các bác hoàn toàn có thể tắt nó đi và sử dụng các tiện ích hiện có.\n\nBác nào trải nghiệm qua thì có thể cho em nhận xét và đánh giá cũng như góp ý nếu có với ạ. Em xin chân thành cảm ơn các bác.\n\nChúc các bác sau lễ quay lại đi làm thuận buồm xuôi gió, thăng tiến công việc ạ.\n\nLink em để trong bình luận hoặc trong mã QR.\n\n[#j2team_software](https://www.facebook.com/hashtag/j2team_software?__cft__[0]=AZjpihF9nIg3NBhIg1nuvLZhNxY14HyXkksEr_qPjJaWQ3XiYvLYQwXGuadTV2hqBMnHfxVT2bw7AFfnDgW4ZKcFB0FrqUrT_JoHyuCiWIMbKmoihIJL0YIlndSXS-j4hKKees4M6dQDaFV8HTj-&__tn__=*NK-R) [#j2team_share](https://www.facebook.com/hashtag/j2team_share?__cft__[0]=AZjpihF9nIg3NBhIg1nuvLZhNxY14HyXkksEr_qPjJaWQ3XiYvLYQwXGuadTV2hqBMnHfxVT2bw7AFfnDgW4ZKcFB0FrqUrT_JoHyuCiWIMbKmoihIJL0YIlndSXS-j4hKKees4M6dQDaFV8HTj-&__tn__=*NK-R) [#j2team_discussion](https://www.facebook.com/hashtag/j2team_discussion?__cft__[0]=AZjpihF9nIg3NBhIg1nuvLZhNxY14HyXkksEr_qPjJaWQ3XiYvLYQwXGuadTV2hqBMnHfxVT2bw7AFfnDgW4ZKcFB0FrqUrT_JoHyuCiWIMbKmoihIJL0YIlndSXS-j4hKKees4M6dQDaFV8HTj-&__tn__=*NK-R)",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3265748113757286/",
+   "published_at": "2026-11-25T09:48:51+00:00",
+   "reactions": 16,
+   "comments_count": 1,
    "top_comments": []
   },
   {
-   "id": "2706575056466551",
-   "group_id": "machinelearningcoban",
-   "group_name": "Forum Machine Learning cơ bản",
-   "title": "clone giọng nói nên dùng lib gì các bác",
-   "content": "clone giọng nói nên dùng lib gì các bác",
-   "url": "https://facebook.com/groups/machinelearningcoban/permalink/2706575056466551/",
-   "published_at": "2026-11-24T07:27:07+00:00",
-   "reactions": 3,
-   "comments_count": 3,
-   "top_comments": []
-  },
-  {
-   "id": "2706646669792723",
-   "group_id": "machinelearningcoban",
-   "group_name": "Forum Machine Learning cơ bản",
-   "title": "Máy local GPU yếu nhưng Kaggle API chỉ cho đẩy notebook chạy batch, không mở được terminal trực tiếp cho AI Agent.",
-   "content": "Máy local GPU yếu nhưng Kaggle API chỉ cho đẩy notebook chạy batch, không mở được terminal trực tiếp cho AI Agent.\n\nMình viết kaggle-shell-mcp để giữ phiên Kaggle Dual T4 (30 GB VRAM) chạy nền tối đa 12h và nối thẳng vào AI Agent qua MCP, không cần VPN hay ngrok.\n\n- Tự gọi lệnh terminal có giữ trạng thái và môi trường.\n\n- Đồng bộ code, chạy job train nền, đọc log và tự chốt checkpoint trước mốc 12h.\n\n- Hỗ trợ tự động tắt để tiết kiệm quota.\n\nGitHub: https://github.com/NguyenQuocDat06-AI/kaggle-shell-mcp\n\nMình rất mong nhận được một Star và các góp ý / PR từ mọi người để hoàn thiện thêm.",
-   "url": "https://facebook.com/groups/machinelearningcoban/permalink/2706646669792723/",
-   "published_at": "2026-11-24T08:58:50+00:00",
-   "reactions": 219,
-   "comments_count": 11,
-   "top_comments": []
-  },
-  {
-   "id": "2706551673135556",
-   "group_id": "machinelearningcoban",
-   "group_name": "Forum Machine Learning cơ bản",
-   "title": "Chào cả nhà buổi chiều.",
-   "content": "Chào cả nhà buổi chiều.\n\nEm muốn được giải đáp vấn đề về clone giọng có cảm xúc tốt và chi phí hợp lý hiện tại ra sao?\n\nHiện tại em đang chạy local trên card 3080 12gb gồm vieneu và Omnivoice thì chất lượng voice đầu ra đang khá tệ đc 0.5 - 0.6 so với voice gốc. Cảm xúc thì hầu như ko có.\n\nEm đang muốn tìm 1 giải pháp khác có phí hoặc local tốt hơn nếu có thể đc từ 0.7-0.8 voice gốc thì quá tốt. Nếu có thêm cảm xúc hoặc nhấn nhá 1 xíu thì lại quá okie. \nMục đích làm video ngắn từ 1-2phút\n\nSố giọng cần clone tầm 7-10 giọng cho đội Sale",
-   "url": "https://facebook.com/groups/machinelearningcoban/permalink/2706551673135556/",
-   "published_at": "2026-11-24T06:55:30+00:00",
-   "reactions": 7,
+   "id": "3265564190442345",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "share code fshare ạ",
+   "content": "share code fshare ạ\nM11267705065146\n[#j2team_share](https://www.facebook.com/hashtag/j2team_share?__cft__[0]=AZi64g-O82C2evmiEGbG__Fj4XRquajugLeFpg27iucPvKYdhcCtCoclhQ9ZubftdggnABiBioU9pvSJNa07ram1i3slapZB1txOb6mOXlAgWW6RI_kM-wLxlJ649LdY2alZMkEYenNmvKrB1CYF7_C3qerjM8RUedlwyRxeDvo8rvyyufc1xivVIQ2aOECG&__tn__=*NK-R)",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3265564190442345/",
+   "published_at": "2026-11-25T06:50:24+00:00",
+   "reactions": 29,
    "comments_count": 5,
    "top_comments": []
   },
   {
-   "id": "2705887939868596",
+   "id": "3265470160451748",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "[Open Source] SpendSync - tự động ghi thu chi bằng email giao dịch từ ngân hàng.",
+   "content": "**[Open Source] SpendSync - tự động ghi thu chi bằng email giao dịch từ ngân hàng.**\n\nĐã từng dùng nhiều ứng dụng ghi chép thu chi và bỏ giữa chừng vì lười, nay mình dùng Claude hỗ trợ để viết 1 phần mềm hỗ trợ đọc email giao dịch và tạo thông tin tự động.\n\nHiện tại hỗ trợ: Vietcombank, CAKE, VPBank. Các ngân hàng khác mình chưa có giao dịch nên chưa thể hỗ trợ được.\n\nAnh em nào cần hỗ trợ thì liên hệ mình và cung cấp email giao dịch để mình parse dữ liệu và hỗ trợ thêm.\n\nPrivacy: một số anh em sẽ sợ về vấn đề cung cấp password nên mình mới Open Source để minh bạch. Nó còn 1 cách khác là forwarding email về email ảo nhưng hơi phức tạp cho end-user và chỉ đọc được giao dịch mới nên mình chưa làm, sẽ hỗ trợ cho các bản cập nhật sau.\n\n**Bản Web:** https://spendsync.co\n\n**GitHub:** https://github.com/henrybuidotdev/spendsync\n\n[#j2team_share](https://www.facebook.com/hashtag/j2team_share?__cft__[0]=AZiEOgb1GI9Ac77TwtM8Z4_pBAHQHCawKlT7tHMZXRJ3T2sD4LzgMOtv166l66ivRC_A_HQKj-bFEFZ1zxLaJm5m8uebemUNCYpCsZZYJx0ceGTAB6H0cIDBDZum6b2w2OzlkSEYI0P-dKuouPeYCO_uxoFX3Bb-qd8hJfSumAAxKoMqxe5qgG7QXSphToE2&__tn__=*NK-R) #j2team_software",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3265470160451748/",
+   "published_at": "2026-11-25T05:02:06+00:00",
+   "reactions": 35,
+   "comments_count": 20,
+   "top_comments": [
+    {
+     "author": "Facebook user",
+     "text": "Giải pháp mình dùng cho gia đình cũng gần tương tự như này nhưng mình dùng cho gia đình còn ko yêu cầu cung cấp user/pass rồi.\nChứ public mà còn bắt cung cấp user pass thì chắc ko mấy ai dùng",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "Email đa phần chỉ có chi thôi ko có thu đâu. Lấy từ shortcut noti thì an toàn mà đầy đủ hơn đó",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "@[100000324860180:2048:Bùi Viết Hướng] Việc nhập email pass của gmail là cái red flag rất lớn. Bạn làm cho người khác xài hay có ý đồ gì ko thì chỉ có bạn biết thôi. Source github thì có up full source hay ko cũng ko ai biết. Hôm nay bạn làm vì mọi người, ngày mai thì đổi ý, ai đảm bảo được. Rồi dữ liệu bị leak, bản có đền bù được cho user hay ko. Email là nơi rất nhiều thông tin nhạy cảm có thể bị lộ.\nCái này chỉ nên share ở mức open source thì sẽ rất tốt, chứ bạn đã làm cho người khác thì cũng phải đảm bảo an toàn dữ liệu của người khác. Tôi thấy cái này security risk rất cao, chừng nào chưa đảm bảo được dữ liệu người dùng thì ko nên publish. Ý tưởng sẽ rất tốt tuy nhiên cần đảm bảo nhiều yếu tố khác nữa.",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "parse mail thôi thì tạo plus addressing xong cho người dùng tạo bộ lọc chuyển tiếp là đc r, đòi user/pass thì ai dám nữa=))",
+     "votes": 0
+    },
+    {
+     "author": "Facebook user",
+     "text": "cái này mình làm từ 3-4 năm trước rồi có khoảng 5k user active thời điểm ấy dùng cũng khá nhiều nhưng cũng drop vì có vấn đề là rất ít ngân hàng support mail, mỗi ngân hàng gửi mail 1 kiểu và update lại mail liên tục, phải chạy theo dể parse lại :v nếu làm product mà bắt user connect nhiều step thế kia thì user cũng bỏ đi",
+     "votes": 0
+    }
+   ]
+  },
+  {
+   "id": "3265463240452440",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "Đợt này mình thấy nhiều người khen Gemini Neon (cả trong nhóm này). Google trở lại rồi à mọi người? 😁",
+   "content": "Đợt này mình thấy nhiều người khen Gemini Neon (cả trong nhóm này). Google trở lại rồi à mọi người? 😁\n\n#j2team_discussion",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3265463240452440/",
+   "published_at": "2026-11-25T04:54:25+00:00",
+   "reactions": 67,
+   "comments_count": 8,
+   "top_comments": []
+  },
+  {
+   "id": "3265360350462729",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "“tít tít... xè xè... ò í e...” **☎️",
+   "content": "**“tít tít... xè xè... ò í e...” **☎️\nChẳng cần phải là chuyên gia. Chẳng ngại thủ tục rườm rà và cũng không cần phải nhớ mật mã. VNN1269 - chìa khóa để vào thế giới Internet kỳ thú của bạn.\nVNN 1269 - CỔNG VÀO INTERNET DỄ DÀNG.\n#j2team_relax",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3265360350462729/",
+   "published_at": "2026-11-25T02:52:12+00:00",
+   "reactions": 96,
+   "comments_count": 11,
+   "top_comments": []
+  },
+  {
+   "id": "3265288173803280",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "📣 ĐIỂM TIN BUỔI SÁNG THỨ TƯ (25/11/2026)",
+   "content": "📣 ĐIỂM TIN BUỔI SÁNG THỨ TƯ (25/11/2026)\n\nChào buổi sáng cả nhà J2TEAM! Chúc mọi người một ngày mới làm việc và học tập tràn đầy năng lượng. Dưới đây là những tin tức công nghệ và an ninh mạng nổi bật nhất trên thế giới sáng nay để mọi người cùng cập nhật nhé!\n\n#j2team_news #diemtinsang #news",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3265288173803280/",
+   "published_at": "2026-11-25T01:27:01+00:00",
+   "reactions": 256,
+   "comments_count": 2,
+   "top_comments": []
+  },
+  {
+   "id": "3264958120502952",
+   "group_id": "j2team.community",
+   "group_name": "J2TEAM Community",
+   "title": "j2team_discussion",
+   "content": "#j2team_discussion \n\nGemini 4 Carbon đã chính thức có mặt cho Antigravity với người dùng mua gói Pro , trong thời gian trước đó mô hình này chỉ khả dụng cho gói Ultra. Tuy vậy thì Gemini bản web cho gói Pro vẫn sẽ chỉ bao gồm Hydrogen và Neon \n> \n\nThú thực là Neon đang đáp ứng quá tốt nhu cầu sử dụng của t nên t cảm giác lượng token Carbon tiêu tốn sẽ không đáng cho đa số trường hợp. Neon nó giống như Opus bên Claude ấy, là một mô hình cân bằng rất tốt giữa tốc độ, hiệu suất và chi phí. Carbon thì lại giống Fable, là mô hình tối tân nhất nhưng lượng chi phí nó đội thêm lên rất nhiều. Với lại cuối tháng này thì Argon sẽ bị đắp chiếu ở Antigravity luôn, nó cũng đã bị xóa khỏi Gemini web cách đây không lâu rồi ☠",
+   "url": "https://facebook.com/groups/j2team.community/permalink/3264958120502952/",
+   "published_at": "2026-11-24T18:59:24+00:00",
+   "reactions": 114,
+   "comments_count": 27,
+   "top_comments": []
+  },
+  {
+   "id": "2707852646338792",
    "group_id": "machinelearningcoban",
    "group_name": "Forum Machine Learning cơ bản",
-   "title": "mng ơi zalo AI challenge đóng cổng nộp priavte ch ạ em kh thấy chỗ submit",
-   "content": "mng ơi zalo AI challenge đóng cổng nộp priavte ch ạ em kh thấy chỗ submit",
-   "url": "https://facebook.com/groups/machinelearningcoban/permalink/2705887939868596/",
-   "published_at": "2026-11-23T16:02:51+00:00",
-   "reactions": 6,
-   "comments_count": 1,
-   "top_comments": []
-  },
-  {
-   "id": "1515548543814988",
-   "group_id": "vgu.tech.alumni",
-   "group_name": "VGU Tech Alumni",
-   "title": "[ 12 Nguyên Tắc Xây Dựng \"Software Factory\" (Nhà Máy Phần Mềm) Dùng AI Mà Không Đẻ Ra Code Rác ]",
-   "content": "# **[ 12 Nguyên Tắc Xây Dựng \"Software Factory\" (Nhà Máy Phần Mềm) Dùng AI Mà Không Đẻ Ra Code Rác ]**\n\nNguồn: Bài nói chuyện của Dex Horthy (Factory, cựu CEO Human Layer) tại sự kiện AI Engineer\n\n**TL;DR:**\n\nDữ liệu từ benchmark Slop Code Bench cho thấy ngay cả các model mạnh nhất hiện nay cũng chỉ đạt khoảng 16% khi phải duy trì và phát triển một codebase qua nhiều giai đoạn.\n\nDex Horthy chỉ ra rằng vận hành một Agentic Software Factory thực chất vẫn là áp dụng kỷ luật Software Engineering truyền thống thay vì thả rông cho AI tự chạy.\n\nMuốn AI tăng năng suất mà không làm phình to nợ kỹ thuật, kỹ sư bắt buộc phải thiết lập cơ chế kiểm soát chất lượng tự động và giữ quyền kiểm duyệt ở các quyết định cốt lõi.\n\n==========================\n\nGần đây cộng đồng dev bàn tán rất nhiều về khái niệm Software Factory, nơi hàng loạt Coding Agent tự động nhận task, viết code và đẩy Pull Request liên tục. Tuy nhiên, số liệu thực tế lại đang gióng lên hồi chuông cảnh báo.\n\nTrên bộ đánh giá mới mang tên Slop Code Bench do Đại học Wisconsin công bố, các model hàng đầu hiện nay như GPT 5.5 hay Astra chỉ đạt mức điểm loanh quanh 15% đến 16.3%. Một nghiên cứu khác từ Faros cũng ghi nhận có tới 30% lượng PR được merge mà không qua review, kéo theo số lượng bug trên mỗi lập trình viên và sự cố trên môi trường Production tăng vọt.\n\nĐiểm yếu chí mạng của các model hiện tại là chúng rất giỏi giải quyết các bài toán độc lập từ con số không, nhưng lại cực kỳ tệ trong việc bảo trì và tiến hóa một codebase theo thời gian. Nếu bạn chỉ nhồi feature mới vào hệ thống một cách mù quáng, AI sẽ liên tục đắp thêm code chắp vá thay vì tái cấu trúc (Refactor) các lớp trừu tượng cũ, làm độ phức tạp (Cyclomatic Complexity) của hệ thống phình to chỉ sau vài tháng.\n\nĐể biến quy trình làm việc với AI thành một dây chuyền thực thụ mà không biến repo thành bãi rác, Dex Horthy đúc kết lại 12 nguyên tắc thực chiến xoay quanh cách chúng ta điều phối công việc:\n\nĐầu tiên là thiết kế nhịp điệu giữa **Forward Pressure** (áp lực đầu vào) và **Back Pressure** (áp lực phản hồi đầu ra). Forward Pressure là cách bạn tự động đẩy việc vào cho Agent, chẳng hạn như route thẳng feature request từ tracker hoặc tự động tạo PR sửa lỗi ngay khi hệ thống báo incident lúc 3 giờ sáng. Ngược lại, Back Pressure là bộ lọc chặn đứng code kém chất lượng trước khi tới tay con người, bao gồm hệ thống CI/CD chặt chẽ, static linter, các bài test tự động và cả Agentic Code Review để model tự sửa lỗi cho nhau.\n\nTiếp theo, đừng bao giờ bỏ qua bước **Plan trước khi build**. Dù tốc độ sinh code của AI tính bằng phút, chi phí đập đi làm lại khi thiết kế sai Database Schema hoặc kiến trúc tổng thể vẫn rất đắt đỏ. Bạn không cần tranh luận với AI xem cái nút bấm màu gì, nhưng với những phần có mức độ đau đớn cao khi thay đổi về sau, hãy chốt bản thiết kế kỹ thuật thật kỹ trước khi cho Agent chạy.\n\nTrong quá trình review và kiểm thử, hãy chuyển sang **Align Visually** và trao công cụ test thực tế cho Agent. Con người đọc text rất chậm nhưng xử lý hình ảnh cực nhanh, nên thay vì ngồi đọc hàng nghìn dòng diff khô khan, hãy yêu cầu AI xuất ra sơ đồ, bảng biểu hoặc giao diện mockup trực quan. Đồng thời, hãy cấp cho Agent quyền chạy trình duyệt, gọi curl hoặc chụp ảnh màn hình để nó tự kiểm chứng kết quả chạy thực tế thay vì chỉ đoán mò qua unit test.\n\nĐể chặn đứng các thói quen viết code rườm rà đặc trưng của LLM, hãy đưa các bộ quy tắc chống \"slop\" thẳng vào **Linter** trong repo, tương tự như bộ rule Anti-Slop của Dylan Mey tại Cloudflare hay các rule kiểm soát độ phức tạp hàm từ Slop Code Bench. Kết hợp thêm **Feature Flags** như PostHog hay LaunchDarkly để Agent có thể tự thử nghiệm tính năng mới trên tập user nhỏ và đo lường hiệu quả thực tế trước khi mở rộng.\n\nCuối cùng, hãy gom toàn bộ ngữ cảnh vào một **Unified Forge**. Thay vì để các đoạn chat với AI, tài liệu thiết kế trên Notion hay Google Docs nằm rời rạc khiến đồng nghiệp phải copy-paste qua lại trên Slack, hãy tập trung mọi quyết định và lịch sử thiết kế về cùng một mối để cả người lẫn Agent đều hiểu rõ lý do đằng sau từng dòng code.\n\nBên cạnh câu chuyện kỹ thuật, Dex Horthy cùng nhiều kỹ sư từ OpenAI, xAI cũng giới thiệu bản **Anti-Slop Manifesto** (slopmanifesto.com). Thông điệp cốt lõi rất thẳng thắn: Slop xảy ra khi người tạo ra nội dung hoặc code tốn ít công sức hơn rất nhiều so với thời gian người đọc hoặc người review phải bỏ ra để dọn dẹp nó. Chi phí tạo một PR 1.000 dòng giờ gần như bằng không, nhưng chi phí review vẫn giữ nguyên, và rác trong codebase hay tài liệu nội bộ sẽ tự nhân bản khi các Agent đời sau lại đọc chính đống rác đó để học theo.\n\nAI chỉ khuếch đại tư duy của người dùng chứ không thể thay thế năng lực phán đoán kỹ thuật. Dùng AI để vibe coding một bản prototype nhanh thì hoàn toàn ổn, nhưng với những hệ thống cần sống khỏe qua nhiều năm, trách nhiệm cuối cùng với chất lượng sản phẩm vẫn nằm ở người kỹ sư bấm nút merge.\n\n----------------------------\n\nTeam của anh chị em hiện tại đã áp dụng CI/CD hay bộ rule linter nào riêng để chặn AI sinh code rườm rà chưa, hay vẫn đang phải căng mắt review tay từng PR?\n\n#ShareThisPost #sharing #AIDevelopment #review #codereview #SoftwareEngineering #softwaredevelopment",
-   "url": "https://facebook.com/groups/vgu.tech.alumni/permalink/1515548543814988/",
-   "published_at": "2026-11-24T15:01:12+00:00",
-   "reactions": 77,
-   "comments_count": 1,
-   "top_comments": [
-    {
-     "author": "Facebook user",
-     "text": "Mọi người ai lười đọc post thì có thể vào xem clip full ở đây nha (tầm 20p)\nhttps://www.youtube.com/watch?v=-NFMsM2y0Vk",
-     "votes": 0
-    }
-   ]
-  },
-  {
-   "id": "1515536430482866",
-   "group_id": "vgu.tech.alumni",
-   "group_name": "VGU Tech Alumni",
-   "title": "[ GitRanks: Thước đo thực chất xem tài khoản GitHub của bạn đang đứng ở đâu trên bản đồ mã nguồn mở ]",
-   "content": "# **[ GitRanks: Thước đo thực chất xem tài khoản GitHub của bạn đang đứng ở đâu trên bản đồ mã nguồn mở ]**\n\nTL;DR:\n* GitRanks là nền tảng phân tích và xếp hạng dữ liệu công khai trên GitHub cho cả lập trình viên (Developer), kho mã nguồn (Repository) và tổ chức (Organization).\n* Thay vì chỉ đếm số commit xanh lè dễ bị \"cày\" ảo, hệ thống chia bảng xếp hạng theo 3 tiêu chí thực chất: tổng số Star của repo cá nhân, tổng số Star của các repo bên ngoài mà bạn từng có Pull Request được merge, và số lượng Follower.\n* Bạn có thể tra cứu thứ hạng của mình trên phạm vi toàn cầu, tại Việt Nam, theo từng ngôn ngữ lập trình và lấy các huy hiệu động (README badges) gắn thẳng vào trang cá nhân GitHub.\n\n===================\n\nNhiều anh chị em làm nghề lâu năm đều biết cái bẫy của biểu đồ đóng góp (contribution graph) trên GitHub. Chỉ cần viết một đoạn script tự động đẩy commit mỗi ngày là ô vuông xanh rì cả năm, nhưng giá trị thực tế mang lại cho cộng đồng thì gần như bằng không.\n\nVừa rồi mình có lướt qua GitRanks và thấy cách tiếp cận của trang này khá thực tế cho dân kỹ thuật. Nó bỏ qua số lượng commit đơn thuần mà chỉ dùng dữ liệu công khai (public data) để đo lường mức độ ảnh hưởng thực sự qua 3 bảng xếp hạng độc lập:\n\n* **Stars:** Tính tổng số sao trên các Repository mà bạn trực tiếp sở hữu (yêu cầu tối thiểu 5 stars để bắt đầu lên bảng).\n* **Contributions:** Cái này rất hay cho ai hay đi vá lỗi hoặc thêm tính năng cho thư viện bên ngoài. Hệ thống sẽ cộng tổng số sao của những repo người khác mà bạn từng gửi Pull Request và được duyệt gộp (merged PR) vào nhánh chính.\n* **Followers:** Tính theo lượng người theo dõi tài khoản GitHub của bạn (tối thiểu 5 followers).\n\nĐiểm tiện lợi là mọi bảng xếp hạng đều cho phép lọc theo từng quốc gia (có cả Việt Nam) và từng ngôn ngữ lập trình cụ thể. Mỗi tài khoản sau khi phân tích sẽ được phân hạng (Tier) từ Rookie đến Legend, còn các dự án mã nguồn mở thì xếp từ Stardust lên đến Supernova. Nhìn vào đây bạn sẽ biết ngay trong cộng đồng Java, Go hay TypeScript ở Việt Nam, tài khoản của mình đang nằm ở phân khúc nào và tăng giảm ra sao theo từng tháng.\n\nNgoài phần soi thông số cá nhân, trang này còn có vài tính năng phụ trợ khá gọn cho dân làm open source:\n\n* **README Badges:** Công cụ tạo huy hiệu dạng ảnh động (SVG/PNG) tự động cập nhật thứ hạng và tự đổi màu theo giao diện sáng/tối (Light/Dark theme) của người xem để bạn nhúng vào file README.md.\n* **GitRanks Contribute:** Một tính năng mới đang chạy Beta giúp quét các issue đang mở ở những repo uy tín, khớp với kỹ năng của bạn để AI hỗ trợ viết nháp bản vá, sau đó bạn tự review diff và quyết định có mở Pull Request bằng tài khoản của mình hay không.\n\nDữ liệu trên trang được cập nhật tự động theo chu kỳ khoảng 2 đến 4 ngày một lần, hoặc bạn có thể đăng nhập bằng GitHub để tự làm mới (refresh) profile của mình mỗi ngày một lần.\n\n--------------------\n\nMọi người thử gõ username GitHub của mình lên kiểm tra xem đang ở Tier nào rồi nhé. Anh chị em nào hay đóng góp cho mã nguồn mở thì thấy cách tính điểm qua merged PR của trang này đã phản ánh đúng công sức bỏ ra chưa?\n\n#ShareThisPost #sharing #github #ranking",
-   "url": "https://facebook.com/groups/vgu.tech.alumni/permalink/1515536430482866/",
-   "published_at": "2026-11-24T14:47:51+00:00",
+   "title": "Rust for Machine Learning - Mô hình đa phương thức - Phần 03",
+   "content": "## Rust for Machine Learning - Mô hình đa phương thức - Phần 03\n\nChúng ta đã quá quen với việc sử dụng ChatGPT hay Gemini để hỏi đáp và chủ yếu là dưới dạng văn bản. Chúng ta cũng đã từng cùng nhau xây dựng chương trình Rust để tương tác với các LLM. Trong vài năm trở lại đây, chúng ta thấy ChatGPT, Gemeni, v.v. đã có thể \"chat\" bằng văn bản, ảnh, âm thanh, video cùng lúc. Chẳng hạn bạn có thể đưa vào một bức ảnh kèm chuỗi văn bản \"hãy mô tả nội dung bức ảnh này cho tôi\" và AI sẽ mô tả bức ảnh khá chi tiết bằng văn bản.\n\nTrong hai video trước, chúng ta đã cùng nhau tìm hiểu những khái niệm cơ bản về kiến trúc mô hình đa phương thức, cùng nhau đi qua các bước chuẩn bị từ việc tải nạp mô hình PaliGemma từ HuggingFace, cấu hình đối tượng mô hình PaliGemma dựa trên nội dung tệp `model.safetensors.index.json`. Chúng ta cũng đã cùng nhau tìm hiểu tại sao lại dùng kiểu dữ liệu `BF16` thay vì `F32`? và đã tìm hiểu cách thức xử lý dữ liệu ảnh cho đúng để chuẩn bị tạo prompt cho mô hình.\n\n\"**#0071 - Rust for Machine Learning - Mô hình đa phương thức PaliGemma - Phần 03**\" sẽ tiếp tục bằng cách thức \"đồng hóa\" ten-xơ ảnh với ten-xơ văn bản, khởi tạo LogitsProcessor và đưa vào mô hình để thực hiện suy luận đa phương thức.\n\n**RustDev Vietnam** rất mong chuỗi video này hữu dụng và có thể giúp các bạn bước đầu làm quen với việc dùng Rust để xây dựng các chương trình ứng dụng học máy. Trong quá trình xem video, nếu các bạn có bất cứ câu hỏi hoặc gợi ý gì liên quan đến nội dung hãy ghi vào phần \"comment\" của video nhé! **RustDev Vietnam** sẽ cố gắn phản hồi tất cả.\n\nHãy nhớ nhấn ĐĂNG KÝ KÊNH để không bị bỏ lỡ các video mới của **RustDev Vietnam** nhé! Chúng tôi sẽ xuất bản video hàng tuần. #rustdev_vietnam",
+   "url": "https://facebook.com/groups/machinelearningcoban/permalink/2707852646338792/",
+   "published_at": "2026-11-25T09:36:16+00:00",
    "reactions": 10,
-   "comments_count": 1,
+   "comments_count": 0,
    "top_comments": []
   },
   {
-   "id": "1515392543830588",
-   "group_id": "vgu.tech.alumni",
-   "group_name": "VGU Tech Alumni",
-   "title": "[ AI chứng minh được bài toán thế kỷ nhưng chính tác giả cũng không hiểu hết 17 triệu dòng code: Góc nhìn thẳng thắn từ GS. Ngô Bả",
-   "content": "# **[ AI chứng minh được bài toán thế kỷ nhưng chính tác giả cũng không hiểu hết 17 triệu dòng code: Góc nhìn thẳng thắn từ GS. Ngô Bảo Châu ]**\n\nNguồn: Trò chuyện giữa GS. Ngô Bảo Châu và GS. Trần Vĩnh Hưng (Kênh YouTube Hung Vinh Tran - #toan0mau)\n\nTL;DR:\n* Levent Alpöge cùng Anthropic vừa công bố chứng minh Giả thuyết Riemann (Riemann Hypothesis) bằng AI với hơn **17.000.000** dòng lệnh Lean, được máy móc kiểm chứng là đúng nhưng chính tác giả cũng chưa thể hiểu hết toàn bộ chứng minh. Đoạn code được diễn giải bằng văn bản với khoảng **250.000** trang\n* GS. Ngô Bảo Châu nhận định đây là bước ngoặt làm thay đổi cục diện nghiên cứu, nhưng cảnh báo việc tạo ra những lời giải mà con người không hiểu sẽ biến toán học thành \"nghĩa trang khủng long\" thay vì một hệ sinh thái tiếp tục phát triển.\n* Hệ thống đánh giá truyền thống (đếm bài báo, xét duyệt qua tạp chí) đang lỗi thời khi AI làm được quá nhanh, buộc giới học thuật và kỹ thuật phải quay lại với phỏng vấn, vấn đáp trực tiếp và đặt giá trị hiểu biết của con người làm thước đo cao nhất.\n\n===========================\n\nMấy hôm nay cộng đồng khoa học và anh chị em làm công nghệ đang xôn xao vụ Levent Alpöge kết hợp cùng Anthropic công bố giải được Giả thuyết Riemann (Riemann Hypothesis) và Giả thuyết Riemann mở rộng. Đây là một trong những bài toán thế kỷ hóc búa nhất lịch sử, đi kèm bản chứng minh dài hơn 250.000 trang với hàng trăm nghìn dòng code kiểm chứng trên ngôn ngữ hình thức Lean (Formal Verification).\n\nĐiều thú vị là ngay sau tin chấn động này, GS. Trần Vĩnh Hưng đã có buổi trò chuyện rất thẳng thắn với GS. Ngô Bảo Châu. Đứng ở góc độ người làm kỹ thuật phần mềm, mình thấy những trăn trở của giáo sư về chuyện \"AI chạy quá nhanh còn con người chưa kịp hiểu\" lại cực kỳ giống với tình cảnh anh em developer chúng ta đang đối mặt hàng ngày.\n\nCái nghịch lý đầu tiên mà GS. Ngô Bảo Châu chỉ ra là khái niệm \"đã chứng minh xong\". Trước đây, một định lý muốn được công nhận phải đi qua 3 tầng: người làm ra phải hiểu, cộng đồng hiểu, rồi mới dùng máy móc kiểm chứng lại các bước tính toán quá phức tạp. Giờ thì quy trình bị đảo ngược hoàn toàn.\n\nTrình biên dịch Lean xác nhận logic của 250.000 dòng lệnh kia là đúng, nhưng ngay cả người đặt câu lệnh (prompt) tạo ra nó cũng không thể đọc và hiểu hết toàn bộ ý tưởng bên trong. Giáo sư ví von rất hình tượng rằng nếu cứ để máy móc càn quét các bài toán mở theo kiểu đó, khu vườn toán học sẽ biến thành một \"nghĩa trang khủng long\". Khi một định lý bị đánh gục nhưng con người không rút ra được tư duy mới hay sự thấu hiểu sâu sắc, nó chỉ là một cái xác chết nằm đó chứ không hóa thành dinh dưỡng để nuôi sống các nhánh nghiên cứu tiếp theo.\n\nTuy nhiên, giáo sư không hề bi quan hay bài xích AI. Ông nhìn nhận công cụ này giống như một phòng thí nghiệm khổng lồ giúp \"dân chủ hóa\" (democratization) việc nghiên cứu. Trước đây, nhiều người có ý tưởng hay nhưng bị kẹt lại vì sức tính toán trên giấy nháp có hạn, hoặc không đủ khả năng nhẩm một chứng minh dài hàng trăm trang trong đầu.\n\nGiờ đây, AI giúp tra cứu chéo tài liệu, kiểm tra nhanh các mệnh đề trung gian (intermediate propositions) và thử nghiệm trên các dữ liệu đa biến phức tạp chỉ trong vài phút. Nhưng GS. Ngô Bảo Châu cũng chia sẻ một quan điểm làm nghề rất đáng suy ngẫm: ông sẽ chỉ dùng AI để thử nghiệm và tìm tài liệu, còn đến bước chứng minh cốt lõi cuối cùng thì nhất định tự làm. Bởi nếu giao luôn phần thú vị nhất cho máy, mình vừa tự đánh mất niềm vui khám phá, vừa không còn thực sự làm chủ công trình của chính mình.\n\nMột điểm chạm khác cực kỳ thực tế với dân kỹ thuật là sự sụp đổ của các thước đo đánh giá cũ. Khi một người có thể dùng AI xuất bản hàng trăm bài báo mà bản thân không hiểu sâu, việc tuyển dụng hay đánh giá năng lực dựa trên số lượng paper hay cái mác tạp chí lớn không còn ý nghĩa.\n\nTheo giáo sư, giải pháp duy nhất là phải quay về với giao tiếp giữa người với người và thi vấn đáp (oral defense) một cách nghiêm khắc. Giống như cách phỏng vấn kỹ sư hiện nay, thay vì nhìn CV liệt kê hàng tá công nghệ hay repo đẹp, người phỏng vấn phải hỏi xoáy trực tiếp vào bản chất, đặt các câu hỏi phản biện kín để xem ứng viên có thực sự làm chủ kiến thức hay chỉ đang mượn sức mạnh của LLM.\n\nSau cùng, nỗi lo lớn nhất của GS. Ngô Bảo Châu không phải là AI sẽ thay thế con người, mà là sự phân mảnh cộng đồng (sub-communities). Khi công cụ giúp mỗi nhóm nhỏ tự tạo ra một hệ giá trị riêng và chỉ quanh quẩn khen ngợi lẫn nhau, người trẻ sẽ mất đi cơ hội cọ xát với những chuẩn mực đỉnh cao thực sự và ngừng phát triển.\n\nNhìn từ câu chuyện toán học sang ngành phần mềm của anh chị em mình cũng vậy. Code sinh ra ngày càng nhiều, tốc độ ship feature ngày càng nhanh, nhưng giữ được người kỹ sư trong vòng kiểm soát (human-in-the-loop) và hiểu tận gốc rễ hệ thống mới là thứ giúp mình không bị đào thải.\n\n---------------------\n\nTrong team của mọi người dạo này, cách phỏng vấn hay review code có thay đổi gì để phân biệt giữa người thực sự hiểu hệ thống với người chỉ biết copy-paste từ AI không?\n\n#ShareThisPost #sharing #Ngobaochau #AIGenerated #mathematics",
-   "url": "https://facebook.com/groups/vgu.tech.alumni/permalink/1515392543830588/",
-   "published_at": "2026-11-24T11:59:08+00:00",
-   "reactions": 443,
-   "comments_count": 32,
+   "id": "2707581359699254",
+   "group_id": "machinelearningcoban",
+   "group_name": "Forum Machine Learning cơ bản",
+   "title": "TỪ DATA LEAKAGE, OVERFITTING ĐẾN MODEL DRIFT: XÂY DỰNG HỆ THỐNG A-SCORE END-TO-END",
+   "content": "TỪ DATA LEAKAGE, OVERFITTING ĐẾN MODEL DRIFT: XÂY DỰNG HỆ THỐNG A-SCORE END-TO-END\n\nMột mô hình Machine Learning đạt AUC cao trên tập Test chưa chắc đã mang lại hiệu quả khi triển khai trong thực tế.\nBởi đằng sau một hệ thống ML hoàn chỉnh không chỉ là việc lựa chọn thuật toán hay tối ưu Hyperparameter, mà còn là hàng loạt thách thức về dữ liệu, chất lượng dự báo và vận hành:\n• Imbalanced Data: Dữ liệu mất cân bằng khiến mô hình khó nhận diện nhóm khách hàng có rủi ro cao.\n• Limited Data & Overfitting: Dữ liệu thiếu, nhãn chưa đầy đủ hoặc số lượng mẫu hữu ích hạn chế khiến mô hình khó tổng quát hóa.\n• High-dimensional Data: Hàng trăm Features được tạo ra, nhưng đâu mới là những biến thực sự mang giá trị dự báo? Làm sao tránh Data Leakage khi xử lý dữ liệu lịch sử?\n• Model Explainability: Làm thế nào để chuyển kết quả dự báo thành điểm số, nhóm rủi ro và những quyết định có ý nghĩa kinh doanh?\n• Model Stability: Mô hình hoạt động tốt trên dữ liệu lịch sử, nhưng liệu có duy trì hiệu suất khi dữ liệu thực tế liên tục thay đổi?\n\nĐây cũng là những vấn đề được tiếp cận trong Capstone Project của Bootcamp Credit Scoring, thông qua việc xây dựng hệ thống A-Score end-to-end trên bộ dữ liệu Home Credit Default Risk (Kaggle), từ xử lý dữ liệu, phát triển mô hình đến triển khai và giám sát hiệu suất.\n\n🎯 PROJECT: A-SCORE PIPELINE – END-TO-END ML SYSTEM\n🔹 Giai đoạn 1: Data Pipeline & Feature Engineering\nXử lý và tổng hợp 7 bảng dữ liệu, xây dựng Features từ hồ sơ và lịch sử khách hàng. Kiểm soát Data Leakage, thiết lập Train/Test/OOT để đánh giá khả năng tổng quát hóa của mô hình.\n🔹 Giai đoạn 2: Feature Selection & Model Development\nSàng lọc Features bằng Missing Rate, IV, PSI; huấn luyện LightGBM, H2O AutoML và Logistic Regression. So sánh hiệu suất, xử lý đặc thù dữ liệu mất cân bằng và kiểm soát Overfitting.\n🔹 Giai đoạn 3: Evaluation, Calibration & Decision\nĐánh giá AUC, Gini, KS, Lift/Gain; hiệu chỉnh xác suất dự báo, kiểm tra O/E theo từng nhóm. Xây dựng Scorecard, Score Band và mô phỏng Cut-off để cân bằng mức độ rủi ro với hiệu quả kinh doanh.\n🔹 Giai đoạn 4: Model Deployment & MLOps\nĐưa mô hình từ Notebook thành pipeline có thể chạy thử nghiệm: quản lý phiên bản bằng MLflow Model Registry, triển khai Batch Scoring và API real-time với FastAPI, Docker. Thực hiện Parity Test để đảm bảo kết quả chấm điểm nhất quán.\n🔹 Giai đoạn 5: Monitoring & Retraining\nTheo dõi PSI/CSI để phát hiện sự thay đổi phân phối dữ liệu; đánh giá Gini, O/E khi có dữ liệu thực tế để nhận diện suy giảm hiệu suất. Xây dựng kế hoạch Recalibrate/Retrain/Rebuild và kiểm định mô hình mới trước khi thay thế phiên bản hiện tại.\n\nĐiểm cốt lõi của Project không nằm ở việc đạt AUC cao nhất, mà là xây dựng một hệ thống Machine Learning có khả năng xử lý dữ liệu phức tạp, hỗ trợ ra quyết định, triển khai và giám sát hiệu suất trong thực tế.",
+   "url": "https://facebook.com/groups/machinelearningcoban/permalink/2707581359699254/",
+   "published_at": "2026-11-25T03:45:05+00:00",
+   "reactions": 12,
+   "comments_count": 3,
    "top_comments": [
     {
      "author": "Facebook user",
-     "text": "Khong hieu noi bo thoi gian ra de giai cac bai toan nhu vay co ung dung gi duoc cho cuoc son hay de tu suong la minh gioi hon nguoi khac.",
+     "text": "Bootcamp Credit Scoring – Từ Machine Learning đến triển khai mô hình rủi ro tín dụng thực tế chính thức khai giảng ngày 01/12/2026. Đăng ký tham gia tại: https://forms.gle/RNLWaiXbpW5Sp9FQ9",
      "votes": 0
     },
     {
      "author": "Facebook user",
-     "text": "Đúng thế",
+     "text": "Chương trình gồm 08 buổi, giúp học viên thực hành xây dựng mô hình Credit Scoring ((A-Score) end-to-end chuẩn Banking.\n\nNội dung chi tiết và lịch học 08 buổi xem tại: https://docs.google.com/spreadsheets/d/1urq1DOTRU5wD5yYKipg4K50v53tlpQLmu2sfkrel7PA/edit?usp=sharing",
      "votes": 0
     },
     {
      "author": "Facebook user",
-     "text": "Chả sao cả, hồi Einstein đưa ra thuyết tương đối hẹp, hầu hết các nhà khoa học chả hiểu gì",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "Ai sub phát giả thuyết đó là gì",
-     "votes": 0
-    },
-    {
-     "author": "Facebook user",
-     "text": "17tr dòng code ko phải 250k",
+     "text": "📌 THÔNG TIN BOOTCAMP\n• Khai giảng: Thứ 3, ngày 01/12/2026\n• Hình thức: Online Ms Teams\n• Thời gian: 20:00 – 22:00 (Thứ 3 & Thứ 5 hàng tuần)\n• Hình thức: Online qua Zoom (có record)\n• Quyền lợi: Notebook, source code, evaluation template, deployment template, recording và certificate cuối khóa",
      "votes": 0
     }
    ]
-  },
-  {
-   "id": "1514592230577286",
-   "group_id": "vgu.tech.alumni",
-   "group_name": "VGU Tech Alumni",
-   "title": "Ông trùm áo da Jensen Huang chính thức trở lại ghế nóng NVIDIA chỉ sau 11 ngày từ chức — và Elon Musk lập tức lên tiếng: “Sai lầm ",
-   "content": "Ông trùm áo da Jensen Huang chính thức trở lại ghế nóng NVIDIA chỉ sau 11 ngày từ chức — và Elon Musk lập tức lên tiếng: “Sai lầm đã được sửa chữa!”\n\nĐúng như dự đoán của giới công nghệ mấy ngày qua, hội đồng quản trị NVIDIA vừa bỏ phiếu nhất trí khôi phục toàn bộ chức vụ CEO, Chủ tịch và giám đốc cho Jensen Huang ngay lập tức.\n\nChuyện là 11 ngày trước, ông Huang bất ngờ rời ghế nóng giữa lùm xùm liên quan đến vấn đề cá nhân. Nhưng chỉ hơn một tuần thiếu vắng người cầm lái, nội bộ rối ren còn đối thủ thì mừng thầm. Sau khi rà soát và xác nhận vụ việc hoàn toàn không ảnh hưởng gì tới an ninh quốc gia, NVIDIA quyết định \"quay xe\" mời tướng cũ về lại vị trí số một.\n\nTrên mạng xã hội X, Elon Musk — người bạn thân thiết và cũng là đối tác chiến lược của ông Huang — lập tức đăng hai dòng ngắn gọn mà đầy sức nặng: “It is done” (Mọi chuyện đã xong) và “The mistake has been corrected” (Sai lầm đã được sửa chữa). Còn cộng đồng mạng thì được phen cười nghiêng ngả, chế meme ầm ầm cảnh NVIDIA phải \"trải thảm đỏ rước lãnh đạo về\" vì không ai gánh nổi cái ghế tỷ đô này.\n\nNhìn cú quay xe thần tốc của NVIDIA mới thấy một sự thật trần trụi trong kinh doanh: Có những vị trí tưởng là thay ai cũng được, nhưng khi người đứng đầu bước ra khỏi cửa rồi mới biết... không có họ thì cả cỗ máy đứng khựng lại!\n\nTheo anh em, pha \"đi rồi lại về\" sau 11 ngày này sẽ giúp NVIDIA lấy lại phong độ hủy diệt, hay vết rạn nứt vừa rồi vẫn để lại dư chấn?\n\n#JensenHuang #Nvidia #ElonMusk #CongNgheAI #KinhDoanh #GocNhin",
-   "url": "https://facebook.com/groups/vgu.tech.alumni/permalink/1514592230577286/",
-   "published_at": "2026-11-23T16:30:05+00:00",
-   "reactions": 0,
-   "comments_count": 0,
-   "top_comments": []
-  },
-  {
-   "id": "1515157623854080",
-   "group_id": "vgu.tech.alumni",
-   "group_name": "VGU Tech Alumni",
-   "title": "",
-   "content": "",
-   "url": "https://facebook.com/groups/vgu.tech.alumni/permalink/1515157623854080/",
-   "published_at": "2026-11-24T06:37:56+00:00",
-   "reactions": 1,
-   "comments_count": 0,
-   "top_comments": []
   }
  ]
 }
